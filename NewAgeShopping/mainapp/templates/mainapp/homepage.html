@@ -1,0 +1,290 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+
+{% block slider %}
+<div class="container-fluid mt-1">
+    <p class="text-center">Biggest Discount Hurry up <a class="text-decoration-none text-danger font-weight-bold"
+            href="#scroller">Shop Now</a></p>
+</div>
+{% include 'mainapp/slider.html' %}
+
+{% endblock slider %}
+
+{% block content %}
+<div id='scroller'></div>
+<div class="container" style='margin-top: 6%'>
+    <h3 class='text-center'>Shop Now</h3>
+    <hr style="height:4px; bg-gray">
+</div>
+{% include 'mainapp/product_card.html' %}
+
+<div class="container mt-5">
+    <h3 class='text-center'>Trending Now</h3>
+    <hr style="height:4px; bg-gray">
+</div>
+
+<div id="mycarousel1" class="carousel slide mb-4" data-ride="carousel">
+    <div class="carousel-inner">
+        <!-- First Slide -->
+
+        <div class="carousel-item active" data-interval="1000">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <a href="product1">
+                            <div class="product-top">
+                                <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                    <img src="{% static 'images/products/image1.jpg' %}">
+                                </div>
+                                <div class="overlay bg-light">
+                                    <button class="btn" title="Add to cart"><i
+                                            class="fas fa-shopping-cart fa-sm"></i></button>
+                                    <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                    <a href="{% url 'details' %}"><button class="btn" title="Quick shop"><i
+                                                class="far fa-eye fa-sm"></i></button></a>
+                                </div>
+                            </div>
+                            <div class="product-bottom">
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star-half-alt fa-xs"></i>
+                                <i class="far fa-star fa-xs"></i>
+                                <div class="product-detail">
+                                    <h3>One piece</h3>
+                                </div>
+                                <div class="product-price">
+
+                                    <h5> <del style="width:40px; color:red;"> Rs. 3300</del> &nbsp &nbsp Rs. 2000</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href="product1">
+                            <div class="product-top">
+                                <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                    <img src="{% static 'images/products/image2.png' %}">
+                                </div>
+                                <div class="overlay bg-light">
+                                    <button class="btn" title="Add to cart"><i
+                                            class="fas fa-shopping-cart fa-sm"></i></button>
+                                    <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                    <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-bottom">
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star-half-alt fa-xs"></i>
+                                <i class="far fa-star fa-xs"></i>
+                                <div class="product-detail">
+                                    <h3>One piece</h3>
+                                </div>
+                                <div class="product-price">
+                                    <h5>Rs. 2000</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <a href="product1">
+                            <div class="product-top">
+                                <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                    <img src="{% static 'images/products/image3.jpeg' %}">
+                                </div>
+                                <div class="overlay bg-light">
+                                    <button class="btn" title="Add to cart"><i
+                                            class="fas fa-shopping-cart fa-sm"></i></button>
+                                    <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                    <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-bottom">
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star fa-xs"></i>
+                                <i class="fas fa-star-half-alt fa-xs"></i>
+                                <i class="far fa-star fa-xs"></i>
+                                <div class="product-detail">
+                                    <h3>One piece</h3>
+                                </div>
+                                <div class="product-price">
+                                    <h5>Rs. 2000</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-top">
+                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                <img src="{% static 'images/products/image1.jpg' %}">
+                            </div>
+                            <div class="overlay bg-light">
+                                <button class="btn" title="Add to cart"><i
+                                        class="fas fa-shopping-cart fa-sm"></i></button>
+                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-bottom">
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star-half-alt fa-xs"></i>
+                            <i class="far fa-star fa-xs"></i>
+                            <div class="product-detail">
+                                <h3>One piece</h3>
+                            </div>
+                            <div class="product-price">
+                                <h5>Rs. 2000</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of First Slide -->
+
+        <!-- Second Slide -->
+
+        <div class="carousel-item" data-interval="10000">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <div class="product-top">
+                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                <img src="{% static 'images/products/mobile.jpg' %}">
+                            </div>
+                            <div class="overlay bg-light">
+                                <button class="btn" title="Add to cart"><i
+                                        class="fas fa-shopping-cart fa-sm"></i></button>
+                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-bottom">
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star-half-alt fa-xs"></i>
+                            <i class="far fa-star fa-xs"></i>
+                            <div class="product-detail">
+                                <h3>Mobile</h3>
+                            </div>
+                            <div class="product-price">
+                                <h5>Rs. 42000</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-top">
+                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                <img src="{% static 'images/products/oil.jpg' %}">
+                            </div>
+                            <div class="overlay bg-light">
+                                <button class="btn" title="Add to cart"><i
+                                        class="fas fa-shopping-cart fa-sm"></i></button>
+                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-bottom">
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star-half-alt fa-xs"></i>
+                            <i class="far fa-star fa-xs"></i>
+                            <div class="product-detail">
+                                <h3>Oil</h3>
+                            </div>
+                            <div class="product-price">
+                                <h5>Rs. 100</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-top">
+                            <div class="image_format border  shadow p-3 mb-2 bg-white rounded">
+                                <img src="{% static 'images/products/shoes.jpg' %}">
+                            </div>
+                            <div class="overlay bg-light">
+                                <button class="btn" title="Add to cart"><i
+                                        class="fas fa-shopping-cart fa-sm"></i></button>
+                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-bottom">
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star-half-alt fa-xs"></i>
+                            <i class="far fa-star fa-xs"></i>
+                            <div class="product-detail">
+                                <h3>Shoes</h3>
+                            </div>
+                            <div class="product-price">
+                                <h5>Rs. 3000</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="product-top">
+                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
+                                <img src="{% static 'images/products/watch1.jpg' %}">
+                            </div>
+                            <div class="overlay bg-light">
+                                <button class="btn" title="Add to cart"><i
+                                        class="fas fa-shopping-cart fa-sm"></i></button>
+                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
+                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-bottom">
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star fa-xs"></i>
+                            <i class="fas fa-star-half-alt fa-xs"></i>
+                            <i class="far fa-star fa-xs"></i>
+                            <div class="product-detail">
+                                <h3>Watch</h3>
+                            </div>
+                            <div class="product-price">
+                                <h5>Rs. 700</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Second Slide -->
+    </div>
+    <div class="product_arrow" style="">
+        <a href="#mycarousel1" class="carousel-control-prev" role="button" data-slide="prev">
+            <span class="sr-only">Previous</span>
+            <span class="fas fa-chevron-circle-left" style="color:black;" arial-hidden="true"></span>
+        </a>
+        <a href="#mycarousel1" class="carousel-control-next" role="button" data-slide="next">
+            <span class="sr-only">Previous</span>
+            <span class="fas fa-chevron-circle-right" style="color:black;" arial-hidden="true"></span>
+        </a>
+    </div>
+</div>
+
+
+{% endblock content %}
+{% block slide %}
+
+{% endblock slide %}

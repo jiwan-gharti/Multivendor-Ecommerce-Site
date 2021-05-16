@@ -1,0 +1,74 @@
+{% load static %}
+
+{% comment %} first navbar {% endcomment %}
+<nav class="navbar navbar-dark bg-dark" id = 'navid'>
+  <div>
+  <li class="navbar-item m-2 text1"><a  href="{% url 'aboutus' %}">About Us</a></li>
+  <li class="navbar-item m-2 text1"><a>Privacy</a></li>
+  <li class="navbar-item m-2 text1"><a>FAQ</a></li>
+  <li class="navbar-item m-2 text1"><a href="{% url 'aboutus' %}">Contact</li></a>
+  </div>
+
+
+  <div>
+  <li class="navbar-item m-2 text1"><a>My Wishlist</a></li>
+  <li class="navbar-item m-2 text1"><a>Track My Oder</a></li>
+  </div>
+</nav>
+
+{% comment %} second navbar {% endcomment %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark collapse navbar-collapse sticky-top" id = 'navid'>
+    <div>
+        <a class="navbar-brand text1" href="{% url 'homepage' %}">New <span class="text-danger">A</span>ge<span class="text-danger">S</span>hop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+     
+    <div>
+    <div class="collapse navbar-collapse m-3" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active mr-5 text1">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item mr-5">
+                <a class="nav-link" href="{% url 'contactus' %}">Contact</a>
+            </li>
+            <li class="nav-item mr-5">
+                <a class="nav-link" href="#">Blog</a>
+            </li>
+             <li class="nav-item mr-5">
+                <a class="nav-link" href="{% url 'shopping_page' %}">Shop Now</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Mobiles</a>
+                <a class="dropdown-item" href="#">Cloths</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    </div>
+
+    <div>
+            <div><img class='ml-sm-3 search' id='search' height='30px' width='30px' src="{% static 'images/search.png' %}" alt="" srcset="">
+            <img height='30px love' class='ml-sm-3 love' width='30px' src="{% static 'images/love.png' %}" alt="" srcset="">
+            <a href="{% url 'cart' %}"><img class='ml-sm-3 cart' height='30px' width='30px' src="{% static 'images/cart.png' %}" alt="" srcset=""><sup class='text-white'>1</sup></a>
+            </div>
+    </div>
+</nav>
+
+
+{% comment %} <div  class='search1' id='search1'>
+
+ <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+</div> {% endcomment %}

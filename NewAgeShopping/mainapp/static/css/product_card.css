@@ -1,0 +1,73 @@
+.container{
+    width: 100%;
+    /* margin-top: 2%; */
+    font-family: sans-serif;
+    letter-spacing: 1px;
+}
+
+.row{
+    margin-left: 0;
+    margin-top: 30px;
+}
+
+.image_format img{
+    width: 100% ; 
+    height: 260px; 
+    /*border: solid red;*/  
+    justify-content: space-around;
+    transition: 0.3s ease;
+}
+
+
+.image_format img:hover{
+    transform: scale(1.1);
+}
+.overlay{
+    display: block;
+    position: absolute;
+    top: 55%;
+    margin-left: 65px;
+    opacity: 0;
+}
+
+.product-top:hover .overlay{
+    opacity: 1;
+    transition: 0.5s ease;
+}
+
+.product-top .btn:hover{
+    background: red;
+    transition: 0.3s ease;
+}
+
+.product-bottom {
+    text-align: center;
+    justify-content: space-around;
+}
+
+.product-bottom .fas{
+    color: #FFD700;
+    font-size: 10px;
+}
+
+.product-bottom .far{
+    color: #FFD700;
+    font-size: 10px; 
+}
+
+.product-detail h3{
+    color: #413839;
+    font-size: 20px;
+    font-weight: bolder;
+    font-family: Trebuchet MS;
+}
+
+.product-price h5{
+    color: #413839;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Trebuchet MS;
+}
+
+
+

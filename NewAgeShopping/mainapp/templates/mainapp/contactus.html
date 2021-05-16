@@ -1,0 +1,143 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+
+{% block inlinecss %}
+<style>
+    .contact-wrapper {}
+
+    .align-grid i {
+        height: 50px;
+        width: 50px;
+        font-size: 2rem;
+        margin: auto;
+        position: relative;
+    }
+
+    .align-grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-column-gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .align-grid i::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 100%;
+        height: 100%;
+        transform: rotate(45deg);
+        border: solid 1px #FFD700;
+        border-radius: 3px;
+    }
+
+    .align-grid .contact-value {
+        padding: 10px;
+    }
+
+    .align-grid .contact-value address,
+    .align-grid .contact-value p {
+        margin: 5px;
+    }
+
+    form label {
+        font-weight: bold;
+    }
+</style>
+{% endblock inlinecss %}
+
+
+
+{% block content %}
+<div class="container-fluid mt-md-5">
+    <h1 class='alert alert-info text-center p-md-5'>Contact Us</h1>
+</div>
+
+
+
+<div class="container-fluid mb-md-5">
+    <div id="contactus"></div>
+
+    <div class="container-fluid d-flex justify-content-around mt-5">  
+        <div class="row">
+        <div class="col-sm-12 col-md-6">
+        {% comment %} first column {% endcomment %}
+        <div class='contact-wrapper'>
+            <div class='align-grid'>
+                <i class="fas fa-map-marker"></i>
+                <div class='contact-value'>
+                    <address>
+                        <h2><strong>Address</strong></h2>
+                    </address>
+                    <p>kathmandu, Nepal</p>
+                </div>
+            </div>
+
+            <div class='align-grid'>
+                <i class="fas fa-phone"></i>
+                <div class='contact-value'>
+                    <address>
+                        <h2><strong>Phone No</strong></h2>
+                    </address>
+                    <p>125-711-811 | 125-668-886</p>
+                </div>
+            </div>
+
+            <div class='align-grid'>
+                <i class="fas fa-envelope"></i>
+                <div class='contact-value'>
+                    <address>
+                        <h2><strong>Support</strong></h2>
+                    </address>
+                    <p>Cleaning.support@gmail.com</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-6">
+        {% comment %} second column {% endcomment %}
+        <div>
+            <h2 class='m-auto'>Contact us</h2>
+            <hr>
+            <form action="">
+                <div>
+                    <div>
+                        <label class="" for="name">Name</label><br>
+                        <input class="form-control" type="text" name="name" id="name">
+                    </div>
+
+                    <div>
+                        <label for="email">Email</label><br>
+                        <input class="form-control" type="email" name="email" id="email">
+                    </div>
+
+                    <div>
+                        <label for="phone">Phone</label><br>
+                        <input class="form-control" type="number" name="phone" id="phone" max=10>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="name">Message</label><br>
+                    <textarea name="text" class="form-control" id="message" cols="100" rows="10"></textarea>
+                </div>
+
+                <div>
+                    <input class="btn btn-primary mt-md-2 mb-md-5" type="submit" value='Send to'>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="container mt-md-5 mt-sm-5">
+        <iframe style='width:100%; height: 30rem;'
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.163569033682!2d85.3318604150148!3d27.681338982802675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19c01e994dab%3A0x9ed4a1694930632c!2sUniversal%20Boys%20Hostel!5e0!3m2!1sen!2snp!4v1619165911353!5m2!1sen!2snp"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</div>
+    {% endblock content %}
