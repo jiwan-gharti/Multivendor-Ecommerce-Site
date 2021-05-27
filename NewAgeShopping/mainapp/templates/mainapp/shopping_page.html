@@ -6,7 +6,6 @@
     .search-wrapper{
         width:100%;
         height: 3rem;
-        {% comment %} border: 1px solid red; {% endcomment %}
     }
     .form-area{
         width: 100%;
@@ -44,6 +43,9 @@
      .form-check label{
          position: relative;
          left: 10px;
+     }
+     .rating{
+         margin: 0px;
      }
      .rating li{
          display: inline-block;
@@ -83,6 +85,27 @@
         font-size: 12px;
         font-weight:600;
     }
+    p{
+        font-size: 0.7rem;
+        text-align: justify;
+        color: black;
+    }
+    h6{
+        line-height: 1px;
+        font-size: 0.8rem;
+        margin-bottom: 2px;
+    }
+    del{
+        line-height: 1px;
+        font-size: 0.6rem;
+        color: gray;
+    }
+    .card-body{
+        padding: 0.4rem;    
+    }
+    .card-hover:hover{
+        box-shadow: 0 1px 5px 5px rgba(0,0,0,0.09);
+    }
 </style>
 
 {% endblock inlinecss %}
@@ -90,11 +113,10 @@
 {% block content %}
 <div class="container-fluid">
     <div class='row'>
-        <div class="col-lg-3 ml-5 border border-1 border border-danger">
-            <h1>sidebar</h1>
+        <div class="col-lg-3 ml-3 mt-4">
             <div class="search-wrapper">
                 <form class='form-area' action="">
-                        <input type="text" name="search-item" id="search-item">
+                        <input type="text" name="search-item" id="search-item" style='padding-right: 35px;'>
                         <i class="fas fa-search"></i>
                 </form>
             </div>
@@ -120,16 +142,16 @@
             </div>
 
             {% comment %} rating  {% endcomment %}
-            <section class="mb-4">
+            <section class="">
                 <h6 class="font-weight-bold mt-4 mb-3">Avg. Customer Review</h6>
-                <a href="#!">
+                <a href="#!" >
                     <ul class="rating">
                     <li><i class="fas fa-star fa-sm "></i></li>
                     <li><i class="fas fa-star fa-sm "></i></li>
                     <li><i class="fas fa-star fa-sm "></i></li>
                     <li><i class="fas fa-star fa-sm "></i></li>
                     <li><i class="far fa-star fa-sm "></i></li>
-                    <li><p class="small text-uppercase card-link-secondary px-2">& Up</p></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
                     </ul>
                 </a>
                 <a href="#!">
@@ -139,7 +161,7 @@
                     <li><i class="fas fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
-                    <li><p class="small text-uppercase card-link-secondary px-2">& Up</p></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
                     </ul>
                 </a>
                 <a href="#!">
@@ -149,7 +171,7 @@
                     <li><i class="far fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
-                    <li><p class="small text-uppercase card-link-secondary px-2">& Up</p></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
                     </ul>
                 </a>
                 <a href="#!">
@@ -159,7 +181,7 @@
                     <li><i class="far fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
                     <li><i class="far fa-star fa-sm"></i></li>
-                    <li><p class="small text-uppercase card-link-secondary px-2">& Up</p></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
                     </ul>
                 </a>
             </section>
@@ -233,125 +255,115 @@
 
 
         {% comment %} second column {% endcomment %}
-        <div class="col-md-8 ml-5 border border-1 border border-danger">
+        <div class="col-md-8 ml-3">
             <div class="row">
                 {% comment %} first card {% endcomment %}
-                <div class="col-md-3 ">
+                <div class="col-md-3">
                     <a href="product1">
-                        <div class="product-top">
-                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
-                                <img src="{% static 'images/products/image1.jpg' %}">
-                            </div>
-                            <div class="overlay bg-light">
-                                <button class="btn" title="Add to cart"><i
-                                        class="fas fa-shopping-cart fa-sm"></i></button>
-                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
-                                <a href="{% url 'details' %}"><button class="btn" title="Quick shop"><i
-                                            class="far fa-eye fa-sm"></i></button></a>
-                            </div>
-                        </div>
-                        <div class="product-bottom">
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star-half-alt fa-xs"></i>
-                            <i class="far fa-star fa-xs"></i>
-                            <div class="product-detail">
-                                <h3>One piece</h3>
-                            </div>
-                            <div class="product-price">
+                    <div class="card card-hover  overflow-hidden">
+                        <img src="{% static 'images/products/image1.jpg' %}" class="card-img-top" width='150px' height='250px' alt="...">
 
-                                <h5> <del style="width:40px; color:red;"> Rs. 3300</del> &nbsp &nbsp Rs. 2000</h5>
+                        <div class="card-body pt-1">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="product-price">
+                                    <h6 style="color:gold;"> Rs. 3300</h6>
+                                    &nbsp<del class= "muted"> Rs. 200 </del>&nbsp
+                            </div>
+                            <div class="product-bottom">
+                                <div class='float-left'>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star-half-alt fa-xs"></i>
+                                    <i class="far fa-star fa-xs"></i>
+                                </div>
+                                <p style='float:right;'>Nepal</p>
                             </div>
                         </div>
+                    </div>
                     </a>
                 </div>
                 {% comment %} second card {% endcomment %}
-                <div class="col-md-3">
+                <div class="col-md-3 ">
                     <a href="product1">
-                        <div class="product-top">
-                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
-                                <img src="{% static 'images/products/image2.png' %}">
-                            </div>
-                            <div class="overlay bg-light">
-                                <button class="btn" title="Add to cart"><i
-                                        class="fas fa-shopping-cart fa-sm"></i></button>
-                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
-                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
-                            </div>
-                        </div>
-                        <div class="product-bottom">
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star-half-alt fa-xs"></i>
-                            <i class="far fa-star fa-xs"></i>
-                            <div class="product-detail">
-                                <h3>One piece</h3>
-                            </div>
+                    <div class="card card-hover overflow-hidden">
+                            <img src="{% static 'images/products/image2.png' %}" class="card-img-top" width='150px' height='250px' alt="...">
+
+                        <div class="card-body pt-1">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <div class="product-price">
-                                <h5>Rs. 2000</h5>
+                                    <h6 style="color:gold;"> Rs. 3300</h6>
+                                    &nbsp<del class= "muted" style='margin:0;'> Rs. 5600 </del>&nbsp
+                            </div>
+                            <div class="product-bottom">
+                                    <div class='float-left'>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star-half-alt fa-xs"></i>
+                                    <i class="far fa-star fa-xs"></i>
+                                    </div>
+
+                                    <p style='float:right;'>Nepal</p>
                             </div>
                         </div>
+                    </div>
                     </a>
                 </div>
 
                 {% comment %} third card {% endcomment %}
-                <div class="col-md-3">
+                <div class="col-md-3 ">
                     <a href="product1">
-                        <div class="product-top">
-                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
-                                <img src="{% static 'images/products/image3.jpeg' %}">
-                            </div>
-                            <div class="overlay bg-light">
-                                <button class="btn" title="Add to cart"><i
-                                        class="fas fa-shopping-cart fa-sm"></i></button>
-                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
-                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
-                            </div>
-                        </div>
-                        <div class="product-bottom">
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star-half-alt fa-xs"></i>
-                            <i class="far fa-star fa-xs"></i>
-                            <div class="product-detail">
-                                <h3>One piece</h3>
-                            </div>
+                    <div class="card card-hover overflow-hidden">
+                            <img src="{% static 'images/products/image3.jpeg' %}" class="card-img-top" width='150px' height='250px' alt="...">
+
+                        <div class="card-body pt-1">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <div class="product-price">
-                                <h5>Rs. 2000</h5>
+                                    <h6 style="color:gold;"> Rs. 3300</h6>
+                                    &nbsp<del class= "muted" style='margin:0;'> Rs. 1000 </del>&nbsp
+                            </div>
+                            <div class="product-bottom">
+                                    <div class='float-left'>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star-half-alt fa-xs"></i>
+                                    <i class="far fa-star fa-xs"></i>
+                                    </div>
+
+                                    <p style='float:right;'>Nepal</p>
                             </div>
                         </div>
+                    </div>
                     </a>
                 </div>
+                
                 {% comment %} fourth card {% endcomment %}
-                <div class="col-md-3">
+                <div class="col-md-3 ">
                     <a href="product1">
-                        <div class="product-top">
-                            <div class="image_format border shadow p-3 mb-2 bg-white rounded">
-                                <img src="{% static 'images/products/image3.jpeg' %}">
-                            </div>
-                            <div class="overlay bg-light">
-                                <button class="btn" title="Add to cart"><i
-                                        class="fas fa-shopping-cart fa-sm"></i></button>
-                                <button class="btn" title="Wishlist"><i class="far fa-heart fa-sm"></i></button>
-                                <button class="btn" title="Quick shop"><i class="far fa-eye fa-sm"></i></button>
-                            </div>
-                        </div>
-                        <div class="product-bottom">
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star fa-xs"></i>
-                            <i class="fas fa-star-half-alt fa-xs"></i>
-                            <i class="far fa-star fa-xs"></i>
-                            <div class="product-detail">
-                                <h3>One piece</h3>
-                            </div>
+                    <div class="card card-hover overflow-hidden">
+                        <img src="{% static 'images/products/mobile.jpg' %}" class="card-img-top" width='150px' height='250px' alt="...">
+                        
+                        <div class="card-body pt-1">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <div class="product-price">
-                                <h5>Rs. 2000</h5>
+                                    <h6 style="color:gold;"> Rs. 3300</h6>
+                                    &nbsp<del class= "muted" style='margin:0;'> Rs. 500 </del>&nbsp
+                            </div>
+                            <div class="product-bottom">
+                                    <div class='float-left'>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star fa-xs"></i>
+                                    <i class="fas fa-star-half-alt fa-xs"></i>
+                                    <i class="far fa-star fa-xs"></i>
+                                    </div>
+
+                                    <p style='float:right;'>Nepal</p>
                             </div>
                         </div>
+                    </div>
                     </a>
                 </div>
             </div>
