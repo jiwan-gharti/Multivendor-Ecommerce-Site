@@ -1,0 +1,33 @@
+{% extends '../mainapp/base.html' %}
+
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+        <div class="col-md-3 col-sm-12 mr-2 bg-light">
+            {% include "profile/sidebar.html" %}
+        </div>
+        <div class="col-md-8 col-12 bg-white p-2 m-2">
+            <h4>Personal Profile </h4>
+            | <a href="#"><span>Edit</span></a>
+            <h6>Nawij</h6>
+            <h6>Nawij@gamil.com</h6>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-8 col-12 bg-white p-2 ml-md-4 ml-2">
+            <h4>Shipping Address</h4> | <a href="#"><span>Edit</span></a>
+            <h6>Full Name</h6>
+            <h6>Nawij@gamil.com</h6>
+            <h6>Region</h6>
+            <h6>98616616</h6>
+            <h6>Kathmandu,New Baneshwor</h6>
+            <h6>Buddhanagar</h6>
+        </div>
+        </div>
+    </div>
+
+{% endblock content %}

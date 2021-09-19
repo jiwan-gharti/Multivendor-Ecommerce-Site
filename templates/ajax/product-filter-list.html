@@ -1,0 +1,33 @@
+{% for data in data %}
+                    <div class="col-md-3">
+                        <a href="{% url 'details' data.pk %}" class="text-decoration-none">
+                        <div class="card card-hover  overflow-hidden">
+                            <img src="{{data.image.url}}" class="card-img-top" width='150px' height='250px' alt="...">
+
+                            <div class="card-body pt-1">
+                                
+                                <p name="product-name" class="card-text mb-0" style="font-weight:600; font-size:0.9rem;">{{data.name}}</p>
+                                <div class="product-price">
+                                        {% if data.discount.active %}
+                                        <p class="mb-0 mt-0 price-tag">
+                                            <del class="mt-0 mb-0"> ${{data.price}}</del><br> {{data.calculate_Discount}}&nbsp</p>
+                                        {% else %}
+                                        <p class="mb-0 mt-0 price-tag">
+                                            ${{data.price}}</p>
+                                        {% endif %}
+                                </div>
+                                <div class="product-bottom">
+                                    <div class='float-left'>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star-half-alt fa-xs"></i>
+                                        <i class="far fa-star fa-xs"></i>
+                                    </div>
+                                    <p style='float:right;'>Nepal</p>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    {% endfor %} 

@@ -1,0 +1,74 @@
+
+{% extends "../mainapp/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}Login Page{% endblock title %}
+
+{% block content %}
+
+
+ {% if not user.is_authenticated %}
+ 
+<div class="container mt-sm-5 mb-sm-5 ">
+    <div class="form-wrapper w-75 m-sm-auto p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="alert-success p-2" style="font-size:1rem;">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <span class="errors">
+                        {{form.errors|striptags}}
+                    </span>
+                {% endif %}
+
+
+                    <form method= "post" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="font-weight-bold added-style">{{form.username.label}}</label>
+                            {% render_field form.username  class+="form-control added-style" placeholder=form.username.label %}
+                            <span class="errors">{{form.username.errors|striptags}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="font-weight-bold added-style">{{form.password.label}}</label>
+                            <div class="eye">
+                                {% render_field form.password  class+="form-control added-style" placeholder=form.password.label %}
+
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                <span class="errors">{{form.password.errors|striptags}}</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <br>
+                        <br>
+
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <label for="" class="font-weight-bold added-style">New Customer ?</label>
+                                <a href="{% url 'accounts:register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Register</a> Here
+                            </div>
+                            <a href="{% url 'accounts:password_reset' %} " class="added-style text-decoration-none">Forget Password? </a>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ {% else %}
+        
+ {% endif %}
+
+{% endblock content %}

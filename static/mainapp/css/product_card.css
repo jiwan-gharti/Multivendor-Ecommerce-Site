@@ -1,0 +1,109 @@
+.card{
+    overflow: hidden;
+}
+.card:hover{
+    box-shadow: 0px 0px 5px 0px #613f99 , 0px 0px 5px 0px #613f99;
+}
+.card img{
+    height: 250px;
+    width: 100%;
+}
+.card-body{
+    color:black;
+    height: 150px;
+}
+
+.price-tag{
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color:#f57224;
+    
+}
+.card-btn{
+    background: white;
+    height: 2rem;
+    line-height: 2.5rem;
+    width: 5rem;
+}
+.card-btn a{
+    text-decoration: none;
+    color: #333333;
+}
+.card-btn a:hover{
+    background: gold;
+}
+.discount-card{
+    background: gold;
+    font-size: 1rem;
+    padding: 0 0.3rem;
+    font-weight: 600;
+    font-family: Aeria;
+    letter-spacing: 1px;
+    border-radius: 0 0 5px 0;
+
+}
+.discount-span{
+    background: #f57224;
+    padding: 0.3rem;
+    color: white;
+    position: absolute;
+    top: 10px;
+    left: -3px;
+    text-align: center;
+    font-size: .7rem;
+    font-weight: 600;
+    font-family: monospace;
+    letter-spacing: 1px;
+    transform: rotate(-35deg);
+    z-index: 5;
+} 
+
+.add-to-cart-hover{
+    font-size: 1.2rem;
+}
+.add-to-cart-hover:hover > i{
+    animation: hover1 .9s ease-out 1;
+}
+@keyframes hover1 {
+    0%{
+        transform: scale(1);
+        
+    }
+    100%{
+        transform: scale(1.12);
+        color: red;
+    }
+}
+
+
+
+.prev-arrow{
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+}
+.prev-arrow, .next-arrow  > i{
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+}
+.next-arrow{
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+.product-bottom .fas{
+    color: #FFD700;
+    font-size: 10px;
+}
+
+.product-bottom .far{
+    color: #FFD700;
+    font-size: 10px; 
+}
+
+

@@ -1,0 +1,43 @@
+{% extends '../mainapp/base.html' %}
+
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="min-height:30rem">
+            <div class="col-sm-3 col-12 bg-light p-2 mr-2">
+                {% include "profile/sidebar.html" %}
+            </div>
+            <div class="col-sm-7 col-12 bg-light" >
+                <table class="table">
+                    <thead class="bg-light">
+                        <tr>
+                            <td>Full Name</td>
+                            <td>Address</td>
+                            <td>City</td>
+                            <td>Phone No</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom" style="height:5rem">
+                            <td>Nawij</td>
+                            <td>Buddhanagar#100</td>
+                            <td>Kathmandu, New Baneshowr</td>
+                            <td>98232323</td>
+                            <td><a href="#">Edit</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <a class="text-decoration-none text-white" href="{% url 'myprofile:add-shipping-address' %}">
+                    <button class="btn btn-info float-right m-2">+ ADD NEW ADDRESS</button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

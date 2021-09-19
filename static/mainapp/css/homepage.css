@@ -1,0 +1,40 @@
+
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: Roberto;
+}
+body{
+    font-family: Roberto;
+    background-color: #f2f2f2;
+}
+
+.search1{
+    display: flex;
+    align-items: center;
+}
+
+/* Feature slider  */
+.slider-wrapper{
+    position: relative;
+    color: black;
+}
+.slider-caption{
+    position: absolute;
+    width: 25rem;
+    height: 25rem;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.slider-caption h5{
+    color: black;
+    font-size: 2.5rem;
+}
+.slider-caption p{
+    color: black;
+    font-size: 1.3rem;
+    /* text-align: justify; */
+}
+

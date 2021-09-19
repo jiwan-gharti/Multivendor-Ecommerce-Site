@@ -1,0 +1,341 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block inlinecss %}
+<style>
+    .search-wrapper{
+        width:100%;
+        height: 3rem;
+    }
+    .form-area{
+        width: 100%;
+        text-align:center;
+        position: relative;
+    }
+    .form-area input{
+        width: 100%;
+        height: 2rem;
+        border-radius: 5px;
+        border-top-style:none;
+        border-left-style: none;
+        outline-color: #777;
+        padding: 1rem;
+        border-color: #777;
+    }
+    .form-area input:focus{
+        opacity: 0.5;
+        font-weight:600;
+    }
+    .form-area i{
+        position: absolute;
+        top: 7px;
+        right: 10px;
+    }
+    .checkbox-area{
+        position: relative;
+    }
+    .checkbox-area input[type='checkbox']{
+        width: 20px;
+        height: 30px;
+        position: absolute;
+        left:0px;        
+    }
+     .form-check label{
+         position: relative;
+         left: 10px;
+     }
+     .rating{
+         margin: 0px;
+     }
+     .rating li{
+         display: inline-block;
+     }
+     .rating .fas{
+         color: #faca51;
+     }
+     .form-check input[type='radio']{
+         width: 15px;
+         height: 15px;
+         margin-top: 5px;
+         position: absolute;
+         left: 0px;
+     }
+     .form-check label{
+        font-size: 1rem;
+        font-weight: 400;
+        text-align:center;
+        position: relative;
+     }
+
+
+     .min-max-search{
+         position: relative;
+     }
+
+     .min-label{
+         position: absolute;
+         top: 5px;
+         left: 10px;
+         transition: 0.5s;
+         padding: 0 5px;
+     }
+     .min-max-search input:focus ~ .min-label{
+        transform: translateY(-80%);
+        background: white;
+        font-size: 12px;
+        font-weight:600;
+    }
+    p{
+        font-size: 0.7rem;
+        text-align: justify;
+        color: black;
+    }
+    h6{
+        line-height: 1px;
+        font-size: 0.8rem;
+        margin-bottom: 2px;
+    }
+    del{
+        line-height: 1px;
+        font-size: 0.6rem;
+        color: gray;
+    }
+    .card-body{
+        padding: 0.4rem;    
+    }
+    .card-hover:hover{
+        box-shadow: 0 1px 5px 5px rgba(0,0,0,0.09);
+    }
+</style>
+
+{% endblock inlinecss %}
+
+{% block content %}
+<h1 class="title"></h1>
+<div class="container-fluid">
+    <div class='row'>
+        <div class="col-lg-3 ml-3 mt-4">
+         
+            {% comment %} checkbox area  {% endcomment %}
+            <div class="checkbox-area">
+                <div>
+                <h3 for="checkbox-title">Filters</h3>
+                <label for="Condition">Condition</label>
+                </div>
+
+                <div class="form-check" id="new1">
+                    <input for="new" value="watch" type="checkbox" data-key = "condition"  class="filter-checkbox">
+                    <label for="">WATCH</label>
+                </div>
+                <div class="form-check">
+                    <input value="Hair oil" data-key = "condition" type="checkbox" id="used" class="filter-checkbox">
+                    <label for="">HAIR OIL</label>
+                </div>
+                <div class="form-check">
+                    <input value="mobile" id="best" data-key = "condition" type="checkbox" id="renewed" class="filter-checkbox">
+                    <label for="">MOBILE</label>
+                </div>
+            </div>
+
+            {% comment %} <form> {% endcomment %}
+                <label for="" class=mt-4>Price</label>
+                <div class="d-flex align-items-center pb-1">
+                    <div class="md-form md-outline my-0 min-max-search">
+                        <input id="input_minimum" type="text" class="form-control mb-0" data-price-key = "price_key">
+                        <label class='min-label' id='min-label' for="form">$ Min</label>
+                    </div>
+                    <p class="px-2 mb-0 text-muted"> - </p>
+                    <div class="md-form md-outline my-0 min-max-search">
+                        <input id="input_maximum" type="text" class="form-control mb-0" data-price-key = "price_key">
+                        <label class='min-label' for="to">$ Max</label>
+                    </div>
+                    <div class="col-md-3 min_max_button" id='min_max_button'
+                        style="padding-left: 10px; width: 3rem; height:1.6rem;">
+                        <button type="button"><i class="fas fa-play-circle"></i></button>
+                    </div>
+                </div>
+            {% comment %} </form> {% endcomment %}
+
+            <section>
+                <div>
+                    <label for="price"><h3>Price</h3></label>
+                </div>
+
+                <div class="form-radio">
+                    <input data-radio-key = "radio_search" class="radio_search"  type="radio" value="under25" name='radio_search' id='under25'>
+                    <label for="under25">Under $25</label>
+                </div>
+
+                <div class="form-radio">
+                    <input data-radio-key = "radio_search"  class="radio_search"  type="radio" value="25to50" name='radio_search' id='2550'>
+                    <label for="25to50">$25 to $50</label>
+                </div>
+
+                <div class="form-radio">
+                    <input data-radio-key = "radio_search"  class="radio_search"  type="radio" value="50to100" name='radio_search' id='50100'>
+                    <label for="50to100">$50 to $100</label>
+                </div>
+
+                <div class="form-radio">
+                    <input data-radio-key = "radio_search"  class="radio_search" type="radio"value="100t0200" name='radio_search' id='100200'>
+                    <label for="100t0200">$100 to $200</label>
+                </div>
+
+                <div class="form-radio">
+                    <input data-radio-key = "radio_search" type="radio" value="200toabove"  class="radio_search" name='radio_search' id='200above'>
+                    <label for="200toabove">$200 & Above</label>
+                </div>
+            </section>
+
+            {% comment %} rating  {% endcomment %}
+            <section class="">
+                <h6 class="font-weight-bold mt-4 mb-3">Avg. Customer Review</h6>
+                <a href="#!" >
+                    <ul class="rating">
+                    <li><i class="fas fa-star fa-sm "></i></li>
+                    <li><i class="fas fa-star fa-sm "></i></li>
+                    <li><i class="fas fa-star fa-sm "></i></li>
+                    <li><i class="fas fa-star fa-sm "></i></li>
+                    <li><i class="far fa-star fa-sm "></i></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
+                    </ul>
+                </a>
+                <a href="#!">
+                    <ul class="rating">
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
+                    </ul>
+                </a>
+                <a href="#!">
+                    <ul class="rating">
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
+                    </ul>
+                </a>
+                <a href="#!">
+                    <ul class="rating">
+                    <li><i class="fas fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><i class="far fa-star fa-sm"></i></li>
+                    <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
+                    </ul>
+                </a>
+            </section>
+
+            
+
+            {% comment %} checkbox area  {% endcomment %}
+            <div class="checkbox-area">
+                <div>
+                <h3 for="checkbox-title" class='mt-4'>Size</h3>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox">
+                    <label for="">small</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox">
+                    <label for="">Medium</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox">
+                    <label for="">Large</label>
+                </div>
+            </div>   
+
+        </div>
+
+
+        {% comment %} second column {% endcomment %}
+        <div class="col-md-8 ml-3" >
+                {% if second_level_search_cactegories %}
+                    <div class="d-flex justify-content-between">
+                    <h5 class="">{{second_level_search_cactegories.count }} item found for "{{search_key}}"</h5>
+                    <div>
+                    <label for="">Sort By &nbsp</label>
+                        <form>
+                            
+                                <a  href="{% if query_exists %}  {{get_full_path}}&sort=price_asc {% else %} ./?sort=price_asc {% endif %}" >Low To High</a>
+                                <a  href="{% if query_exists %}  {{get_full_path}}&sort=price_descc {% else %} ./?sort=price_desc {% endif %}" >High To Low</a>
+                            
+                        </form>
+                    </div>
+                    </div>
+                    <hr>
+            <div class="row" id="filteredProducts">
+                {% comment %} first card {% endcomment %}
+                
+
+                    {% for data in second_level_search_cactegories %}
+                    <div class="col-md-3">
+                        <a href="{% url 'details' data.pk %}" class="text-decoration-none">
+                        <div class="card card-hover  overflow-hidden">
+                            <img src="{{data.image.url}}" class="card-img-top" width='150px' height='250px' alt="...">
+
+                            <div class="card-body pt-1">
+                                
+                                <p name="product-name" class="card-text mb-0" style="font-weight:600; font-size:0.9rem;">{{data.name}}</p>
+                                <div class="product-price">
+                                        {% if data.discount.active %}
+                                        <p class="mb-0 mt-0 price-tag">
+                                            <del class="mt-0 mb-0"> ${{data.price}}</del><br> {{data.calculate_Discount}}&nbsp</p>
+                                        {% else %}
+                                        <p class="mb-0 mt-0 price-tag">
+                                            ${{data.price}}</p>
+                                        {% endif %}
+                                </div>
+                                <div class="product-bottom">
+                                    <div class='float-left'>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star fa-xs"></i>
+                                        <i class="fas fa-star-half-alt fa-xs"></i>
+                                        <i class="far fa-star fa-xs"></i>
+                                    </div>
+                                    <p style='float:right;'>Nepal</p>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    {% endfor %} 
+                {% else %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-9 mt-4">
+                                <h5>{{second_level_search_cactegories.count }} item found </h5>
+                                <div class="text-center">
+                                    <div class="c1nVRb" data-spm-anchor-id="a2a0e.searchlist.list.i0.701a6c6171jj4f">
+                                           <h4> Search No Result </h4>
+                                    </div>
+                                    <div >
+                                        We're sorry. We cannot find any matches for your search term.
+                                    </div>
+                                    <div class="text-center mt-5">
+                                        <i style="font-size:5rem;" class="fas fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                
+            </div>
+        </div>{% comment %} end of second column {% endcomment %}
+    </div>
+</div>
+
+
+{% endblock content %}

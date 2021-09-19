@@ -1,0 +1,14 @@
+{% load crispy_forms_filters %}
+
+<form action="" method="post" class="border p-4"> 
+    {% csrf_token %}
+    <label class="text-capitalize alert alert-danger" for="">Product Section</label>
+    {{ProductForm1 | crispy}}
+    <label for="">SIAAS</label>
+    {{SecondLevelCategoryForm1 | crispy}}
+    {{ProductCategoryForm1 | crispy}}
+    
+    {{DiscountForm1 | crispy}}
+    {{ProductInventoryForm1 | crispy}}
+    <input class="bg-success border-0 p-2 text-white" type="submit" name="" id="">
+</form>

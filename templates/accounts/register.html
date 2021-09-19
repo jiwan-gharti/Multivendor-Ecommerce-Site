@@ -1,0 +1,97 @@
+
+{% extends "../mainapp/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}Login Page{% endblock title %}
+
+{% block content %}
+
+{% comment %} <form action="" method="post" novalidate>
+{% csrf_token %}
+{% for form in forms %}
+{{form.label_tag}}{{form}} {{form.errors|striptags}} <br> <br>
+{% endfor %}
+<input type="submit">
+</form> {% endcomment %}
+
+<div class="container mt-sm-5 mb-sm-5 ">
+    <div class="form-wrapper w-75 m-sm-auto p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+
+
+                    <form novalidate method = 'post' action = "">
+                    {% csrf_token %}
+                    <h3 class="text-center mb-4 mt-0" sytle = "text-align: center;">Create your NewAgeShopping Account</h3>
+                   <div class="form-group">
+                            <label for="firstname" class="font-weight-bold added-style">{{forms.username.label_tag}}</label>                            
+                            {% render_field forms.username  class+="form-control added-style" placeholder=forms.username.label %}
+                            <span class="errors">{{forms.username.errors|striptags}}</span>
+                        </div>
+                    <div class="form-group">
+                            <label for="firstname" class="font-weight-bold added-style">{{forms.first_name.label_tag}}</label>                            
+                            {% render_field forms.first_name  class+="form-control added-style" placeholder=forms.first_name.label %}
+                            <span class="errors">{{forms.first_name.errors|striptags}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="font-weight-bold added-style">{{forms.last_name.label_tag}}</label>                      
+                            {% render_field forms.last_name class+="form-control" placeholder=forms.last_name.label %}
+                            <span class="errors">{{forms.last_name.errors|striptags}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="font-weight-bold added-style">{{forms.email.label_tag}}</label>
+                            {% render_field forms.email class+="form-control added-style" placeholder=forms.email.label%}
+                            <span class="errors">{{forms.email.errors|striptags}}</span>                       
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="font-weight-bold added-style">{{forms.phone_number.label_tag}}</label>
+                            {% render_field forms.phone_number class+="form-control added-style" placeholder=forms.phone_number.label%}
+                            <span class="errors">{{forms.phone_number.errors|striptags}}</span>                        
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="font-weight-bold added-style">{{forms.address.label_tag}}</label>
+                            {% render_field forms.address class+="form-control added-style" placeholder=forms.address.label %}
+                            <span class="errors">{{forms.address.errors|striptags}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1" class="font-weight-bold added-style">{{forms.gender.label_tag}}</label>
+                            {% render_field forms.gender class+="form-control added-style" %}</option>
+                            <span class="errors">{{forms.gender.errors|striptags}}</span>
+                            </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="font-weight-bold added-style">{{forms.password1.label_tag}}</label>
+                            <div class="eye">
+                                {% render_field forms.password1 class+="form-control added-style" placeholder=forms.password1.label %}
+
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                            </div>
+                            <span class="errors">{{forms.password1.errors|striptags}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="font-weight-bold added-style">{{forms.password2.label_tag}}</label>
+                            <div class="eye">
+                                {% render_field forms.password2 class+="form-control added-style" placeholder=forms.password2.label %}
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                            </div>
+                            <span class="errors">{{forms.password2.errors|striptags}}</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <br>
+                        <br>
+                        <label for="" class="font-weight-bold added-style">Already Memeber?</label>
+                        <a href="{% url 'accounts:login' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Login</a> Here
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

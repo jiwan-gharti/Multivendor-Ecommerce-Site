@@ -1,0 +1,174 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+{% block title %}Payment{% endblock title %}
+
+
+{% block inlinecss %}{% endblock inlinecss %}
+
+
+{% block content %}
+
+{% comment %} <div class="container py-5">
+    <!-- For demo purpose -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-6">Payment</h1>
+        </div>
+    </div> <!-- End -->
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card ">
+                <div class="card-header">
+                    <div class="bg-primary shadow-sm pt-4 pl-2 pr-2 pb-2">
+                        <ul class="nav text-white nav-pills rounded nav-fill mb-3">
+                            <li class="nav-item"> <i class="fas fa-credit-card mr-2"></i> Credit Card </li>
+                        </ul>
+                    </div>
+                    <!-- Credit card header -->
+                    <!-- Credit card form content -->
+                    <div>
+                        <!-- credit card info-->
+                        <div id="credit-card" class="mt-2">
+                            <form role="form" onsubmit="event.preventDefault()">
+                                <div>
+                                    <label for="cardNumber">
+                                        <h6>Card number</h6>
+                                    </label>
+                                    <div class="input-group"> <input type="text" name="cardNumber"
+                                            placeholder="Valid card number" class="form-control " required>
+                                        <div class="input-group-append"> <span class="input-group-text text-muted"> <i
+                                                    class="fab fa-cc-visa mx-1"></i> <i
+                                                    class="fab fa-cc-mastercard mx-1"></i> <i
+                                                    class="fab fa-cc-amex mx-1"></i> </span> </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group"> <label><span class="hidden-xs">
+                                                    <h6>Expiration Date</h6>
+                                                </span></label>
+                                            <div class="input-group"> <input type="number" placeholder="MM" name=""
+                                                    class="form-control" required> <input type="number" placeholder="YY"
+                                                    name="" class="form-control" required> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group mb-4"> <label data-toggle="tooltip"
+                                                title="Three digit CV code on the back of your card">
+                                                <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                            </label> <input type="text" required class="form-control"> </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="button" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm
+                                        Payment </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+
+
+<div class="container" style="position:relative; z-index: -99;">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div id="paypal-button-container" class="text-center text-bold mb-5">Payment Gateway</div>
+
+            <!-- Include the PayPal JavaScript SDK -->
+            <script src="https://www.paypal.com/sdk/js?client-id=Aam6uwbKPINR8_b8QrqxG0ktWqGgQAH0IIlIePiGPwRTlpR3Jd_k4Ik-Y8kXDd7g_8M0ohkdkqgho8_q&currency=USD"></script>
+
+            <script>
+
+                
+                // Render the PayPal button into #paypal-button-container
+                paypal.Buttons({
+
+                    // Set up the transaction
+                    createOrder: function (data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: '88.44'
+                                }
+                            }]
+                        });
+                    },
+
+                    // Finalize the transaction
+                    onApprove: function (data, actions) {
+                        return actions.order.capture().then(function (orderData) {
+                            // Successful capture! For demo purposes:
+                            console.log('Capture result', orderData, JSON.stringify(orderData, null,
+                                2));
+                            var transaction = orderData.purchase_units[0].payments.captures[0];
+                            alert('Transaction ' + transaction.status + ': ' + transaction.id +
+                                '\n\nSee console for all available details');
+
+                            // Replace the above to show a success message within this page, e.g.
+                            // const element = document.getElementById('paypal-button-container');
+                            // element.innerHTML = '';
+                            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                            // Or go to another URL:  actions.redirect('thank_you.html');
+                        });
+                    }
+
+
+                }).render('#paypal-button-container');
+            </script>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+
+
+<div class="conatiner mb-5">
+    <h4 class="d-flex justify-content-center">Your Cart Items</h4>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-sm-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for orderItem in orderItems %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{orderItem.item.name}}</td>
+                        <td>{{orderItem.quantity}}</td>
+                        <td>Rs. {{orderItem.get_total_price}}</td>
+                    </tr>
+
+                    {% if forloop.last %}
+                    <tr>
+                        <th scope="row"></th>
+                        <th>Grand Total</th>
+                        <td></td>
+                        <td>Rs. {{orderItem.get_cart_total}}</td>
+                    </tr>
+                    {% endif%}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-3"></div>
+
+    </div>
+</div>
+
+
+
+{% endblock content %}

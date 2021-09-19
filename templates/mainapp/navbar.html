@@ -1,0 +1,111 @@
+{% load static %}
+
+{% comment %} first navbar {% endcomment %}
+
+
+<nav class="navbar-dark bg-dark first-nav navbar-collapse" id='navid'>
+    <div class="first-nav-left text-center">
+        <li class="navbar-item"><a href="{% url 'aboutus' %}">About Us</a></li>
+        <li class="navbar-item"><a href="{% url 'contactus' %}">Contact us</a></li>
+        <li class="navbar-item facebook"><a href="www.facebook.com"><i class="fab fa-facebook-f"></i></a></li>
+        <li class="navbar-item instagram"><a href="www.instagram.com"><i class="fab fa-instagram"></i></a></li>
+        <li class="navbar-item twitter"><a href="www.twitter.com"><i class="fab fa-twitter"></i></a></li>
+    </div>
+
+    <div class="first-nav-right text-center">
+        <li class="navbar-item"><a href="">Sale on NewAgeShopping</a></li>
+        <li class="navbar-item"><a href="{% url 'contactus' %}">Help Center</a></li>
+        <li class="navbar-item"><a href="">Track My Oder</a></li>
+    </div>
+</nav>
+
+
+{% comment %} second navbar  {% endcomment %}
+<nav class="navbar navbar-dark bg-dark second-nav-bar navbar-collapse">
+    <div class="container-fluid d-flex justify-content-around">
+        <div>
+            <a class="navbar-brand" href="{% url 'homepage' %}"><img src="" alt="Logo" width="30" height="24"></a>
+        </div>
+
+        <form class="d-flex search-bar" method="get" action="/shopping_page1/search/">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search-keys">
+            <button type="submit" class="bg-white"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </form>
+
+        <div class="last-one">
+            <div class="">
+                <a class="cart-icon" style="font-size: 1.7rem;" href="{% url 'cart' %}"><i class="fa fa-cart-plus "
+                        style="font-size: 1.5rem; color:white" aria-hidden="true"></i></a>
+            </div>
+            <li class="nav-item dropdown account">
+                <a class="nav-link" style="color:white" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="account-icons-section">
+                        <i class="fa fa-user" style="font-size: 1.7rem; color:white" aria-hidden="true"></i>
+                        <span style="font-size:.8rem">
+                            Namaste,signin<br>
+                            <span style="font-weight:bold;">Account</span><i class="fa fa-chevron-down ml-2"
+                                aria-hidden="true"></i>
+                        </span>
+
+                    </div>
+                </a>
+                <div class="dropdown-menu overflow-hidden text-center account-area-wrapper"
+                    aria-labelledby="navbarDropdown">
+                    {% if not request.user.is_authenticated %}
+                    <a class="dropdown-item text-white login" href="{% url 'accounts:login' %}">Login</a>
+                    <p class="text-center font-italic font-weight-bold">New Customer?</p>
+                    <a class="dropdown-item text-white signup" href="{% url 'accounts:register' %}">SignUp</a>
+                    {% else %}
+                    <a class="dropdown-item text-white account" href="{% url 'myprofile:profile' %}">My Account</a>
+                    <hr class="mb-0 mt-0">
+                    <a class="dropdown-item logout for-hover" href="{% url 'accounts:logout' %}">Logout</a>
+                    {% endif %}
+                </div>
+            </li>
+        </div>
+    </div>
+
+
+
+</nav>
+
+{% comment %} third navbar  {% endcomment %}
+<nav class="navbar navbar-dark bg-dark navbar-collapse position-relative">
+    <div class="container category-section shadow">
+        <li class="nav-item dropdown shadow">
+            <a class="nav-link dropdown-toggle utils-class-a" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Category
+            </a>
+            <div class="dropdown-menu shadow border-right-1" aria-labelledby="navbarDropdown" style="min-height: 14.4rem; ">
+                {% for category in navbarcategories %}           
+                {% comment %} <div class="dropdown-divider"></div> {% endcomment %}
+                <div class="inner-item ml-4" class="dropdown-item">
+                    <label class="dropdown-item">{{category.first_level_category | title}}</label>   
+                        <ul class="inner-ul shadow rounded">
+                            {% for data in category.secondLevelItems %}      
+                            <li class="most-inner-item"><a class="dropdown-item " href="{% url 'shopping_page1' data   %}">
+                                     <span style="font-size: 1rem;">{{data | title}}</span></a>
+                                        <ul class="most-inner-ul shadow rounded">
+                                        {% comment %} {{data.thirdLevelItems}} {% endcomment %}
+                                        {% for data2 in data.thirdLevelItems %}
+                                            <li><a href="{% url 'shopping_page1' data2 %}" class="dropdown-item" style="font-size: 1em;" href="#">{{data2}}</a></li>
+                                        {% endfor %}
+                                        </ul>
+                                    
+                            </li>
+                            {% endfor %}  
+                        </ul>
+                </div>
+
+                {% endfor %}
+            </div>
+        </li>
+    
+    {% comment %} <div class="thanks-banner">
+        <h3>Thanks For Visiting</h3>
+    </div> {% endcomment %}
+    </div>
+
+</nav>

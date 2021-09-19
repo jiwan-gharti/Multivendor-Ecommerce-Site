@@ -1,0 +1,357 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block inlinecss %}
+<style>
+    .forhover {
+        transition: all 0.5s ease;
+    }
+
+    .forhover:hover {
+        box-shadow: 3px 5px 3px #F0F8FF;
+        color: black;
+        background: #c6c6ff;
+
+    }
+
+    .rateus-label {
+        font-size: 1.2rem;
+        font-weight: 600;
+        font-family: Aeria;
+    }
+
+    .rateus i {
+        font-size: 1.7rem;
+    }
+    .reply{
+        display: none;
+    }
+    .reply-show{
+        display: block;
+    }
+    .comment-details{
+        display: inline;
+        border: 1px solid red;
+    }
+    .main-image-layout{
+        width: 300px;
+        height: 450px;
+        overflow: hidden;
+        padding: 0 0;
+        transition: 1s all ease;
+    }
+    .container-layout{
+        width: 100%;
+        height: 100%;
+        padding: 0 0;
+    }
+    .stock{
+        position: absolute;
+        top: 0;
+        right: 100px;
+        width: 150px;
+        height: 40px;
+        font-weight: 600;
+        background: #f57224;
+        border: none;
+        Color: white;
+        pointer-events: none;  
+        font-size: 1.3rem;
+        border-radius: 2px;     
+        
+    }
+    .diss{
+        border: none;
+        Color: white;
+        margin-left: 2rem;
+        background: #f57224;
+        padding: 0.1rem .8rem;
+        width: 30px;
+        height: 30px;
+        font-size: .9rem;
+    }
+</style>
+{% endblock inlinecss %}
+
+
+{% block content %}
+
+
+{% comment %} Product Details {% endcomment %}
+<div class="container-fluid">
+    <h3 class='alert alert-info text-center mt-5 border border-info'>Product Details</h3>
+
+    {% comment %} image Section {% endcomment %}
+    <div class="row mt-sm-3">
+        <div class="col-md-4 col-sm-12">
+                <div class="col-sm-12" style="height:600px; width:600px">
+                    <img src="{{singleProduct.image.url}}" class='main-image container-layout' alt="" style="height:100%; width:100%;">
+                </div>
+                
+            <div class="row mr-1 mt-1" style="height:100px">
+                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
+                    <img  class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image3.jpeg' %}" alt="">
+                </div>
+                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
+                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image2.png' %}" alt="">
+                </div>
+                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
+                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image1.jpg' %}" alt="">
+                </div>
+                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
+                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image1.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+        {% comment %} end image Section {% endcomment %}
+
+        {% comment %} description section {% endcomment %}
+        <div class="col-md-8 col-sm-12 text-md-left text-sm-center">
+            <h2 class="mt-3">{{singleProduct.name | title}}</h2>
+            <p class='m-sm-1 text-muted'>{{singleProduct.category.second_level_category | upper}} || BRAND NAME : {{singleProduct.category.brand_name | upper}}</p>
+
+            <div style='color:#ffd700'>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star-half-alt fa-xs"></i>
+                <i class="far fa-star fa-xs"></i>
+            </div>
+            
+            <div class="d-block ">
+              {% if singleProduct.discount.active %}
+                ${{singleProduct.calculate_Discount}}
+                <p class="price-tag text-muted">
+                    <del class="m-0 mb-0"style="font-size: .7rem;">
+                        ${{singleProduct.price}}
+                    </del>
+                    <span class="diss">{{ singleProduct.discount.discount_percentage }}% OFF</span> 
+                </p>        
+            {% else %}
+            <p class="mb-0 mt-0 price-tag">
+                <p class='m-sm-1'><strong>$ {{singleProduct.price}}</strong></p>
+            </p>
+              {% endif %}
+            </div>
+
+            <div class="table-responsive">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, nam quisquam
+                    dolor reiciendis autem quasi blanditiis reprehenderit earum in.Consequatur doloribus
+                    dolorem temporibus sint nemo reprehenderit quibusdam error? Libero, omnis.</p>
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Model</strong></th>
+                            <td>Shirt 5407X</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Color</strong></th>
+                            <td>Black</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
+                            <td>USA, Europe</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+
+            <div class="m-sm-3">
+                <p><strong>Select Size :</strong></p>
+                <div class="form-check form-check-inline pl-sm-0 text-sm-center">
+                    <input type="radio" class="form-check-input" id="small" name="materialExampleRadios" checked>
+                    <label class="form-check-label small text-uppercase card-link-secondary" for="small">Small</label>
+                </div>
+                <div class="form-check form-check-inline pl-sm-0">
+                    <input type="radio" class="form-check-input" id="medium" name="materialExampleRadios">
+                    <label class="form-check-label small text-uppercase card-link-secondary" for="medium">Medium</label>
+                </div>
+                <div class="form-check form-check-inline pl-sm-0">
+                    <input type="radio" class="form-check-input" id="large" name="materialExampleRadios">
+                    <label class="form-check-label small text-uppercase card-link-secondary" for="large">Large</label>
+                </div>
+            </div>
+
+            <div class="def-number-input number-input safari_only m-sm-3">
+
+                {% if singleProduct.availability %}
+                    <button class="stock">In Stock</button>
+                {% else %}
+                    <button class="stock">Out Of Stock</button>
+                {% endif %}
+                
+
+                {% comment %} <p><strong>Quantity :</strong> </p>
+                <button style='max-width:2rem; text-align:center; border:none; outline:none;'
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus bg-white"><i
+                        class='fas fa-minus fa-xs'></i></button>
+                <input class=" m-sm-2 quantity text-sm-center" min="0" name="quantity" value="1" type="number"
+                    style='max-width:50px;'>
+                <button style='max-width:2rem; text-align:center; border:none; outline:none;'
+                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus bg-white"><i
+                        class='fas fa-plus fa-xs'></i></button> {% endcomment %}
+            </div>
+            {% comment %} button {% endcomment %}
+            <div class="mt-4 text-sm-center" >
+                
+                {% comment %} <a class="alert alert-primary d-sm-inline-block  forhover" href="{% url 'checkout' %}">Buy Now</a> {% endcomment %}
+                
+                <form action="/cart/" method="post" class="d-inline-block" >
+                {% csrf_token %}
+                <input id="product_id" type="text" name = "detail_item_id" value="{{singleProduct.id}}" hidden>
+                <button type= "submit" style="border-radius:2px;" class="bg-primary forhover text-white p-2 border-0 add-to-cart-btn1"><i class='fas fa-shopping-cart pr-2'></i> Add to
+                    Card</button>
+                </form>
+
+                <form action="/removecart/" method="post" class="d-inline-block ml-md-3">
+                {% csrf_token %}
+                <input  type="text" name = "remove_cart_id" value="{{ singleProduct.id }}" hidden>
+                <button type= "submit" style="border-radius:2px;" class="bg-danger forhover text-white p-2 border-0"><i class='fas fa-trash-alt pr-2'></i> Remove
+                    Item</button> 
+                </form>
+            </div>
+        </div>
+        {% comment %} end description section {% endcomment %}
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 shadow">
+                <h5 style='text-align:center; padding-top:1.2rem; font-weight:600; font-family:Aeria;'>Product
+                    Description</h5>
+                <p class="small text-muted text-uppercase mb-2">Shirts</p>
+                <div style='color:#ffd700'>
+                    <i class="fas fa-star fa-xs"></i>
+                    <i class="fas fa-star fa-xs"></i>
+                    <i class="fas fa-star fa-xs"></i>
+                    <i class="fas fa-star-half-alt fa-xs"></i>
+                    <i class="far fa-star fa-xs"></i>
+                </div>
+                <h6>12.99 $</h6>
+                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
+                    error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
+                    officia quis dolore quos sapiente tempore alias.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container border border-1 mt-3 mt-sm-5">
+
+        <div  class="ml-sm-4">
+            <canvas id="myChart" width = "1000px" height = "200"></canvas>
+        </div>
+
+        <div class="col-sm-12">
+            <br>
+            <div style='display: flex; justify-content:center; item-align:center;'>
+                <a href='#'>Review</a>
+            </div>
+            <label for="" class='rateus-label'>Rate Us:</label>
+            <div class="rateus" style='color:#ffd700'>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star fa-xs"></i>
+                <i class="fas fa-star-half-alt fa-xs"></i>
+                <i class="far fa-star fa-xs"></i>
+            </div>
+
+            <div id='review-content'    >
+                <form action="" class="m-5 text-sm-center text-md-left">
+                    <input class='w-50' type="text" style='border-style:none; outline:none;  border-bottom-style:solid; border-color:green;'>
+                    <a class='alert alert-primary ml-md-4 ml-sm-1 d-inline-block' href="#"> Review</a>
+                </form>
+            </div>
+
+            {% comment %} comment section  {% endcomment %}
+            <div class="comment-section">
+                <div class="comment">
+                    <div class="row">
+                    <div class="col-sm-1 text-right">
+                        <div style='width:50px; height: 50px;'>
+                            <img src="{% static 'images/products/image1.jpg' %}" alt="" class="rounded-circle img-fluid border border-green image-container-layout">
+                        </div>
+                    </div>
+                    <div class="col-sm-8 text-left">
+                        <h6 class="font-weight-bold" style="font-size: 0.8rem; margin:2px;">Name First</h6>
+                        <p style="font-size:0.8rem; margin: 0px;" class="font-italic">Its an awesome t-shirt</p>
+                        <p class="comment-reply d-sm-inline" style="font-size: 0.8rem;">Reply</p>
+                        <p class="d-sm-inline" style="font-size: 0.8rem;">Edit</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="reply ml-5">
+                    <div class='row'>
+                    <div class="col-md-1 col-sm-2 text-right">
+                        <img src="{% static 'images/products/image1.jpg' %}" alt="" class="rounded-circle img-fluid border border-green"
+                            width='50px' height='50px;'>
+                    </div>
+                    <div class="col-md-8 col-sm-5 text-left mb-4" >
+                        <h6 class="font-weight-bold" style="font-size: 0.8rem; margin:2px;">Name First</h6>
+                        <p style="font-size:0.8rem; margin: 0px;" class="font-italic">Its an awesome t-shirt</p>
+                        <p class="mt-0  d-sm-inline" style="font-size: 0.8rem;">Reply</p>
+                        <p class="mt-0 d-sm-inline" style="font-size: 0.8rem;">Edit</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} end comment section  {% endcomment %}
+        </div>
+
+
+    </div>
+</div>
+</div>
+
+
+
+<div class="container-fluid mt-5">
+
+    <h1> People who viewed this Item also Viewed</h1>
+    <div class="row mb-5" style="display:flex; justify-content:space-around">
+        <div class="card m-md-3 m-sm-2" style="width: 18rem; display:inline-block;">
+            <img src="{% static 'images/slider/slider1.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+        <div class="card m-md-3 m-sm-2" style="width: 18rem; display:inline-block;">
+            <img src="{% static 'images/slider/slider2.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+        <div class="card m-md-3 m-sm-2" style="width: 18rem; display:inline-block;">
+            <img src="{% static 'images/slider/slider1.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+        <div class="card m-md-3 m-sm-2" style="width: 18rem; display:inline-block;">
+            <img src="{% static 'images/slider/slider3.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock content %}

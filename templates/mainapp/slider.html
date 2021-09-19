@@ -1,0 +1,17 @@
+{% load static %}
+<div class="container-fluid">
+  <div class="row featureSlider">
+    {% for data in featureItems %}
+    <div class="col-sm-12">
+      <img src="{{data.image.url}}" height='550px' class="d-block w-100" alt="...">
+      <div class="carousel-caption slider-caption d-none d-md-block">
+        <h5>{{data.name | capfirst}}</h5>
+        <p>{{data.description}}</p>
+        <a href="{% url 'shopping_page' %}" class="d-inline-block text-decoration-none text-white alert alert-dark bg-dark">
+          SHOP NOW
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
