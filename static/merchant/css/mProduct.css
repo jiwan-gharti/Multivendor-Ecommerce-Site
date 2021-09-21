@@ -1,0 +1,38 @@
+.product_image{
+    margin: auto;
+    height: 250px;
+    width: fit-content;
+}
+.product_image > img{
+    width: fit-content;
+    height: 250px;
+}
+
+.product_name{
+    padding: 4px 0;
+    height: 40px;
+}
+.product_name > p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+
+}
+
+.two_buttons > button{
+    outline: none;
+}
+.delete_button, .edit_button{
+    
+    border: none;
+    border-radius: 0;
+    padding: 4px;
+    width: 80px;
+    color: whitesmoke;
+    background-color: #007bff;
+    font-size: 18px;
+}
+
+.delete_button{
+    background-color: #f44336;
+}

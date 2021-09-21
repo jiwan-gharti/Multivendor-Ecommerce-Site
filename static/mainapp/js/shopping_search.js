@@ -2,6 +2,7 @@
 var min_max_button = document.getElementById("min_max_button")
 var input_minimum = document.getElementById('input_minimum')
 var input_maximum = document.getElementById('input_maximum')
+var sorted_filter = document.getElementById("asc_desc")
 var filterobj = {}
 // var url =  '/test/'
 var url = window.location.url
@@ -105,6 +106,17 @@ checkboxBtn.forEach((element)=>
 
 });
 
+
+
+sorted_filter.addEventListener("click",function(){
+sorted_filter.addEventListener("change",function(){
+    var value = sorted_filter.options[sorted_filter.selectedIndex].value;
+    if(value === null)
+        filterobj["sorted_filter"] = value
+        API()
+});
+
+});
 
 
 

@@ -258,8 +258,8 @@ def ShoppingPage1(request,slug):
         # print(radio_filter)
 
 
-
-
+        sorted_filter = request.GET.get("sorted_filter")
+        print(sorted_filter)
         
         # print(request.GET)
         # print(request.GET.getlist("condition[]"))
@@ -301,6 +301,13 @@ def ShoppingPage1(request,slug):
             if radio_filter == "200toabove":
                 all_products = all_products.filter(price__gte = 200)
                 print("radio value",radio_filter)
+        
+        if sorted_filter:
+            if sorted_filter == "ascending":
+                all_products = all_products.order_by('price')
+            if sorted_filter == 'descending':
+                print(sorted_filter)
+                all_products = all_products.order_by('-price')
         
         t = render_to_string("ajax/product-filter-list.html",{'data':all_products})   
         return JsonResponse({"data": t},safe=False)

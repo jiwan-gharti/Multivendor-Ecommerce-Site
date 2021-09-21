@@ -24,7 +24,7 @@ class FeaturedSlider(ProductBaseClass):
     active              =      models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
     
     def save(self,*args, **kwargs):
         self.slug = slugify(self.name)
@@ -32,11 +32,12 @@ class FeaturedSlider(ProductBaseClass):
 
 class SuperProductCategory(models.Model):
     first_level_category     =     models.CharField(max_length=100,
-                                                blank=True, null=True,unique=True,
+                                                blank=True, null=True,
+                                                unique=True,
                                                  help_text="Like Electronic or Beauty Products or Sport and OutDoors",
                                                 )
     def __str__(self):
-        return self.first_level_category
+        return str(self.first_level_category)
 
     def save(self,*args, **kwargs):
         self.general_category = self.first_level_category.lower()
@@ -56,13 +57,13 @@ class SuperProductCategory(models.Model):
 
     
 class SecondLevelCategory(models.Model):
-    product_category         =     models.CharField("Product Category Name (2nd level)",max_length=200, unique=True, blank= True, null=True)
+    product_category         =     models.CharField("Product Category Name (2nd level)",max_length=200, blank= True, null=True)
     first_level_category     =     models.ForeignKey(SuperProductCategory, on_delete=models.CASCADE)
     slug                =       models.SlugField(max_length=300,blank=True,null=True)
       
 
     def __str__(self):
-        return self.product_category
+        return str(self.product_category)
     
     def save(self,*args, **kwargs):
         self.product_category = self.product_category.lower()
@@ -84,7 +85,7 @@ class SecondLevelCategory(models.Model):
 class ProductCategory(ProductBaseClass):
 
     second_level_category     =     models.ForeignKey(SecondLevelCategory, on_delete=models.CASCADE)
-    brand_name                =     models.CharField("Brand Name",max_length=200)
+    brand_name                =     models.CharField("Brand Name",max_length=200, null=True, blank= True)
     description               =     models.CharField(max_length=2000)
     slug                =           models.SlugField(max_length=300,blank=True,null=True)
 
@@ -96,7 +97,7 @@ class ProductCategory(ProductBaseClass):
         db_table              =    "Product Category"
 
     def __str__(self):
-        return self.brand_name
+        return str(self.brand_name)
 
 
  
@@ -119,23 +120,23 @@ class ProductInventory(ProductBaseClass):
             return str(self.quantity)
 
 class Discount(ProductBaseClass):
-    name                 =     models.CharField("Discount Name",max_length=200)
-    description          =     models.CharField(max_length=200)
-    active               =     models.BooleanField(default=False)
-    discount_percentage  =     models.DecimalField(max_digits=4, decimal_places=2)
+    name                 =     models.CharField("Discount Name",max_length=200,null=True, blank=True)
+    description          =     models.CharField(max_length=200,null=True, blank=True)
+    active               =     models.BooleanField(default=False,)
+    discount_percentage  =     models.DecimalField(max_digits=4, decimal_places=2,null=True, blank=True)
     slug                =      models.SlugField(max_length=300,blank=True,null=True)
 
     class Meta:
         db_table = "Product Discount"
     
     def save(self,*args, **kwargs):
-        self.brand_name = self.brand_name.lower()
+        # self.brand_name = self.brand_name.lower()
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 
     def __str__(self):
-            return self.name
+            return str(self.name)
 
 class Product(ProductBaseClass):
     image                  =     models.ImageField("Product Image",upload_to = image_name_change, null=True, blank = True)
@@ -153,7 +154,7 @@ class Product(ProductBaseClass):
         constraints         =   [models.CheckConstraint(check= models.Q(price__gt = 20), name="price Constraints")]
 
     def __str__(self):
-            return self.name
+            return str(self.name)
     
     def save(self,*args, **kwargs):
         self.slug = slugify(self.name)
@@ -180,7 +181,7 @@ class OrderItem(models.Model):
     ordered = models.BooleanField(default=False,null=True, blank=True)
 
     def __str__(self):
-        return self.item.name
+        return str(self.item.name)
     
     
     def get_total_price(self):
@@ -244,7 +245,7 @@ class ShippingAddress(models.Model):
     # default = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.username)
 
     class Meta:
         verbose_name_plural = 'Shipping Addresses'

@@ -264,12 +264,17 @@
                     <h5 class="">{{second_level_search_cactegories.count }} item found for "{{search_key}}"</h5>
                     <div>
                     <label for="">Sort By &nbsp</label>
-                        <form>
+                        {% comment %} <form>
                             
                                 <a  href="{% if query_exists %}  {{get_full_path}}&sort=price_asc {% else %} ./?sort=price_asc {% endif %}" >Low To High</a>
                                 <a  href="{% if query_exists %}  {{get_full_path}}&sort=price_descc {% else %} ./?sort=price_desc {% endif %}" >High To Low</a>
                             
-                        </form>
+                        </form> {% endcomment %}
+                        <select name="asc_desc" id="asc_desc"class="asc_desc">
+                            <option value=""disabled selected class="text-center">-----</option>
+                            <option value="ascending">Low To High</option>
+                            <option value="descending">High to Low</option>
+                        </select>
                     </div>
                     </div>
                     <hr>

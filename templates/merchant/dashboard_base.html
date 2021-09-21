@@ -9,6 +9,9 @@
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Yatra One|Dosis">
 
+    <link rel="stylesheet" href="{% static '/merchant/css/mupdate.css' %}">
+    <link rel="stylesheet" href="{% static 'merchant/css/mProduct.css' %}">
+
    
 
     {% block inlinecss %}
@@ -38,6 +41,14 @@ integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZD
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
+
+<!--Chart.js JS CDN--> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.0/dist/chart.min.js"></script> 
+
+<script src="{% static 'merchant/js/mProduct.js' %}"></script>
+<script src="{% static 'merchant/js/merchant_dashboard.js' %}"></script>
+<script src="{% static 'merchant/js/dashboard_chart.js' %}"></script>c
 
 </body>
 </html>
