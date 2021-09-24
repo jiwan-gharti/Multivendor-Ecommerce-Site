@@ -26,7 +26,11 @@
       <div class="card" style="width: 18rem">
         <div class="card-body">
           <h5 class="card-title border-bottom pb-2  text-center">Number of Products</h5>
-          <h1 class="text-center">5</h1>
+          {% if all_products.count == 0 %}
+            <h1 class="text-center">0</h1>
+          {% else %}
+            <h1 class="text-center">{{all_products.count}}</h1>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -35,7 +39,12 @@
       <div class="card" style="width: 18rem">
         <div class="card-body">
           <h5 class="card-title border-bottom pb-2  text-center">Low Stocks Products</h5>
-          <h1 class="text-center">5</h1>
+            {% if low_stock <= 0 %}
+              <h1 class="text-center">0</h1>
+            {% else %}
+              <h1 class="text-center">{{low_stock}}</h1>
+            {% endif %}
+          
         </div>
       </div>
     </div>

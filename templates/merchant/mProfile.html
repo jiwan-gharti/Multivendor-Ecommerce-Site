@@ -137,30 +137,30 @@ Merchant Profile
                 <tbody>
                     <tr>
                         <td>Name</td>
-                        <td>Jiwan Gharti</td>
+                        <td>{{merchant_user.first_name | upper}} {{merchant_user.last_name | upper}}</td>
                     </tr>
 
                     <tr>
                         <td>Email</td>
-                        <td>someone@mail.com</td>
+                        <td>{{merchant_user.email}}</td>
                     </tr>
 
                     <tr>
                         <td>Phone Number</td>
-                        <td>98986767</td>
+                        <td>{{merchant_user.phone_number}}</td>
                     </tr>
 
                     <tr>
                         <td>Pan number</td>
-                        <td>01-23456-789</td>
+                        <td>{{merchant_user.pan_no}}</td>
                     </tr>
 
                     <tr>
                         <td>Documnets</td>
                         <td>
                             <div class="doc_image d-inline" id="doc_image">
-                                <img class="border" id="myImg" src="{% static '/mainapp/images/products/image1.jpg' %}"
-                                    style="width: 200px; height: 200px; margin-right: 10px;" alt="img" loading="lazy">
+                                <img class="border" id="myImg" src="{{merchant_user.document.url}}"
+                                    style="width: 200px; height: 200px; margin-right: 10px;" alt="{{merchant_user.pan_no}}" loading="lazy">
                                 <img class="border" id="myImg" src="{% static '/mainapp/images/products/image2.png' %}"
                                     style="width: 200px; height: 200px;" alt="img" loading="lazy">
                                 <img class="border" id="myImg" src="{% static '/mainapp/images/products/image3.jpeg' %}"
@@ -174,15 +174,14 @@ Merchant Profile
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td><button class="border-0 bg-primary p-sm-2 text-white">Update</button></td>
-                    </tr>
-                </tbody>
+            </tbody>
             </table>
+            <a href="{% url 'merchant_app:mProfile_upadate' %}"><button class="border-0 btn-primary p-sm-2 text-white mt-4">Update</button></a>
         </div>
     </div>
 </div>
+
+
 
 <script type="text/javascript">
     //Get the id model    

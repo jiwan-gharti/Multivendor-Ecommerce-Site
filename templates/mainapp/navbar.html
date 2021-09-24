@@ -3,18 +3,18 @@
 {% comment %} first navbar {% endcomment %}
 
 
-<nav class="navbar-dark bg-dark first-nav navbar-collapse" id='navid'>
+<nav class="navbar-dark bg-dark first-nav navbar-expand-xs" id='navid'>
     <div class="first-nav-left text-center">
         <li class="navbar-item"><a href="{% url 'aboutus' %}">About Us</a></li>
         <li class="navbar-item"><a href="{% url 'contactus' %}">Contact us</a></li>
-        <li class="navbar-item facebook"><a href="www.facebook.com"><i class="fab fa-facebook-f"></i></a></li>
-        <li class="navbar-item instagram"><a href="www.instagram.com"><i class="fab fa-instagram"></i></a></li>
-        <li class="navbar-item twitter"><a href="www.twitter.com"><i class="fab fa-twitter"></i></a></li>
+        <li class="navbar-item facebook"><a  href="www.facebook.com"><i class="fab fa-facebook-f"></i></a></li>
+        <li class="navbar-item instagram"><a  href="www.instagram.com"><i class="fab fa-instagram"></i></a></li>
+        <li class="navbar-item twitter"><a  href="www.twitter.com"><i class="fab fa-twitter"></i></a></li>
     </div>
 
     <div class="first-nav-right text-center">
-        <li class="navbar-item"><a href="">Sale on NewAgeShopping</a></li>
-        <li class="navbar-item"><a href="{% url 'contactus' %}">Help Center</a></li>
+        <li class="navbar-item"><a href="{% url 'accounts:login' %}">Sale on NewAgeShopping</a></li>
+        <li class="navbar-item"><a href="{% url 'merchant_list' %}">List of Merchant</a></li>
         <li class="navbar-item"><a href="">Track My Oder</a></li>
     </div>
 </nav>
@@ -34,7 +34,7 @@
 
         <div class="last-one">
             <div class="">
-                <a class="cart-icon" style="font-size: 1.7rem;" href="{% url 'cart' %}"><i class="fa fa-cart-plus "
+                <a counts={{cart_items_count}} class="cart-icon" style="font-size: 1.7rem;" href="{% url 'cart' %}"><i class="fa fa-cart-plus "
                         style="font-size: 1.5rem; color:white" aria-hidden="true"></i></a>
             </div>
             <li class="nav-item dropdown account">
@@ -42,11 +42,21 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="account-icons-section">
                         <i class="fa fa-user" style="font-size: 1.7rem; color:white" aria-hidden="true"></i>
-                        <span style="font-size:.8rem">
+                        {% if request.user.is_authenticated %}
+                            <span style="font-size:.8rem">
+                            Namaste,{{request.user.first_name}}<br>
+                            <span style="font-weight:bold;">Account</span><i class="fa fa-chevron-down ml-2"
+                                aria-hidden="true"></i>
+                            </span>
+                        
+                        {% else %}
+                            <span style="font-size:.8rem">
                             Namaste,signin<br>
                             <span style="font-weight:bold;">Account</span><i class="fa fa-chevron-down ml-2"
                                 aria-hidden="true"></i>
-                        </span>
+                            </span>
+                        {% endif %}
+                        
 
                     </div>
                 </a>

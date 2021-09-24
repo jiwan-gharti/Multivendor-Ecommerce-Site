@@ -1,0 +1,45 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+{% block inlinecss %}
+<style>
+    .shop-name:hover{
+        color:#007bff;
+    }
+</style>
+{% endblock inlinecss %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row shadow mb-3 mt-4">
+            <div class="col-sm-12 ">
+                <h4 class="text-center mb-4 mt-4">Our Salers</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Shop Name</th>
+                        <th scope="col">Merchant Name</th>
+                        <th scope="col">Product Selling</th>
+                        <th scope="col">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                    {% for merchant in merchants_list %}
+                        <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>Shop Name</td>
+                        <td>{{merchant.first_name}} {{merchant.last_name}}</td>
+                        <td>{{list1}}</td>
+                        <td><a href="/merchant_shopping_page/merchant/{{merchant.pk}}/" class="text-decoration-none shop-name">Shop Here</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -23,29 +23,35 @@
     .rateus i {
         font-size: 1.7rem;
     }
-    .reply{
+
+    .reply {
         display: none;
     }
-    .reply-show{
+
+    .reply-show {
         display: block;
     }
-    .comment-details{
+
+    .comment-details {
         display: inline;
         border: 1px solid red;
     }
-    .main-image-layout{
+
+    .main-image-layout {
         width: 300px;
         height: 450px;
         overflow: hidden;
         padding: 0 0;
         transition: 1s all ease;
     }
-    .container-layout{
+
+    .container-layout {
         width: 100%;
         height: 100%;
         padding: 0 0;
     }
-    .stock{
+
+    .stock {
         position: absolute;
         top: 0;
         right: 100px;
@@ -55,12 +61,13 @@
         background: #f57224;
         border: none;
         Color: white;
-        pointer-events: none;  
+        pointer-events: none;
         font-size: 1.3rem;
-        border-radius: 2px;     
-        
+        border-radius: 2px;
+
     }
-    .diss{
+
+    .diss {
         border: none;
         Color: white;
         margin-left: 2rem;
@@ -80,27 +87,26 @@
 {% comment %} Product Details {% endcomment %}
 <div class="container-fluid">
     <h3 class='alert alert-info text-center mt-5 border border-info'>Product Details</h3>
-
     {% comment %} image Section {% endcomment %}
     <div class="row mt-sm-3">
         <div class="col-md-4 col-sm-12">
-                <div class="col-sm-12" style="height:600px; width:600px">
-                    <img src="{{singleProduct.image.url}}" class='main-image container-layout' alt="" style="height:100%; width:100%;">
-                </div>
-                
+            <div class="col-sm-12" style="height:600px; width:600px">
+                <img src="{{singleProduct.image.url}}" class='main-image container-layout' alt=""
+                    style="height:100%; width:100%;">
+            </div>
+
             <div class="row mr-1 mt-1" style="height:100px">
                 <div class="col-sm-3 p-1" style="height:100%; width:100%;">
-                    <img  class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image3.jpeg' %}" alt="">
+                    <img src="{{singleProduct.image.url}}" class='image-change-js container-layout' alt=""
+                    style="height:100%; width:100%;">
                 </div>
+                {% for data in singleProduct.productalternativeimage_set.all %}
                 <div class="col-sm-3 p-1" style="height:100%; width:100%;">
-                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image2.png' %}" alt="">
+                    <img class='img-fluid container-layout image-change-js'
+                        src="{{data.alternative_image.url}}" alt="">
                 </div>
-                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
-                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image1.jpg' %}" alt="">
-                </div>
-                <div class="col-sm-3 p-1" style="height:100%; width:100%;">
-                    <img class='img-fluid container-layout image-change-js' src="{% static 'mainapp/images/products/image1.jpg' %}" alt="">
-                </div>
+                {% endfor %}
+                
             </div>
         </div>
         {% comment %} end image Section {% endcomment %}
@@ -108,7 +114,8 @@
         {% comment %} description section {% endcomment %}
         <div class="col-md-8 col-sm-12 text-md-left text-sm-center">
             <h2 class="mt-3">{{singleProduct.name | title}}</h2>
-            <p class='m-sm-1 text-muted'>{{singleProduct.category.second_level_category | upper}} || BRAND NAME : {{singleProduct.category.brand_name | upper}}</p>
+            <p class='m-sm-1 text-muted'>{{singleProduct.category.second_level_category | upper}} || BRAND NAME :
+                {{singleProduct.category.brand_name | upper}}</p>
 
             <div style='color:#ffd700'>
                 <i class="fas fa-star fa-xs"></i>
@@ -117,21 +124,21 @@
                 <i class="fas fa-star-half-alt fa-xs"></i>
                 <i class="far fa-star fa-xs"></i>
             </div>
-            
+
             <div class="d-block ">
-              {% if singleProduct.discount.active %}
+                {% if singleProduct.discount.active %}
                 ${{singleProduct.calculate_Discount}}
                 <p class="price-tag text-muted">
-                    <del class="m-0 mb-0"style="font-size: .7rem;">
+                    <del class="m-0 mb-0" style="font-size: .7rem;">
                         ${{singleProduct.price}}
                     </del>
-                    <span class="diss">{{ singleProduct.discount.discount_percentage }}% OFF</span> 
-                </p>        
-            {% else %}
-            <p class="mb-0 mt-0 price-tag">
-                <p class='m-sm-1'><strong>$ {{singleProduct.price}}</strong></p>
-            </p>
-              {% endif %}
+                    <span class="diss">{{ singleProduct.discount.discount_percentage }}% OFF</span>
+                </p>
+                {% else %}
+                <p class="mb-0 mt-0 price-tag">
+                    <p class='m-sm-1'><strong>$ {{singleProduct.price}}</strong></p>
+                </p>
+                {% endif %}
             </div>
 
             <div class="table-responsive">
@@ -176,134 +183,159 @@
             <div class="def-number-input number-input safari_only m-sm-3">
 
                 {% if singleProduct.availability %}
-                    <button class="stock">In Stock</button>
+                <button class="stock">In Stock</button>
                 {% else %}
-                    <button class="stock">Out Of Stock</button>
+                <button class="stock">Out Of Stock</button>
                 {% endif %}
-                
 
-                {% comment %} <p><strong>Quantity :</strong> </p>
-                <button style='max-width:2rem; text-align:center; border:none; outline:none;'
-                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus bg-white"><i
-                        class='fas fa-minus fa-xs'></i></button>
-                <input class=" m-sm-2 quantity text-sm-center" min="0" name="quantity" value="1" type="number"
-                    style='max-width:50px;'>
-                <button style='max-width:2rem; text-align:center; border:none; outline:none;'
-                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus bg-white"><i
-                        class='fas fa-plus fa-xs'></i></button> {% endcomment %}
+
+                
             </div>
             {% comment %} button {% endcomment %}
-            <div class="mt-4 text-sm-center" >
-                
-                {% comment %} <a class="alert alert-primary d-sm-inline-block  forhover" href="{% url 'checkout' %}">Buy Now</a> {% endcomment %}
-                
-                <form action="/cart/" method="post" class="d-inline-block" >
-                {% csrf_token %}
-                <input id="product_id" type="text" name = "detail_item_id" value="{{singleProduct.id}}" hidden>
-                <button type= "submit" style="border-radius:2px;" class="bg-primary forhover text-white p-2 border-0 add-to-cart-btn1"><i class='fas fa-shopping-cart pr-2'></i> Add to
-                    Card</button>
+            <div class="mt-4">
+                <form action="/cart/" method="post" class="d-inline-block">
+                    {% csrf_token %}
+                    <input id="product_id" type="text" name="detail_item_id" value="{{singleProduct.id}}" hidden>
+                    <button type="submit" style="border-radius:2px;"
+                        class="bg-primary forhover text-white p-2 border-0 add-to-cart-btn1"><i
+                            class='fas fa-shopping-cart pr-2'></i> Add to
+                        Card</button>
                 </form>
 
-                <form action="/removecart/" method="post" class="d-inline-block ml-md-3">
-                {% csrf_token %}
-                <input  type="text" name = "remove_cart_id" value="{{ singleProduct.id }}" hidden>
-                <button type= "submit" style="border-radius:2px;" class="bg-danger forhover text-white p-2 border-0"><i class='fas fa-trash-alt pr-2'></i> Remove
-                    Item</button> 
-                </form>
+                {% comment %} <form action="/removecart/{{}}/" method="post" class="d-inline-block ml-md-3">
+                    {% csrf_token %}
+                    <input type="text" name="remove_cart_id" value="{{ singleProduct.id }}" hidden>
+                    <button type="submit" style="border-radius:2px;"
+                        class="bg-danger forhover text-white p-2 border-0"><i class='fas fa-trash-alt pr-2'></i> Remove
+                        Item</button>
+                </form> {% endcomment %}
             </div>
         </div>
         {% comment %} end description section {% endcomment %}
     </div>
+</div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 shadow">
-                <h5 style='text-align:center; padding-top:1.2rem; font-weight:600; font-family:Aeria;'>Product
-                    Description</h5>
-                <p class="small text-muted text-uppercase mb-2">Shirts</p>
-                <div style='color:#ffd700'>
-                    <i class="fas fa-star fa-xs"></i>
-                    <i class="fas fa-star fa-xs"></i>
-                    <i class="fas fa-star fa-xs"></i>
-                    <i class="fas fa-star-half-alt fa-xs"></i>
-                    <i class="far fa-star fa-xs"></i>
+<div class="container mt-sm-5 mb-sm-5 border">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="product-tab">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-detail-tab" data-toggle="tab" href="#pills-details" role="tab"
+                            aria-controls="pills-details" aria-selected="true">Detail</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-review-tab" data-toggle="tab" href="#pills-review" role="tab"
+                            aria-controls="pills-review" aria-selected="false">Review({{comments.count}})</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <!--Details tab-->
+                <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-detail-tab">
+                    <p>
+                        something here{{ product.detail |safe }}
+                    </p>
                 </div>
-                <h6>12.99 $</h6>
-                <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
-                    error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
-                    officia quis dolore quos sapiente tempore alias.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="container border border-1 mt-3 mt-sm-5">
-
-        <div  class="ml-sm-4">
-            <canvas id="myChart" width = "1000px" height = "200"></canvas>
-        </div>
-
-        <div class="col-sm-12">
-            <br>
-            <div style='display: flex; justify-content:center; item-align:center;'>
-                <a href='#'>Review</a>
-            </div>
-            <label for="" class='rateus-label'>Rate Us:</label>
-            <div class="rateus" style='color:#ffd700'>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star-half-alt fa-xs"></i>
-                <i class="far fa-star fa-xs"></i>
-            </div>
-
-            <div id='review-content'    >
-                <form action="" class="m-5 text-sm-center text-md-left">
-                    <input class='w-50' type="text" style='border-style:none; outline:none;  border-bottom-style:solid; border-color:green;'>
-                    <a class='alert alert-primary ml-md-4 ml-sm-1 d-inline-block' href="#"> Review</a>
-                </form>
-            </div>
-
-            {% comment %} comment section  {% endcomment %}
-            <div class="comment-section">
-                <div class="comment">
+                <!--Review Tab-->
+                <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                     <div class="row">
-                    <div class="col-sm-1 text-right">
-                        <div style='width:50px; height: 50px;'>
-                            <img src="{% static 'images/products/image1.jpg' %}" alt="" class="rounded-circle img-fluid border border-green image-container-layout">
+                        <div class="col-md-6">
+                            <div class="product-reviews">
+                                {% for rs in page_obj %}
+                                <div class="single-review border-bottom" >
+                                    <div class="review-heading">
+                                                <div><a href="#"><i class="fa fa-user-o"></i> {{rs.user.first_name}}</a></div>
+                                                <div style="font-size:14px;"><p>{{rs.subject}}</p></div>
+                                                <div style="font-size:12px;"><p class="text-muted" href="#"><i class="fa fa-clock-o"></i> {{rs.created}}</p></div>
+                                            
+                                            <div class="review-rating float-right" style="font-size:12px;">
+                                                <i class="fa fa-star{% if rs.rate < 1 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if rs.rate < 2 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if rs.rate < 3 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if rs.rate < 4 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if rs.rate < 5 %}-o empty{% endif %}"></i>
+                                            </div>
+
+                                    </div>
+                                    <div class="review-body">
+                                        <p>{{rs.comment}}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                <div class="pagination">
+                                    <span class="step-links">
+                                        {% if page_obj.has_previous %}
+                                            <a href="?page=1">&laquo; 1</a>
+                                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                        </span>
+
+                                        {% if page_obj.has_next %}
+                                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                            {% comment %} <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endcomment %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="text-uppercase">Write Your Review</h4>
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{message.tags}}" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+
+                            <form class="review-form" action="{% url 'add_comment' singleProduct.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input name="subject" class="input form-control" type="text"
+                                        placeholder="Your subject" />
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea name="comment" class="input form-control"
+                                        placeholder="Your review"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-rating">
+                                        <strong class="text-uppercase">Your Rating: </strong>
+                                        <div class="stars">
+                                            <input type="radio" id="star5" name="rate" value="5" /><label
+                                                for="star5"></label>
+                                            <input type="radio" id="star4" name="rate" value="4" /><label
+                                                for="star4"></label>
+                                            <input type="radio" id="star3" name="rate" value="3" /><label
+                                                for="star3"></label>
+                                            <input type="radio" id="star2" name="rate" value="2" /><label
+                                                for="star2"></label>
+                                            <input type="radio" id="star1" name="rate" value="1" /><label
+                                                for="star1"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if request.user.id is not None %}
+                                <button type="submit" class="btn-primary p-1 border" style="backgroud:#f57224">Submit</button>
+                                {% else %}
+                                You must be logged in to post a review
+                                {% endif %}
+                            </form>
+
                         </div>
                     </div>
-                    <div class="col-sm-8 text-left">
-                        <h6 class="font-weight-bold" style="font-size: 0.8rem; margin:2px;">Name First</h6>
-                        <p style="font-size:0.8rem; margin: 0px;" class="font-italic">Its an awesome t-shirt</p>
-                        <p class="comment-reply d-sm-inline" style="font-size: 0.8rem;">Reply</p>
-                        <p class="d-sm-inline" style="font-size: 0.8rem;">Edit</p>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="reply ml-5">
-                    <div class='row'>
-                    <div class="col-md-1 col-sm-2 text-right">
-                        <img src="{% static 'images/products/image1.jpg' %}" alt="" class="rounded-circle img-fluid border border-green"
-                            width='50px' height='50px;'>
-                    </div>
-                    <div class="col-md-8 col-sm-5 text-left mb-4" >
-                        <h6 class="font-weight-bold" style="font-size: 0.8rem; margin:2px;">Name First</h6>
-                        <p style="font-size:0.8rem; margin: 0px;" class="font-italic">Its an awesome t-shirt</p>
-                        <p class="mt-0  d-sm-inline" style="font-size: 0.8rem;">Reply</p>
-                        <p class="mt-0 d-sm-inline" style="font-size: 0.8rem;">Edit</p>
-                    </div>
-                    </div>
                 </div>
             </div>
-            {% comment %} end comment section  {% endcomment %}
         </div>
-
-
     </div>
 </div>
-</div>
-
 
 
 <div class="container-fluid mt-5">
@@ -353,5 +385,7 @@
 
     </div>
 </div>
+
+
 
 {% endblock content %}

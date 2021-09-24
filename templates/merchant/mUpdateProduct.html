@@ -1,0 +1,63 @@
+{% extends './dashboard_base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}
+Merchant Product Update
+{% endblock title %} 
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="update-section">
+                <div class="inner-section">
+                    <div>
+                        <form action="" method="post" enctype="multipart/form-data" class="" novalidate>
+                            {% csrf_token %}
+                            <div class="border border-dark p-2">
+                                <div class="text-center bg-info">
+                                    <label class="text-capitalize font-weight-bold p-2" for="">Product Information
+                                        Section</label>
+                                </div>
+                                {{ProductForm1 | crispy}}
+                            </div>
+
+                            
+
+                            <div class="border border-dark p-2">
+                                <div class="text-center bg-info">
+                                    <label for="" class="text-capitalize font-weight-bold p-2">Product Discount
+                                        Section</label>
+                                </div>
+                                {{DiscountForm1 | crispy}}
+                            </div>
+
+                            <div class="border border-dark p-2">
+                                <div class="text-center bg-info">
+                                    <label for="" class="text-capitalize font-weight-bold p-2">Product Inventory
+                                        Section</label>
+                                </div>
+                                {{ProductInventoryForm1 | crispy}}
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                            <div class="mt-sm-2 mb-5">
+                                <input class="bg-primary border-0 p-3 text-white" type="submit" value="Update Product"
+                                    name="" id="" />
+                                <input class="bg-danger border-0 p-3 text-white" type="reset" value="Reset"
+                                    name="" id="" />
+                            </div>
+                            <a href="{% url 'merchant_app:merchant_dashboard' %}"><input class="bg-danger border-0 p-3 text-white mt-2" type="button" value="Dashboard"
+                                    name="" id="" /></a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -121,18 +121,22 @@ Merchant Product
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xl-3 col-md-3 col-sm-12 mb-md-3 mb-sm-5 border pt-3" style="height:400px;">
+        {% for product in all_products %}
+        <div class="col-xl-3 col-md-3 col-sm-12 mb-md-3 mb-sm-5 shadow pt-3" style="height:400px;">
             <div class="product_image mb-3">
-                <img class=" shadow" id="myImg1"  src=" {% static '/mainapp/images/products/image1.jpg' %} " alt="product image">
+                <img class=" shadow" id="myImg1"  src=" {{product.image.url}} " alt="product image">
             </div>
             <div class="product_name mb-3 ">
-                <p style="font-size: 16px; font-weight: 500;"> Product 1</p>
+                <p style="font-size: 16px; font-weight: 500;"> {{product.name}}</p>
             </div>
-            <div class="two_buttons d-flex justify-content-between">
-                <button type="button"  class="delete_button delete-btn">Delete</button>
-                <button type="button"  id = "update-button" class="edit_button update-button">Edit</button>
+            <div class="two_buttons d-flex justify-content-between">        
+                    <a href="{% url 'merchant_app:delete_product' product.pk %}"><button type="submit"  class="delete_button delete-btn">Delete</button></a>
+
+                
+                    <a href="{% url 'merchant_app:update_product' product.pk %}"><button type="button"  id = "update-button" class="edit_button update-button">Edit</button></a>
             </div>
         </div>
+        
 
 
         <div id="myModal1" class="modal1">
@@ -140,81 +144,26 @@ Merchant Product
             <img id="modal1-img" class="modal1-content" src="">
             <div id="caption1"></div>
         </div>
+        {% endfor %}
 
-        <div class="col-xl-3 col-md-3 col-sm-12 mb-3 border pt-3" style="height: 400px;">
-            <div class="product_image mb-3">
-                <img class="shadow"  id="myImg1"src=" {% static '/mainapp/images/products/image1.jpg' %} " alt="product image">
-            </div>
-            <div class="product_name mb-3 ">
-                <p style="font-size: 16px; font-weight: 500;"> Product 1</p>
-            </div>
-            <div class="two_buttons d-flex justify-content-between">
-                <button type="button" onclick=delete_popup() class="delete_button">Delete</button>
-                <button type="button" onclick=edit_popup() class="edit_button">Edit</button>
-            </div>
-            
-        </div>
+       
 
     </div>
 </div>
 
-<div class="update-section">
-    <div class="inner-section">
-        <div>
-            <div><label for="" class="float-right mb-5 close-btn"><i style="font-size:2rem;" class="fa fa-times-circle"
-                        aria-hidden="true"></i></label></div>
-            <form action="" method="post" enctype="multipart/form-data" class="border-0" novalidate>
-                {% csrf_token %}
-                <div class="border border-dark p-2">
-                    <div class="text-center bg-info">
-                        <label class="text-capitalize font-weight-bold p-2" for="">Product Information Section</label>
-                    </div>
-                    {{ProductForm1 | crispy}}
-                </div>
 
-                <div class="border border-dark p-2">
-                    <div class="text-center bg-info">
-                        <label for="" class="text-capitalize font-weight-bold p-2">Product Category Section</label>
-                    </div>
-                    {{SecondLevelCategoryForm1 | crispy}} {{ProductCategoryForm1 | crispy}}
-                </div>
 
-                <div class="border border-dark p-2">
-                    <div class="text-center bg-info">
-                        <label for="" class="text-capitalize font-weight-bold p-2">Product Discount Section</label>
-                    </div>
-                    {{DiscountForm1 | crispy}}
-                </div>
-
-                <div class="border border-dark p-2">
-                    <div class="text-center bg-info">
-                        <label for="" class="text-capitalize font-weight-bold p-2">Product Inventory Section</label>
-                    </div>
-                    {{ProductInventoryForm1 | crispy}}
-                </div>
-
-                <div class="mt-sm-2 mb-5">
-                    <input class="bg-success border-0 p-2 text-white" type="submit" value="Update Product" name=""
-                        id="" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="delete-section">
+{% comment %} <div class="delete-section">
     <div class="delete-inner">
         <div class="content-section">
-            <div><label for="" class="float-right mb-5 cancel-btn"><i style="font-size:2rem;" class="fa fa-times-circle"
-                        aria-hidden="true"></i></label></div>
             <label for="for-delete">Are You sure Want to Delete?</label>
             <div class="btn-group mt-sm-4">
                 <button class="bg-danger p-2 border-0 mr-2 text-white">Delete</button>
-                <button class="bg-primary p-2 border-0 ml-2 text-white">cancel</button>
+                <button class="bg-primary p-2 border-0 ml-2 text-white cancel-btn">cancel</button>
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 
 
 <script type="text/javascript">

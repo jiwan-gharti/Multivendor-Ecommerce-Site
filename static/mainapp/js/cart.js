@@ -2,12 +2,15 @@ console.log("cart here")
 
 var user = '{{request.user}}'
 
-var updateBtns = document.getElementsByClassName("update-cart")
+var updateBtns = document.querySelectorAll(".update-cart")
 
-for(var i = 0; i < updateBtns.length; i++){
-    updateBtns[i].addEventListener('click', function(){
 
-        // e.preventDefault()
+        
+
+updateBtns.forEach((updateBtn) =>{
+    updateBtn.addEventListener('click', function(e){
+
+        e.preventDefault()
         
         var productId = this.dataset.product
         var action = this.dataset.action
@@ -18,11 +21,13 @@ for(var i = 0; i < updateBtns.length; i++){
             addCookieItem(productId, action)
         }
         else{
+            // console.log("first--------------------")
+            // console.log(productId, action)
             updateUserOrder(productId, action)
         }
 
     })
-}
+})
 
 function addCookieItem(productId, action){
 
@@ -33,6 +38,12 @@ function updateUserOrder(productId, action){
     console.log("User Logged in and Sending update quantity")
 
     var url = '/update_item/'
+    
+    
+    // var url = "{% url 'update_item' %}"
+    // console.log(url)
+    // var url = window.location.href
+    console.log(url)
 
     fetch(url, {
         method: "POST",
@@ -50,7 +61,21 @@ function updateUserOrder(productId, action){
 
     .then((data) =>{
         location.reload()
-        console.log('Data:',data)
+        console.log(data.data1)
+        // $("#cart-page").html(data.data1)
     })
 
+    
 }
+
+
+console.log("here")
+var expected_date = document.getElementById("expected_date")
+window.addEventListener('load', (event) => {
+    var date = new Date();
+    date.setDate(date.getDate() + 7);
+    expected_date.textContent = date
+    console.log(date);
+});
+
+

@@ -1,0 +1,61 @@
+
+{% extends "../mainapp/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+
+{% block title %}Login Page{% endblock title %}
+
+{% block content %}
+
+
+ {% comment %} {% if not user.is_authenticated %} {% endcomment %}
+ 
+<div class="container mt-sm-5 mb-sm-5 ">
+    <div class="form-wrapper w-75 m-sm-auto p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="alert-success p-2" style="font-size:1rem;">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <span class="errors">
+                        {{form.errors|striptags}}
+                    </span>
+                {% endif %}
+
+
+                    <form method= "POST" action="" enctype = "multipart/form-data">
+                        <h4 for="" class="text-center text-bold mb-5">Create your NewAgeShopping Merchant Account</h4>
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <div>
+                                <label for="" class="font-weight-bold added-style">Already Have Account ?</label>
+                                <a href="{% url 'accounts:register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Login</a> Here
+                            </div>
+                            <a href="{% url 'accounts:password_reset' %} " class="added-style text-decoration-none">Forget Password? </a>
+                        </div>
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ {% comment %} {% else %} {% endcomment %}
+        
+ {% comment %} {% endif %} {% endcomment %}
+
+{% endblock content %}

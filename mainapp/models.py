@@ -1,7 +1,8 @@
 from django.db import models
 from .utils import image_name_change
 from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User
+
+from accounts.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
 
@@ -139,14 +140,15 @@ class Discount(ProductBaseClass):
             return str(self.name)
 
 class Product(ProductBaseClass):
+    user                   =     models.ForeignKey(User,on_delete=models.CASCADE,null=True, blank = True)
     image                  =     models.ImageField("Product Image",upload_to = image_name_change, null=True, blank = True)
     name                   =     models.CharField("Product Name",max_length=120)
     description            =     models.CharField("Product Description",max_length=2000)
     price                  =     models.DecimalField("Price",max_digits=8, decimal_places=2, help_text="Price should Grater than 20")
     availability           =     models.BooleanField(default=True)
     category               =     models.ForeignKey(ProductCategory, models.CASCADE, null=True, blank = True)
-    inventory              =     models.ForeignKey(ProductInventory, models.CASCADE, null=True, blank = True, verbose_name="Quantity")
-    discount               =     models.ForeignKey(Discount, models.CASCADE, null=True, blank = True)
+    inventory              =     models.ForeignKey(ProductInventory, models.CASCADE, null=True, blank = True, verbose_name="Quantity", related_query_name="inventory")
+    discount               =     models.ForeignKey(Discount, models.CASCADE, null=True, blank = True,related_query_name="discount")
     slug                   =      models.SlugField(max_length=300,blank=True,null=True)
 
     class Meta:
@@ -171,6 +173,15 @@ class Product(ProductBaseClass):
     @property
     def get_discount_status(self):
         return self.discount.discount_percentage
+    
+
+class ProductAlternativeImage(models.Model):
+    alternative_image = models.ImageField(upload_to = "alternative Images")
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.product.name) + " Sub-Image"
+
 
 
 class OrderItem(models.Model):
@@ -183,7 +194,7 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.item.name)
     
-    
+    @property
     def get_total_price(self):
         if self.item.discount and self.item.discount.active:
             price = self.item.calculate_Discount
@@ -193,12 +204,12 @@ class OrderItem(models.Model):
             item_total = float(self.item.price) * self.quantity
             return item_total
     
-    
+    @property
     def get_cart_total(cls):
         total = 0
         
         for item in OrderItem.objects.all():
-            total += item.get_total_price()
+            total += item.get_total_price
         return total
     
     def total_cart_items(self):
@@ -249,5 +260,26 @@ class ShippingAddress(models.Model):
 
     class Meta:
         verbose_name_plural = 'Shipping Addresses'
+
+
+
+class Comment(models.Model):
+    STATUS = [
+        ('New','New'),
+        ('True', 'True'),
+        ('False',"False")
+    ]
+    product    = models.ForeignKey(Product,on_delete= models.CASCADE)
+    user       = models.ForeignKey(User,on_delete= models.CASCADE)
+    subject    = models.CharField(max_length=50, blank=True)
+    comment    = models.CharField(max_length=200, blank=True)
+    rate       = models.SmallIntegerField(default = 1)
+    ip         = models.CharField(max_length=20, blank=True)
+    status     = models.CharField(max_length=10, choices=STATUS,default="New")
+    created    =    models.DateTimeField(auto_now_add=True)
+    updated    =    models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.subject + "-title"
 
 

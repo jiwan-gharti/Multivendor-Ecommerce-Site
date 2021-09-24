@@ -6,8 +6,9 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('register/', view=views.SignupPage, name='register'),
+    path('merchat_register/',view = views.MerchantCustomer, name="merchant_register"),
 
-    path('login/', view=views.Login.as_view(), name='login'),
+    path('login/', view=views.Login, name='login'),
     path('logout/', view=LogoutView.as_view(), name='logout'),
 
     path('password_reset/', view = views.PasswordResetView.as_view(), name = "password_reset"),

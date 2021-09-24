@@ -111,8 +111,9 @@ checkboxBtn.forEach((element)=>
 sorted_filter.addEventListener("click",function(){
 sorted_filter.addEventListener("change",function(){
     var value = sorted_filter.options[sorted_filter.selectedIndex].value;
-    if(value === null)
+    if(value !== null)
         filterobj["sorted_filter"] = value
+        console.log(filterobj)
         API()
 });
 
@@ -127,6 +128,7 @@ sorted_filter.addEventListener("change",function(){
 
 var filteredData = document.querySelector("#filteredData")
 function API(){
+    console.log(filterobj)
 
     $.ajax({
         url: url,
@@ -144,3 +146,4 @@ function API(){
         }
     });
 }
+

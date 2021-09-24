@@ -13,13 +13,13 @@ subImage.forEach((item, index) => {
         console.log(biggerImage)
     }
 
-    item.onmouseover = () =>{
+    item.onclick = () =>{
         mainImage.src = item.src;
     }
-    item.onmouseout= () =>{
-        console.log("I am out!!!")
-        mainImage.src = biggerImage
-    }
+    // item.onmouseout= () =>{
+    //     console.log("I am out!!!")
+    //     mainImage.src = biggerImage
+    // }
 });
 
 var addToBtn = document.querySelector(".add-to-cart-btn1")

@@ -1,3 +1,4 @@
+from mainapp.models import Comment
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from django_countries.fields import CountryField
@@ -36,4 +37,10 @@ class CheckoutForm(forms.Form):
     # same_billing_address = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class':'form-control'}))
 
     payment_option = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("subject", "comment","rate")
     

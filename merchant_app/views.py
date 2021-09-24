@@ -1,27 +1,26 @@
-from mainapp.models import Discount, Product, ProductCategory, ProductInventory, SecondLevelCategory, SuperProductCategory
-from django.shortcuts import render
-from .forms import ProductForm,ProductCategoryForm,SecondLevelCategoryForm,DiscountForm,ProductInventoryForm
+from accounts.models import User
+from mainapp.models import Discount, Product, ProductCategory, ProductInventory
+from django.shortcuts import redirect, render
+from .forms import MerchantProfileForm, ProductForm,DiscountForm,ProductInventoryForm
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib.auth import logout
+from django.shortcuts import get_object_or_404
 
 def MerchantDashbord(request):
        
     ProductForm1 = ProductForm()
-    ProductCategoryForm1= ProductCategoryForm()
-    SecondLevelCategoryForm1 = SecondLevelCategoryForm()
     DiscountForm1 = DiscountForm(prefix="discount")
     ProductInventoryForm1 = ProductInventoryForm()
 
     if request.method == "POST":
         ProductForm1 = ProductForm(data = request.POST or None,files=request.FILES)
-        ProductCategoryForm1= ProductCategoryForm(request.POST or None)
-        SecondLevelCategoryForm1 = SecondLevelCategoryForm(request.POST or None)
         DiscountForm1 = DiscountForm(request.POST, prefix="discount")
         ProductInventoryForm1 = ProductInventoryForm(request.POST or None)
 
         
 
-        if ProductForm1.is_valid() and ProductCategoryForm1.is_valid() and SecondLevelCategoryForm1.is_valid() and DiscountForm1.is_valid() and ProductInventoryForm1.is_valid():
+        if ProductForm1.is_valid()  and DiscountForm1.is_valid() and ProductInventoryForm1.is_valid():
         
             # print(ProductForm1)
             print("POST request got")
@@ -41,13 +40,7 @@ def MerchantDashbord(request):
             brand_name = ProductForm1.cleaned_data.get('category')
             print("category-------------",brand_name)
 
-            #category
-            second_level_category = ProductCategoryForm1.cleaned_data.get('second_level_category')
-            print(second_level_category)
             
-            #secondary
-            first_level_category = SecondLevelCategoryForm1.cleaned_data.get('first_level_category')
-            print(first_level_category)
             #discount
             discount_name = DiscountForm1.cleaned_data.get('name')
             print(discount_name)
@@ -61,11 +54,7 @@ def MerchantDashbord(request):
             print(quantity)
 
             
-            # first_level_category_obj = SuperProductCategory.objects.get(first_level_category = first_level_category)
-            # print("object",first_level_category)
-
-            # second_level_category_obj = SecondLevelCategory.objects.get(product_category = second_level_category)
-            # print("objects",second_level_category)
+            
             category_obj = ProductCategory.objects.get(brand_name = brand_name)
             print("objects---------",category_obj)
 
@@ -75,6 +64,7 @@ def MerchantDashbord(request):
             
 
             data = Product.objects.create(
+                user = request.user,
                 image = product_image,
                 name = product_name,
                 description = product_description,
@@ -90,21 +80,111 @@ def MerchantDashbord(request):
             print("saved!!!")
         else:
             print("else part")
-            
-
-
-
+        
+        #for mProfile
+        
         
 
+
+    all_products = Product.objects.filter(user = request.user)
+
+    merchant_user = User.objects.get(id = request.user.pk)
+    print(merchant_user)
+
+
+    low_stock = all_products.filter(inventory__quantity__lte = 5).count()
+    print(low_stock)
     context = {
         'ProductForm1':ProductForm1,
-        'ProductCategoryForm1':ProductCategoryForm1,
-        'SecondLevelCategoryForm1':SecondLevelCategoryForm1,
         'DiscountForm1':DiscountForm1,
-        'ProductInventoryForm1':ProductInventoryForm1
+        'ProductInventoryForm1':ProductInventoryForm1,
+        'all_products':all_products,
+        'merchant_user':merchant_user,
+        'low_stock':low_stock
 
     }
     return render(request, 'merchant/merchant_home_page.html', context)
+
+
+
+def DeleteProduct(request,pk):
+    print("HERE!!!")
+    delete_product  = Product.objects.get(pk = pk)
+    delete_product.delete()
+    return redirect("/merchant/")
+
+def UpdateProduct(request,pk):
+    update_product  = Product.objects.get(pk = pk)
+    ProductForm1 = ProductForm(instance = update_product)
+
+    inventory_obj = ProductInventory.objects.all()
+    single_inventory_obj = inventory_obj.get(inventory__id = pk)
+    ProductInventoryForm1 = ProductInventoryForm(instance=single_inventory_obj)
+
+    
+    discount_obj = Discount.objects.all()
+    if update_product.discount and update_product.discount.active:
+        single_discount_obj = discount_obj.get(discount__id = pk)
+        DiscountForm1 = DiscountForm(prefix="discount",instance=single_discount_obj)
+    else:
+        DiscountForm1 = DiscountForm(prefix="discount")
+    print(single_inventory_obj)
+
+    
+    
+
+    if request.method == "POST":
+        ProductForm1 = ProductForm(request.POST,request.FILES,instance = update_product)
+        if update_product.discount and update_product.discount.active:
+            single_discount_obj = discount_obj.get(discount__id = pk)
+            DiscountForm1 = DiscountForm(prefix="discount",data = request.POST,instance=single_discount_obj)  
+        else:
+            single_discount_obj = discount_obj.get(discount__id = pk)
+            DiscountForm1 = DiscountForm(prefix="discount",data = request.POST)    
+            
+        ProductInventoryForm1 = ProductInventoryForm(request.POST, instance=single_inventory_obj)
+
+        if ProductForm1.is_valid() and DiscountForm1.is_valid() and ProductInventoryForm1.is_valid():
+            ProductForm1.save()
+            DiscountForm1.save()
+            ProductInventoryForm1.save()
+            return redirect("/merchant/")
+        else:
+            print("form invalid!!")
+
+    context = {
+        'ProductForm1':ProductForm1,
+        'DiscountForm1':DiscountForm1,
+        'ProductInventoryForm1':ProductInventoryForm1,
+
+    }
+
+
+
+    return render(request,'merchant/mUpdateProduct.html',context)
+
+def mProfileUpdate(request):
+    # merchant_user = User.objects.get(pk = pk)
+    mProfileUpdateForm = MerchantProfileForm(instance = request.user)
+
+    if request.method == "POST":
+        mProfileUpdate = MerchantProfileForm(request.POST, request.FILES, instance=request.user)
+        if mProfileUpdate.is_valid():
+            mProfileUpdate.save()
+            return redirect("/merchant/")
+
+    context = {
+        'mProfileUpdateForm':mProfileUpdateForm
+    }
+    return render(request, 'merchant/mUpdateProfile.html',context)
+
+
+def Logout(request):
+    logout(request)
+    return redirect("accounts:login")
+
+
+
 
 def API_data(request):
     data = {

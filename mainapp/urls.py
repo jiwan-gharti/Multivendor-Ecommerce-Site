@@ -9,8 +9,16 @@ urlpatterns = [
     path("removecart/", views.RemoveCart, name="remove_cart"),
     path('contactus/', views.ContactUs.as_view(),name='contactus'),
     path('aboutus/', views.AboutUs.as_view(),name='aboutus'),
-    path('shopping_page/', views.ShoppingPage.as_view(),name='shopping_page'),
+    path('shopping_page/', views.ShoppingPage,name='shopping_page'),
     path('shopping_page1/<str:slug>/', views.ShoppingPage1,name='shopping_page1'),
+
+
+
+    path('merchant_shopping_page/<str:slug>/<int:pk>/', views.ShoppingPage1,name='merchant_shopping_page'),
+
+    path("add_comment/<int:pk>/", views.addComment, name = 'add_comment'),
+    path("merchant_list/", views.MerchantList,name = "merchant_list"),
+    # path("merchant_shope_page/<int:pk>/", views.MerchantShopPage,name = "merchant_shope_page"),
     
     
     path('checkout/', views.CheckoutPage,name='checkout'),

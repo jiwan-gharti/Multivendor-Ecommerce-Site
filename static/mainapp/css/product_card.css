@@ -83,8 +83,9 @@
     top: 50%;
     left: 1rem;
     transform: translateY(-50%);
+    z-index: 454;
 }
-.prev-arrow, .next-arrow  > i{
+.prev-arrow > i, .next-arrow  > i{
     width: 1.5rem;
     height: 1.5rem;
     font-size: 1.5rem;

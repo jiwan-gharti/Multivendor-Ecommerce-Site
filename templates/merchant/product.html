@@ -1,6 +1,6 @@
 {% load crispy_forms_filters %}
 
-<div class="container mt-5">
+{% comment %} <div class="container mt-5">
     {% if messages %}
     <div class="mt-3 col-12 text-center">
         <ul class="messages">
@@ -15,46 +15,37 @@
         </ul>
     </div>
     {% endif %}
-</div>
+</div> {% endcomment %}
 
 
-    
 
-    <form action="" method="post" enctype="multipart/form-data" class="border-0" novalidate>
-        {% csrf_token %}
-        <div class="border border-dark p-2">
-            <div class="text-center bg-info">
-                <label class="text-capitalize font-weight-bold p-2" for="">Product Information Section</label>
-            </div>
-            {{ProductForm1 | crispy}}
+
+<form action="" method="post" enctype="multipart/form-data" class="border-0" novalidate>
+    {% csrf_token %}
+    <div class="border border-dark p-2">
+        <div class="text-center bg-info">
+            <label class="text-capitalize font-weight-bold p-2" for="">Product Information Section</label>
         </div>
+        {{ProductForm1 | crispy}}
+    </div>
 
-        <div class="border border-dark p-2">
-            <div class="text-center bg-info">
-                <label for="" class="text-capitalize font-weight-bold p-2">Product Category Section</label>
-            </div>
-            {{SecondLevelCategoryForm1 | crispy}}
-            {{ProductCategoryForm1 | crispy}}
-
+    <div class="border border-dark p-2">
+        <div class="text-center bg-info">
+            <label for="" class="text-capitalize font-weight-bold p-2">Product Discount Section</label>
         </div>
+        {{DiscountForm1 | crispy}}
+    </div>
 
-
-        <div class="border border-dark p-2">
-            <div class="text-center bg-info">
-                <label for="" class="text-capitalize font-weight-bold p-2">Product Discount Section</label>
-            </div>
-            {{DiscountForm1 | crispy}}
+    <div class="border border-dark p-2">
+        <div class="text-center bg-info">
+            <label for="" class="text-capitalize font-weight-bold p-2">Product Inventory Section</label>
         </div>
+        {{ProductInventoryForm1 | crispy}}
+    </div>
 
-        <div class="border border-dark p-2">
-            <div class="text-center bg-info">
-                <label for="" class="text-capitalize font-weight-bold p-2">Product Inventory Section</label>
-            </div>
-            {{ProductInventoryForm1 | crispy}}
-        </div>
+    <div class="mt-sm-2 mb-5">
+        <input class="bg-success border-0 p-2 text-white" type="submit" value="Add Product" name="" id="">
+    </div>
 
-        <div class="mt-sm-2 mb-5">
-            <input class="bg-success border-0 p-2 text-white" type="submit" value="Add Product" name="" id="">
-        </div>
 
-    </form>
+</form>

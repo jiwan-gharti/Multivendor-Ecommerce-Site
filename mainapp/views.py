@@ -1,12 +1,13 @@
+from accounts.models import User
 import json
 import random
 from django.http import response
-from django.http.response import JsonResponse
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import TemplateView, View
-from .models import FeaturedSlider,  OrderItem, Product, SecondLevelCategory, ShippingAddress
+from .models import Comment, FeaturedSlider,  OrderItem, Product, SecondLevelCategory, ShippingAddress
 from django.contrib import messages
-from .forms import CheckoutForm
+from .forms import CheckoutForm, CommentForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -14,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core import serializers
 from django.template.loader import render_to_string
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -29,8 +31,14 @@ def homepage(request):
 
 def details(request,pk):
     singleProduct = Product.objects.get(pk = pk)
+    comments = Comment.objects.filter(product__id = pk,status = True)
+    paginator = Paginator(comments, per_page=2)
+    page_no = request.GET.get("page")
+    page_obj = paginator.get_page(page_no)
     context = {
         "singleProduct" : singleProduct,
+        'comments': comments,
+        'page_obj':page_obj
     }
     return render(request, 'mainapp/details.html', context)
 
@@ -74,12 +82,13 @@ class ContactUs(TemplateView):
 class AboutUs(TemplateView):
     template_name = 'mainapp/aboutus.html'
 
-class ShoppingPage(View):
-    def get(self,request):
-        return render(request, 'mainapp/shopping_page.html')
+# class ShoppingPage(View):
+#     def get(self,request):
+#         return render(request, 'mainapp/shopping_page.html')
      
 
-# def ShoppingPage1(request,slug):
+def ShoppingPage(request):
+    pass
 #     # print(slug)
 #     print(request.headers)
 #     search_key = request.GET.get("search-keys")
@@ -128,7 +137,7 @@ class ShoppingPage(View):
 
 
     # context = {
-    #     'second_level_search_cactegories':search_categories,
+        # 'second_level_search_cactegories':search_categories,
     #     'search_key':search_key,
     #     'query_exists':query_exists,
     #     'get_full_path' : request.get_full_path(),
@@ -200,24 +209,38 @@ def UpdateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
-    print(action)
+    # productId = request.GET.get("productId")
+    # action = request.GET.get("action")
+    # print(productId)
+    # print(action)
 
     item = get_object_or_404(Product, pk = productId)
 
     order_items = OrderItem.objects.filter(user = request.user, item = item)
+    print("object",order_items)
     if order_items.exists():
         order_item = order_items[0]
         
         if action == "add":
             order_item.quantity += 1
             order_item.save()
+            print(order_item.quantity)
         elif action == 'remove':
             if int(order_item.quantity) > 1:
                 order_item.quantity -= 1
                 order_item.save()
+                print(order_item.quantity)
             else:
                 order_item.delete()
-                messages.warning(request, "Item Deleted From Cart!!!")    
+                messages.warning(request, "Item Deleted From Cart!!!")
+        
+        
+           
+        # data = OrderItem.objects.all()
+
+
+        # t = render_to_string("ajax/cart_item.html",{'data':data})
+        # return JsonResponse({"data": t},safe=False)
     return JsonResponse('This is the Response From server!!', safe = False)
 
 @login_required
@@ -230,19 +253,28 @@ def PaymentView(request):
     return render(request, "mainapp/payment.html", context)
 
 @csrf_exempt
-def ShoppingPage1(request,slug):
+def ShoppingPage1(request,slug,pk=1):
     search_key = request.GET.get("search-keys")
+    print(slug)
     if slug != "search":
-            all_products = Product.objects.filter(Q(category__second_level_category__product_category__icontains = slug) | 
+        print("Search")
+        all_products = Product.objects.filter(Q(category__second_level_category__product_category__icontains = slug) | 
                                                         Q(category__brand_name__icontains = slug)
-    
-                                         )                                          
+                                                )                                                                           
     else:
+        print("here11111111")
         all_products = Product.objects.filter( Q(name__icontains = search_key) | Q(description__icontains = search_key) |
                                                 Q(category__brand_name__icontains = search_key) | 
                                                 Q(category__description__icontains = search_key) |
                                                 Q(category__second_level_category__first_level_category__first_level_category__icontains = search_key)
                                                 )
+    if slug == "all":
+        print("all is in")
+        all_products = Product.objects.all()
+    if slug == "merchant":
+        print("-------------------Form merchant-----------------------")
+        all_products = Product.objects.filter(user__id = pk)
+        
     
     print(request.headers.get('X-Requested-With', "HTTPS"))
     is_ajax = request.headers.get('X-Requested-With', "HTTPS")
@@ -251,7 +283,7 @@ def ShoppingPage1(request,slug):
         # print(request.GET.getlist("condition[]"))
         data = request.GET.getlist("condition[]")
         min_price =  request.GET.get('min_price')
-        max_price = request.GET.get("max_price")
+        max_price = request.GET.get("max_value")
         # print(min_price, max_price)
         
         radio_filter = request.GET.get("radio_search")
@@ -288,6 +320,7 @@ def ShoppingPage1(request,slug):
         if min_price:
             all_products = all_products.filter(price__gte = min_price)
         if max_price:
+            print(max_price)
             all_products = all_products.filter(price__lte = max_price)
         if radio_filter:
             if radio_filter == "under25":
@@ -317,7 +350,7 @@ def ShoppingPage1(request,slug):
         # 'search_key':search_key,
         # 'query_exists':query_exists,
         # 'get_full_path' : request.get_full_path(),
-    }
+        }
         return render(request, 'mainapp/shopping_page.html',context)
 
     context = {
@@ -329,3 +362,48 @@ def ShoppingPage1(request,slug):
     return render(request, 'mainapp/shopping_page.html',context)
     return
     # return JsonResponse("HTTP Request !!!!",safe=False)
+
+
+def addComment(request,pk):
+    url = request.META.get("HTTP_REFERER")
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            data = Comment()
+            data.subject = form.cleaned_data['subject']
+            data.comment = form.cleaned_data['comment']
+            data.rate = form.cleaned_data['rate']
+            data.ip = request.META.get('REMOTE_ADDR')
+            data.product = Product.objects.get(pk = pk)
+            data.user = request.user
+            data.save()
+            messages.success(request,"Your review has been sent. Thank you for your interest.")
+            return HttpResponseRedirect(url)
+        else:
+            print("Form Invalid!!!")
+    
+    return HttpResponseRedirect(url)
+
+
+def MerchantList(request):
+    merchants_list = User.objects.filter(is_merchant = True)
+    # print(merchants_list)
+    list1 = []
+    for user in merchants_list: 
+        merchant_product = Product.objects.filter(user = user, user__is_merchant = True)
+
+        merchant_brand_name = merchant_product.values_list('category__brand_name')
+        list1.append(merchant_brand_name[0][0])
+    print(list1)
+    context = {
+        'merchants_list': merchants_list,
+        'list1':list1
+    }
+    return render(request, "mainapp/merchant_list.html",context)
+
+# def MerchantShopPage(request,pk):
+#     merchant_products = Product.objects.filter(user__id = pk)
+#     context ={
+#         'merchant_products':merchant_products
+#     }
+#     return render(request, "mainapp/shopping_page.html",context)
