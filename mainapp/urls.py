@@ -11,6 +11,7 @@ urlpatterns = [
     path('aboutus/', views.AboutUs.as_view(),name='aboutus'),
     path('shopping_page/', views.ShoppingPage,name='shopping_page'),
     path('shopping_page1/<str:slug>/', views.ShoppingPage1,name='shopping_page1'),
+    # path("load_more_data/", views.LoadMore, name= 'load_more_date'),
 
 
 
@@ -22,7 +23,10 @@ urlpatterns = [
     
     
     path('checkout/', views.CheckoutPage,name='checkout'),
-    path('wishlist/', views.WishlistPage.as_view(),name='wishlist'),
+    path('wishlist_page/', views.WishlistPage1,name='wishlist_page'),
+    path('wishlist/<int:pk>/', views.WishlistPage,name='wishlist'),
+    path('remove_from_wishlist/<int:pk>/', views.WishlistRemoveItem,name='remove_from_wishlist'),
+    path("wishlist_to_cart/",views.WishTocart, name = "wishlist_to_cart"),
 
 
     path("update_item/", views.UpdateItem, name= 'update_item'),
@@ -30,5 +34,7 @@ urlpatterns = [
 
     # test 
     # path("test/", views.TestView,name = "test")
+
+    path("post_payment/",views.PostPayment, name="post_payment")
 
 ]

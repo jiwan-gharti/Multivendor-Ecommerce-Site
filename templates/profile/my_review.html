@@ -1,0 +1,50 @@
+{% extends '../mainapp/base.html' %}
+
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+    <div class="container mb-sm-5">
+        <div class="row">
+        <div class="col-md-3 col-sm-12 mr-2 bg-light">
+            {% include "profile/sidebar.html" %}
+        </div>
+        <div class="col-md-8 col-12 bg-white p-2 m-2 shadow ">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Reviewed On</th>
+                    <th scope="col">Your Product</th>
+                    <th>Your Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for data in my_reviews %}
+                    <tr>
+                    <th scope="col">{{forloop.counter}}</th>
+                    <th scope="col">{{data.product.name}}</th>
+                    <th scope="col">{{data.created}}</th>
+                    <th scope="col"><a href="{% url 'details' data.product.id %}"><img width="100px" height='100px' src="{{data.product.image.url}}" alt=""></a></th>
+                   <th>
+                    <div class="review-rating pull-right" style="font-size: 12px;">
+                                <i style=" color:#FFB656;" class="fa fa-star{% if data.rate < 1 %}-o empty{% endif %}"></i>
+                                <i style=" color:#FFB656;" class="fa fa-star{% if data.rate < 2 %}-o empty{% endif %}"></i>
+                                <i style=" color:#FFB656;" class="fa fa-star{% if data.rate < 3 %}-o empty{% endif %}"></i>
+                                <i style=" color:#FFB656;" class="fa fa-star{% if data.rate < 4 %}-o empty{% endif %}"></i>
+                                <i style=" color:#FFB656;" class="fa fa-star{% if data.rate < 5 %}-o empty{% endif %}"></i>
+                                ({{data.rate}})
+                            </div>
+                    </th>
+                    </tr>
+                    
+                {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends '../mainapp/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+    <div class="container mb-sm-5">
+        <div class="row">
+        <div class="col-md-3 col-sm-12 mr-2 bg-light">
+            {% include "profile/sidebar.html" %}
+        </div>
+        <div class="col-md-8 col-12 bg-white p-2 m-2 shadow ">
+           <form action="" method="post">
+           {% csrf_token %}
+           {{forms | crispy}}
+           <button type="submit" class="p-2 bg-primary text-white border-0">Update</button>
+           </form>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

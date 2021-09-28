@@ -283,7 +283,7 @@
                 
 
                     {% for data in second_level_search_cactegories %}
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="product-box">
                         <a href="{% url 'details' data.pk %}" class="text-decoration-none">
                         <div class="card card-hover  overflow-hidden">
                             <img src="{{data.image.url}}" class="card-img-top" width='150px' height='250px' alt="...">
@@ -340,6 +340,8 @@
             </div>
         </div>{% comment %} end of second column {% endcomment %}
     </div>
+    <p class="my-4 text-center"><button id="loadMore" data-limit="3" data-total="{{total_products}}" class="btn btn-dark btn-sm ">Load More <i class="fa fa-sync load-more-icon"></i> </button></p>
+
 </div>
 
 

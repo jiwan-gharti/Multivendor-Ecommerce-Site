@@ -33,7 +33,11 @@
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>Shop Name</td>
                         <td>{{merchant.first_name}} {{merchant.last_name}}</td>
-                        <td>{{list1}}</td>
+                        <td>
+                        {% for data in merchant.product_set.all %}
+                        {{ data}},
+                        {% endfor %}
+                        </td>
                         <td><a href="/merchant_shopping_page/merchant/{{merchant.pk}}/" class="text-decoration-none shop-name">Shop Here</a></td>
                         </tr>
                     {% endfor %}

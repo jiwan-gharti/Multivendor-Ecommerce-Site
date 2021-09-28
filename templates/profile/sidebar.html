@@ -1,24 +1,20 @@
-
+<p class="mt-2">Hello, <span class="text-muted">John</span></p>
 <ul>
     <li><h4> Manage My Account </h4></li>
-    <ul>
-        <li><a href="{% url 'myprofile:profile' %}"> My Profile</a></li>
-        <li><a href="{% url 'myprofile:shippingaddress' %}"> Shipping Address</a></li>
-    </ul>
 </ul>
 <ul>
-    <li><h4>My Order </h4></li>
-    <ul>
-        <li>My Returns</li>
-    </ul>
+    <li><a href="{% url 'myprofile:profile' %}"> My Profile</a></li>
 </ul>
 <ul>
-    <li><h4>Payment Options </h4></li>
+    <li><a href="{% url 'myprofile:shippingaddress' %}"> Shipping Address</a></li>
 </ul>
 <ul>
-    <li><h4>My Review </h4></li>
+    <li><h6><a href="{% url 'myprofile:my_orders' %}"> My Order </a></h6></li>
 </ul>
 <ul>
-    <li><h4>Top Item Gain </h4></li>
+    <li><h6><a href="{% url 'myprofile:my_review' %}"> My Review </a></h6></li>
+</ul>
+<ul>
+    <li><h6><a href=""> Top Item Gain </a> </h6></li>
 </ul>
 

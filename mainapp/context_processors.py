@@ -3,7 +3,10 @@ from .models import OrderItem, ProductCategory, SuperProductCategory
 def Category(request):
     navbarcategories     =  SuperProductCategory.objects.filter().distinct()
     # navbarcategories2     =  ProductCategory.objects.filter().distinct()
-    cart_items_count = OrderItem.objects.all().count()
+    if request.user.is_authenticated:
+        cart_items_count = OrderItem.objects.filter(user=request.user, ordered = False).count()
+    else:
+        cart_items_count = '0'
 
     # print(navbarcategories)
     # print(navbarcategories2)

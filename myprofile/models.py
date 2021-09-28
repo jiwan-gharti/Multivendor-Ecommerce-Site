@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User
-from phonenumber_field.modelfields import PhoneNumber
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 SHIPPING_ADDRESS = (
@@ -10,7 +10,7 @@ SHIPPING_ADDRESS = (
 
 class ShippingAddress(models.Model):
     full_name = models.CharField(max_length=100)
-    receiver_no = PhoneNumber(country_code="+977")
+    receiver_no = PhoneNumberField(region="NP")
     region = models.CharField(max_length=100)
     city   = models.CharField(max_length=100)
     area   = models.CharField(max_length=100)
@@ -23,7 +23,7 @@ class ShippingAddress(models.Model):
 class MyProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE)
-    mobile = PhoneNumber(country_code="+977")
+    mobile = PhoneNumberField(region="NP")
 
     def __str__(self):
-        return self.user
+        return str(self.user.username)

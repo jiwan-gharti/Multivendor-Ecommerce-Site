@@ -15,7 +15,7 @@
     <div class="first-nav-right text-center">
         <li class="navbar-item"><a href="{% url 'accounts:login' %}">Sale on NewAgeShopping</a></li>
         <li class="navbar-item"><a href="{% url 'merchant_list' %}">List of Merchant</a></li>
-        <li class="navbar-item"><a href="">Track My Oder</a></li>
+        <li class="navbar-item"><a href="{% url 'myprofile:my_orders' %}">Track My Oder</a></li>
     </div>
 </nav>
 
@@ -33,10 +33,18 @@
         </form>
 
         <div class="last-one">
+        {% if request.user.is_authenticated %}
             <div class="">
                 <a counts={{cart_items_count}} class="cart-icon" style="font-size: 1.7rem;" href="{% url 'cart' %}"><i class="fa fa-cart-plus "
                         style="font-size: 1.5rem; color:white" aria-hidden="true"></i></a>
             </div>
+
+        {% else %}
+            <div class="">
+                <a counts={{cart_items_count}} class="cart-icon" style="font-size: 1.7rem;" href="{% url 'wishlist_page' %}">
+                <i class="fa fa-heart" style="font-size: 1.5rem; color:white" aria-hidden="true"></i></a>
+            </div>
+        {% endif %}
             <li class="nav-item dropdown account">
                 <a class="nav-link" style="color:white" href="#" id="navbarDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

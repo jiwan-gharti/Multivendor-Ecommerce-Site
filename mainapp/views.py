@@ -5,7 +5,7 @@ from django.http import response
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import TemplateView, View
-from .models import Comment, FeaturedSlider,  OrderItem, Product, SecondLevelCategory, ShippingAddress
+from .models import Comment, FeaturedSlider, Order,  OrderItem, Payment, Product, SecondLevelCategory, ShippingAddress
 from django.contrib import messages
 from .forms import CheckoutForm, CommentForm
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,7 +16,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator
-
+import datetime
 # Create your views here.
 
 def homepage(request):
@@ -31,14 +31,25 @@ def homepage(request):
 
 def details(request,pk):
     singleProduct = Product.objects.get(pk = pk)
-    comments = Comment.objects.filter(product__id = pk,status = True)
-    paginator = Paginator(comments, per_page=2)
-    page_no = request.GET.get("page")
-    page_obj = paginator.get_page(page_no)
+    total_comments = Comment.objects.filter(product__id = pk,status = True).count()
+    comments = Comment.objects.filter(product__id = pk,status = True)[:2]
+    # paginator = Paginator(comments, per_page=2)
+    # page_no = request.GET.get("page")
+    # page_obj = paginator.get_page(page_no)
+    is_ajax = request.headers.get('X-Requested-With', "HTTPS")
+    if is_ajax == 'XMLHttpRequest':
+        offset = request.GET.get("offset")
+        limit  = request.GET.get("limit")
+        comments = Comment.objects.filter(product__id = pk,status = True)[int(offset):int(offset) + int(limit)]
+        t = render_to_string("ajax/ajax-comment.html",{'data':comments})
+        return JsonResponse({'data':t},safe=False)
+
+        print("-------",offset,"------------",limit)
     context = {
         "singleProduct" : singleProduct,
         'comments': comments,
-        'page_obj':page_obj
+        'total_comments': total_comments
+        # 'page_obj':page_obj
     }
     return render(request, 'mainapp/details.html', context)
 
@@ -47,22 +58,42 @@ def Cart(request):
     if request.method == "POST":
         detail_item_id = request.POST.get("detail_item_id")
         item = get_object_or_404(Product, pk = detail_item_id)
-        data = OrderItem.objects.filter(user = request.user, item = item)
+        data = OrderItem.objects.filter(user = request.user, item = item,ordered = False)
         if data.exists():
             first_data = data[0]
             # first_data.quantity 
             # first_data.save()
             messages.success(request, 'Already Added At Cart!!!')
         else:
-            data = OrderItem.objects.create(user = request.user, item = item)
+            data = OrderItem.objects.create(user = request.user, item = item, ordered = False)
             data.save()
             messages.success(request, 'Item Added At Cart!!!')
             # print(detail_item_id)
+
+        # cart_session = request.session("product_cart")
+        # if cart_session is not None:
+        #     id = []
+        #     for value in cart_session:
+        #         id.append(cart_session[value])
+        #     products = Product.objects.filter(pk__in = id)
+        #     print(products)
+        #     for item in products:
+        #         data = OrderItem.objects.create(user = request.user, item = item, ordered = False)
+        #         data.save()
+
     
-    cart_items = OrderItem.objects.filter(user = request.user)
+    cart_items = OrderItem.objects.filter(user = request.user, ordered = False)
+
+    orderitem = OrderItem.order_items.get_total(request.user)
+    total = 0 
+    for cart_item in orderitem:
+        total += cart_item.get_total_price
+    print(total)
+    print(orderitem)
     
     context = {
-        "cart_items" : cart_items
+        "cart_items" : cart_items,
+        'total':total
     }
     return render(request, "mainapp/cart.html", context)
 
@@ -200,9 +231,48 @@ def CheckoutPage(request):
         'forms':forms
     }
     return render(request, "mainapp/checkoutpage.html", context)
+
+def WishlistPage1(request):
+    products = None
+    cart = request.session.get("product_cart")
+    if cart is not None:
+        id = []
+        for value in cart:
+            id.append(cart[value])
+        products = Product.objects.filter(pk__in = id)
+    context={
+        'products':products
+    }
+    return render(request,'mainapp/wishlist.html',context)
+
+def WishlistPage(request,pk):
+    products = None
+    cart = request.session.get("product_cart")
+    if cart is None:
+        cart = {}
+        request.session["product_cart"] = cart
+    cart[pk] = pk
+    request.session['product_cart'] = cart
+    id = []
+    for value in cart:
+        id.append(cart[value])
+    products = Product.objects.filter(pk__in = id)
+    context={
+        'products':products
+    }
+    return render(request,'mainapp/wishlist.html',context)
+
+def WishlistRemoveItem(request,pk):
+    cart = request.session.get("product_cart")
+    cart.pop(str(pk))
+    request.session['product_cart'] = cart
     
-class WishlistPage(TemplateView):
-    template_name = 'mainapp/wishlist.html'
+    # request.session.get("product_cart") = 
+    print(cart)
+    return redirect("/wishlist_page/")
+
+def WishTocart(request):
+    return redirect("/accounts/login/")
 
 
 def UpdateItem(request):
@@ -233,24 +303,18 @@ def UpdateItem(request):
             else:
                 order_item.delete()
                 messages.warning(request, "Item Deleted From Cart!!!")
-        
+            
+               
         
            
-        # data = OrderItem.objects.all()
+        data = OrderItem.objects.all()
 
 
-        # t = render_to_string("ajax/cart_item.html",{'data':data})
-        # return JsonResponse({"data": t},safe=False)
+        t = render_to_string("ajax/cart_item.html",{'data':data})
+        return JsonResponse({"data": t},safe=False)
     return JsonResponse('This is the Response From server!!', safe = False)
 
-@login_required
-def PaymentView(request):
-    orderItems = OrderItem.objects.filter(user = request.user, ordered = False)
-    context = {
-        'orderItems': orderItems
-    }
-    print(orderItems)
-    return render(request, "mainapp/payment.html", context)
+
 
 @csrf_exempt
 def ShoppingPage1(request,slug,pk=1):
@@ -258,11 +322,19 @@ def ShoppingPage1(request,slug,pk=1):
     print(slug)
     if slug != "search":
         print("Search")
+        total_products = Product.objects.filter(Q(category__second_level_category__product_category__icontains = slug) | 
+                                                        Q(category__brand_name__icontains = slug)
+                                                ).count()
         all_products = Product.objects.filter(Q(category__second_level_category__product_category__icontains = slug) | 
                                                         Q(category__brand_name__icontains = slug)
-                                                )                                                                           
+                                                )                                                                        
     else:
         print("here11111111")
+        total_products = Product.objects.filter( Q(name__icontains = search_key) | Q(description__icontains = search_key) |
+                                                Q(category__brand_name__icontains = search_key) | 
+                                                Q(category__description__icontains = search_key) |
+                                                Q(category__second_level_category__first_level_category__first_level_category__icontains = search_key)
+                                                ).count()
         all_products = Product.objects.filter( Q(name__icontains = search_key) | Q(description__icontains = search_key) |
                                                 Q(category__brand_name__icontains = search_key) | 
                                                 Q(category__description__icontains = search_key) |
@@ -270,21 +342,24 @@ def ShoppingPage1(request,slug,pk=1):
                                                 )
     if slug == "all":
         print("all is in")
+        total_products = Product.objects.all().count()
         all_products = Product.objects.all()
     if slug == "merchant":
-        print("-------------------Form merchant-----------------------")
+        print("-------------------FROM merchant-----------------------")
+        total_products = Product.objects.filter(user__id = pk).count()
         all_products = Product.objects.filter(user__id = pk)
         
     
     print(request.headers.get('X-Requested-With', "HTTPS"))
     is_ajax = request.headers.get('X-Requested-With', "HTTPS")
     if is_ajax == 'XMLHttpRequest':
-        # if request.is_ajax
-        # print(request.GET.getlist("condition[]"))
         data = request.GET.getlist("condition[]")
         min_price =  request.GET.get('min_price')
         max_price = request.GET.get("max_value")
-        # print(min_price, max_price)
+        offset = request.GET.get("offset",3)
+        limit = request.GET.get('limit')
+        print("------------------",offset,limit)
+        
         
         radio_filter = request.GET.get("radio_search")
         # print(radio_filter)
@@ -293,16 +368,6 @@ def ShoppingPage1(request,slug,pk=1):
         sorted_filter = request.GET.get("sorted_filter")
         print(sorted_filter)
         
-        # print(request.GET)
-        # print(request.GET.getlist("condition[]"))
-        # json_data = json.loads(request.body)
-        # # print(json_data)
-        # data = json_data['condition']
-        # print(data)
-        # data = json.loads(request.body)
-        # # print(data['condition'])
-        # print(data)
-        # print(type(data))
         
     
         
@@ -342,11 +407,21 @@ def ShoppingPage1(request,slug,pk=1):
                 print(sorted_filter)
                 all_products = all_products.order_by('-price')
         
+        if limit:
+            all_products = all_products[int(offset):int(offset) + int(limit)]
+        else:
+            all_products = all_products.distinct()
+        print(all_products)
+        
         t = render_to_string("ajax/product-filter-list.html",{'data':all_products})   
         return JsonResponse({"data": t},safe=False)
+    
+    
     else:
+        print("ALl Products----------",total_products)
         context = {
-        'second_level_search_cactegories':all_products,
+        'second_level_search_cactegories':all_products.distinct()[:3],
+        'total_products':total_products
         # 'search_key':search_key,
         # 'query_exists':query_exists,
         # 'get_full_path' : request.get_full_path(),
@@ -387,17 +462,9 @@ def addComment(request,pk):
 
 def MerchantList(request):
     merchants_list = User.objects.filter(is_merchant = True)
-    # print(merchants_list)
-    list1 = []
-    for user in merchants_list: 
-        merchant_product = Product.objects.filter(user = user, user__is_merchant = True)
-
-        merchant_brand_name = merchant_product.values_list('category__brand_name')
-        list1.append(merchant_brand_name[0][0])
-    print(list1)
+    
     context = {
         'merchants_list': merchants_list,
-        'list1':list1
     }
     return render(request, "mainapp/merchant_list.html",context)
 
@@ -407,3 +474,53 @@ def MerchantList(request):
 #         'merchant_products':merchant_products
 #     }
 #     return render(request, "mainapp/shopping_page.html",context)
+
+@login_required
+def PaymentView(request):
+    orderItems = OrderItem.objects.filter(user = request.user, ordered = False)
+    orderitem = OrderItem.order_items.get_total(request.user)
+    total = 0 
+    for cart_item in orderitem:
+        total += cart_item.get_total_price
+    print(total)
+    context = {
+        'orderItems': orderItems,
+        'total': total
+    }
+    print(orderItems)
+    return render(request, "mainapp/payment.html", context)
+
+
+def PostPayment(request):
+    if request.method == 'POST':
+        print("inside post")
+        data = json.loads(request.body)
+        print(data)
+        transcation_id = data['transcation_id']
+        amount = data['amount']
+        print("---------------------transcaation_",transcation_id,amount)
+
+        data = Payment.objects.create(stripe_charge_id = transcation_id,
+                                      user = request.user,
+                                      amount = amount,        
+        )
+        data.save()
+        print("Payment Method Saved!!!!!!!!")
+
+        orderItems = OrderItem.objects.filter(user = request.user, ordered = False)
+        get_shipping_address = ShippingAddress.objects.filter(user = request.user)
+        if get_shipping_address.exists():
+            get_shipping_address = get_shipping_address[0]
+        else:
+            return redirect("/checkout")
+        if orderItems.exists():
+            orderItems.update(shipping_address = get_shipping_address)
+            orderItems.update(payment = request.user)
+            orderItems.update(ordered = True)
+            for item in orderItems:
+                item.save()
+            print("ordered placed!!!!")
+        
+            return redirect("/")
+    else:
+        return redirect("/payment/")

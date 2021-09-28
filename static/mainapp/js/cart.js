@@ -30,6 +30,7 @@ updateBtns.forEach((updateBtn) =>{
 })
 
 function addCookieItem(productId, action){
+    
 
 }
 
@@ -61,8 +62,9 @@ function updateUserOrder(productId, action){
 
     .then((data) =>{
         location.reload()
-        console.log(data.data1)
-        // $("#cart-page").html(data.data1)
+        // console.log(data.data)
+        // $(this).prop('disabled',true)
+        // $("#cart-page").html(data.data).load(url)
     })
 
     

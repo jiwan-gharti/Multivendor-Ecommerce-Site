@@ -100,8 +100,8 @@
 
             </div>{% comment %} end description column {% endcomment %}
             <hr style="width:80%; background-color:gray; margin:auto; margin-top:1rem">             
-          
-        {% if  forloop.last  %}  
+          {% endfor %}
+        {% comment %} {% if  forloop.last  %}   {% endcomment %}
         </div>  
 
         {% comment %} for total amount {% endcomment %}
@@ -123,7 +123,7 @@
                             <p class="mb-0">(including VAT)</p>
                         </strong>
                     </div>
-                    <span><strong>${{cart_item.get_cart_total}}</strong></span>
+                    <span><strong>${{total}}</strong></span>
                 </li>
             </ul>
             <a class="text-decoration-none" href="{% url 'checkout' %}"><button type="button" class="btn btn-warning btn-block">Proceed
@@ -150,8 +150,8 @@
             </div> {% comment %} end of the discount {% endcomment %}
         </div>
     
-        {% endif %}
-        {% endfor %}
+        {% comment %} {% endif %} {% endcomment %}
+        
     </div>
     
 </div>

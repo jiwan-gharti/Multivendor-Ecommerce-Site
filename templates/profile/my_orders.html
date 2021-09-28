@@ -1,0 +1,49 @@
+{% extends '../mainapp/base.html' %}
+
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+    <div class="container mb-sm-5">
+        <div class="row">
+        <div class="col-md-3 col-sm-12 mr-2 bg-light">
+            {% include "profile/sidebar.html" %}
+        </div>
+        <div class="col-md-8 col-12 bg-white p-2 m-2 shadow ">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order</th>
+                    <th scope="col">Place on</th>
+                    <th scope="col">Items</th>
+                    <th scope="col">Total</th>
+                    <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for data in my_order %}
+                    <tr>
+                    <th scope="col">{{forloop.counter}}</th>
+                    <th scope="col">{{data.item.name}}</th>
+                    <th scope="col">{{data.added_date}}</th>
+                    <th scope="col">{{data.quantity}}</th>
+                    <th scope="col">{{data.get_total_price}}</th>
+                    {% if data.being_delivered %}
+                        <th scope="col">On The Way</th>  
+                    {% elif data.received %}
+                        <th scope="col">Received</th>  
+                    {% else %}
+                        <th scope="col">Processing</th>  
+                    {% endif %}
+                                  
+                    </tr>
+                {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

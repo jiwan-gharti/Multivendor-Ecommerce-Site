@@ -18,44 +18,53 @@
     <div class="row">
         <div class="col-md-1 col-sm-12"></div>
         {% comment %} first column {% endcomment %}
-        <div class="col-md-10 col-sm-12">
-            <h5 class="mb-4">Cart (<span>2</span> items)</h5>
-
-            <div class="row text-center cart-row cart-shadow">
+        <div class="col-md-10 col-sm-12 shadow">
+        {% if products.count > 0 %}
+            <h5 class="mb-4">wishlist (<span>{{products.count}}</span> items)</h5>
+            {% for data in products %}
+            <div class="row cart-row cart-shadow">
                 {% comment %} img column {% endcomment %}
                 <div class="col-md-3 col-sm-4 col-xm-12 d-inline-block img-block">
                     <img style='width:100%; height:100%;' class='cart-img shadow'
-                        src="{% static 'images/products/image1.jpg' %}" alt="image1" height='220px' width='200px'>
+                        src="{{data.image.url}}" alt="image1" height='220px' width='200px'>
                 </div>
 
                 {% comment %} description column {% endcomment %}
                 <div class="col-md-8 col-sm-7 col-xs-12 ml-2 d-inline-block">
-                    <div class="d-flex justify-content-between mt-md-2 mt-sm-3 mt-xs-3">
-                        <div class="text-left">
-                            <h5>Blue denim shirt</h5>
-                            <p class="mb-2 text-uppercase small">Shirt - blue</p>
-                            <p class="mb-2 text-uppercase small">Color: blue</p>
-                            <p class="mb-2 text-uppercase small">Size: M</p>
-                        </div>
-                        
-                    </div>{% comment %} End of first column {% endcomment %}
+                    <h5>{{data.name | title}}</h5>
+                    {% if data.discount.active %}
+                        <p class="" style="margin-bottom: 0rem;">
+                            <span class="badge badge-primary"><del>${{data.price}}</del></span>
+                                 
+                        <p class="" style="font-size: 1rem; margin-bottom: -1rem;">${{data.calculate_Discount}}&nbsp</p></p>
+                    {% else %}
+                        <p class="" style="margin-bottom: 0rem;">${{data.price}}</p>
+                    {% endif %}
                     {% comment %} for button {% endcomment %}
-                    <div class="d-flex justify-content-between align-items-center border-1">
+                    <div class="d-flex justify-content-between align-items-center border-1 mt-5">
                         <div>
-                            <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
+                            <a href="{% url 'remove_from_wishlist' data.id %}" type="button" class="card-link-danger text-danger small text-uppercase mr-3"><i
                                     class="fas fa-trash-alt mr-1"></i> Remove Item </a>
-                            <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
+                            <a href="{% url 'wishlist_to_cart' %}" type="button" class="card-link-secondary small text-uppercase"><i
                                     class="fa fa-shopping-cart mr-1"></i> Move to Cart </a>
                         </div>
-                        <p class="mb-0"><span><strong>$35.99</strong></span></p class="mb-0">
                     </div>
                 </div>
-                <p class="text-primary ml-sm-4 mb-sm-3  mt-sm-2"><i class="fas fa-info-circle"></i> Do not delay the
-                    purchase, adding items to your cart does not mean booking them.</p>
 
             </div>{% comment %} end description column {% endcomment %}
-            <hr style="width:80%; background-color:gray; margin:auto;">
+            {% comment %} <hr style="width:80%; background-color:gray; margin:auto;"> {% endcomment %}
+            {% endfor %}
 
+
+        {% else %}
+            <div class="container mt-5">    
+                <div class="cart-empty text-center">
+                    <div class="text-center ">There are no items in this wishlist</div>
+                        <a href="{% url 'shopping_page1' 'all'  %}"><button type="button" class="text-center mt-5 p-2 border border-info text-info">CONTINUE SHOPPING</button></a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
         </div>
         <div class="col-md-1 col-sm-12"></div>

@@ -21,11 +21,13 @@
                     </thead>
                     <tbody>
                         <tr class="border-bottom" style="height:5rem">
-                            <td>Nawij</td>
-                            <td>Buddhanagar#100</td>
-                            <td>Kathmandu, New Baneshowr</td>
-                            <td>98232323</td>
+                        {% for data in shippingAddresses %}
+                            <td>{{data.shipping_address.full_name}}</td>
+                            <td>{{data.shipping_address.region}}, {{data.shipping_address.city}}</td>
+                            <td>{{data.shipping_address.area}}, {{data.shipping_address.address}}</td>
+                            <td>{{data.mobile}}</td>
                             <td><a href="#">Edit</a></td>
+                        {% endfor %}
                         </tr>
                     </tbody>
                 </table>

@@ -116,14 +116,28 @@
             <h2 class="mt-3">{{singleProduct.name | title}}</h2>
             <p class='m-sm-1 text-muted'>{{singleProduct.category.second_level_category | upper}} || BRAND NAME :
                 {{singleProduct.category.brand_name | upper}}</p>
-
-            <div style='color:#ffd700'>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star fa-xs"></i>
-                <i class="fas fa-star-half-alt fa-xs"></i>
-                <i class="far fa-star fa-xs"></i>
+                {% comment %} {{singleProduct.get_average_rating.rating_avg}} {% endcomment %}
+            
+            {% if singleProduct.get_average_rating.rating_avg %}
+            
+             <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star{% if singleProduct.get_average_rating.rating_avg < 1 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if singleProduct.get_average_rating.rating_avg < 2 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if singleProduct.get_average_rating.rating_avg < 3 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if singleProduct.get_average_rating.rating_avg < 4 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if singleProduct.get_average_rating.rating_avg < 5 %}-o empty{% endif %}"></i>
+                ({{singleProduct.get_average_rating.rating_avg}})
             </div>
+            {% else %}
+            <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+            </div> 
+            (Not Rated Yet)
+            {% endif %}
 
             <div class="d-block ">
                 {% if singleProduct.discount.active %}
@@ -216,7 +230,7 @@
 </div>
 
 <div class="container mt-sm-5 mb-sm-5 border">
-    <div class="row">
+    <div class="row"  >
         <div class="col-md-12">
             <div class="product-tab">
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -240,10 +254,10 @@
                 <!--Review Tab-->
                 <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="product-reviews">
-                                {% for rs in page_obj %}
-                                <div class="single-review border-bottom" >
+                        <div class="col-md-6" >
+                            <div class="product-reviews"  id="comment-section">
+                                {% for rs in comments %}
+                                <div class="single-review border-bottom" id="comment-box">
                                     <div class="review-heading">
                                                 <div><a href="#"><i class="fa fa-user-o"></i> {{rs.user.first_name}}</a></div>
                                                 <div style="font-size:14px;"><p>{{rs.subject}}</p></div>
@@ -263,25 +277,8 @@
                                     </div>
                                 </div>
                                 {% endfor %}
-
-                                <div class="pagination">
-                                    <span class="step-links">
-                                        {% if page_obj.has_previous %}
-                                            <a href="?page=1">&laquo; 1</a>
-                                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                                        {% endif %}
-
-                                        <span class="current">
-                                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                                        </span>
-
-                                        {% if page_obj.has_next %}
-                                            <a href="?page={{ page_obj.next_page_number }}">next</a>
-                                            {% comment %} <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endcomment %}
-                                        {% endif %}
-                                    </span>
-                                </div>
                             </div>
+                            <p class="my-4 text-center"><button id="loadMoreComment" data-limit_comments="3" data-total_comments="{{total_comments}}" class="btn btn-dark btn-sm">Load More <i class="fa fa-sync" id="load-more-comment-icon"></i> </button></p>
                         </div>
                         <div class="col-md-6">
                             <h4 class="text-uppercase">Write Your Review</h4>

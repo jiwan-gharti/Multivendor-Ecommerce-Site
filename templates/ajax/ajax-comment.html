@@ -1,0 +1,21 @@
+{% for rs in data %}
+    <div class="single-review border-bottom" id="comment-box">
+        <div class="review-heading">
+                    <div><a href="#"><i class="fa fa-user-o"></i> {{rs.user.first_name}}</a></div>
+                    <div style="font-size:14px;"><p>{{rs.subject}}</p></div>
+                    <div style="font-size:12px;"><p class="text-muted" href="#"><i class="fa fa-clock-o"></i> {{rs.created}}</p></div>
+                
+                <div class="review-rating float-right" style="font-size:12px;">
+                    <i class="fa fa-star{% if rs.rate < 1 %}-o empty{% endif %}"></i>
+                    <i class="fa fa-star{% if rs.rate < 2 %}-o empty{% endif %}"></i>
+                    <i class="fa fa-star{% if rs.rate < 3 %}-o empty{% endif %}"></i>
+                    <i class="fa fa-star{% if rs.rate < 4 %}-o empty{% endif %}"></i>
+                    <i class="fa fa-star{% if rs.rate < 5 %}-o empty{% endif %}"></i>
+                </div>
+
+        </div>
+        <div class="review-body">
+            <p>{{rs.comment}}</p>
+        </div>
+    </div>
+{% endfor %}

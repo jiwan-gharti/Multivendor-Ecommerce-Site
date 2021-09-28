@@ -1,10 +1,12 @@
 from django.db import models
+from django.db.models.aggregates import Avg
 from .utils import image_name_change
 from django.template.defaultfilters import slugify
 
 from accounts.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
+from .managers import OrderItemManager
 
 
 
@@ -174,6 +176,12 @@ class Product(ProductBaseClass):
     def get_discount_status(self):
         return self.discount.discount_percentage
     
+    @property
+    def get_average_rating(self):
+        average_rating = Comment.objects.filter(product = self).aggregate(rating_avg=Avg("rate"))
+        return average_rating
+    
+    
 
 class ProductAlternativeImage(models.Model):
     alternative_image = models.ImageField(upload_to = "alternative Images")
@@ -190,6 +198,13 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1, null=False , blank=True)
     added_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False,null=True, blank=True)
+    shipping_address = models.ForeignKey(
+        'ShippingAddress', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
+    payment = models.ForeignKey(
+        'Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    
+    being_delivered = models.BooleanField(default=False)
+    received = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.item.name)
@@ -214,6 +229,10 @@ class OrderItem(models.Model):
     
     def total_cart_items(self):
         return OrderItem.objects.all().count()
+
+    
+    object = objects = models.Manager() # The default manager.
+    order_items = OrderItemManager()
 
 
         
@@ -256,10 +275,11 @@ class ShippingAddress(models.Model):
     # default = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.user.username)
+        return str(self.city_address) +" , "+ str(self.street_address)
 
     class Meta:
         verbose_name_plural = 'Shipping Addresses'
+        ordering = ('-ordered_date',)
 
 
 
@@ -281,5 +301,23 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.subject + "-title"
+    
+    
+    
+
+
+
+
+class Payment(models.Model):
+    stripe_charge_id = models.CharField(max_length=50)
+    user = models.ForeignKey(User,
+                             on_delete=models.SET_NULL, blank=True, null=True)
+    amount = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+    
+    
 
 

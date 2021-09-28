@@ -1,5 +1,5 @@
 {% for data in data %}
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="product-box">
                         <a href="{% url 'details' data.pk %}" class="text-decoration-none">
                         <div class="card card-hover  overflow-hidden">
                             <img src="{{data.image.url}}" class="card-img-top" width='150px' height='250px' alt="...">

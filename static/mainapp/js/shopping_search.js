@@ -147,3 +147,42 @@ function API(){
     });
 }
 
+
+var loadBtn = document.getElementById("loadMore")
+
+loadBtn.addEventListener("click",function(){
+    var current_product_length = document.querySelectorAll("#product-box").length
+    var limit = loadBtn.dataset.limit
+    var total = loadBtn.dataset.total
+    console.log("-------------",current_product_length,limit,total)
+
+    url= window.location.url
+    filterobj["limit"] = limit
+    filterobj['offset'] = current_product_length
+    $.ajax({
+        url: url,
+        // method: "GET",
+        data :  filterobj,
+        dataType:'json',
+        beforeSend:function(){
+            // loadBtn.setAttribute("disabled",true)
+            $("#loadMore").attr('disabled',true)
+            $(".load-more-icon").addClass("fa-spin")
+        },
+        success:function(res){
+            $("#loadMore").attr('disabled',false)
+            $(".load-more-icon").removeClass("fa-spin")
+            console.log("success!!!!")
+            // if(limit && total){
+                $("#filteredProducts").append(res.data)
+            // }else if(filterobj["sorted_filter"] || filterobj["max_value"] || filterobj["min_value"] || filterobj['radio_search'] || filterobj['condition'])
+            // {
+            // $("#filteredProducts").html(res.data)
+            // }
+               
+        }
+    });
+
+})
+
+

@@ -35,49 +35,42 @@ addToBtn.addEventListener("click",function(){
 })
 
 
+var LoadMoreComment = document.getElementById("loadMoreComment")
 
+LoadMoreComment.addEventListener("click",function(){
+    var offset = document.querySelectorAll("#comment-box").length
+    var limit = LoadMoreComment.dataset.limit_comments
+    var total = LoadMoreComment.dataset.total_comments
+    console.log(offset,limit,total)
 
-// mainImageContainer.onmouseover = function(event){
-//     console.log("inside main image ");
-//     x = event.offsetX                                         
-//     y = event.offsetY
-//     console.log(x)
-//     console.log(y)
+    url = window.location.href
 
-//     width = mainImageContainer.offsetWidth;
-//     height = mainImageContainer.offsetHeight;
+    data = {
+        'offset':offset,
+        'limit':limit
+    }
+    
+    $.ajax({
+        url: url,
+        data: data,
+        dataType : 'json',
+        beforeSend:function(){
+            $("#loadMoreComment").attr('disabled',true)
+            $("#load-more-comment-icon").addClass("fa-spin")
+        },
+        success:function(res){
+            console.log(res.data)
+            $("#loadMoreComment").attr('disabled',true)
+            $("#load-more-comment-icon").addClass("fa-spin") 
+            $("#comment-section").append(res.data)
+            var _countTotal=$("#comment-box").length;
+            if(_countTotal == total){
+                $("#LoadMoreComment").remove();
+            }else{
+                $("#LoadMoreComment").removeClass('disabled').text('Load More');
+            }
+                        
+        }
+    })
 
-//     console.log(width)
-//     console.log(height)
-
-//     console.log(mainImageContainer.offsetLeft)
-//     console.log(mainImageContainer.offsetTop)
-
-//     posX = (x / width) * 100;
-//     posY = (y / height) * 100;
-
-//     // console.log(posX, posY)
-//     mainImage.style.transform = "translate(-" + posX +"%,-"+ posY +"%) scale(2)";
-   
-// }
-// mainImageContainer.onmouseleave = function(event){
-//     console.log("inside main image ")
-//     mainImage.style.transform = "translate(0%,0%) scale(1)";
-// }
-
-
-
-
-
-
-
-
-const replyBtn = document.querySelector(".comment-reply");
-const  reply= document.querySelector(".reply");
-
-replyBtn.addEventListener("click",function(){
-    console.log('fang fang')
-    // if(!reply.classList.contains('reply-show')){
-        reply.classList.toggle('reply-show');
-    // }
-}); 
+})
