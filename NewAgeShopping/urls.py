@@ -22,12 +22,20 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('',include('mainapp.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls'), name = 'accounts'),
+     path('accounts/', include('accounts.urls',namespace="accounts")),
+    path('accounts/', include('allauth.urls')),
+   
     path('accounts/', include('django.contrib.auth.urls')),
+    
     path('myprofile/', include('myprofile.urls', namespace="myprofile")),
-    path("merchant/",include("merchant_app.urls", namespace="merchant_app"))
+    path("merchant/",include("merchant_app.urls", namespace="merchant_app")),
+    path('summernote/', include('django_summernote.urls'))
     
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+admin.site.site_header = 'New Age Shopping'
+admin.sites.AdminSite.index_title = 'New Age Shopping'
+admin.site.site_title = 'Admin panel'

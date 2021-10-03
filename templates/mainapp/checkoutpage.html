@@ -79,11 +79,11 @@
         </div>
     {% endif %}
 
-    <div class="row">
-        <div class="col-md-7 col-sm-12 col-xs-12 mt-5">
+    <div class="row shadow mb-5">
+        <div class="col-md-7 col-sm-12 col-xs-12 mt-5 p-3 border-right">
             <h3 class='mb-sm-4'><strong>Billing Details</strong></h3>
             
-            <form action="/checkout/" method="post" class="mb-5">
+            <form novalidate action="/checkout/" method="post" class="mb-5">
                 {% csrf_token %}
                 <div class="row m-0">
                     <div class="col-sm-6">
@@ -91,6 +91,8 @@
                             {% comment %} <input type="text" id="firstName" class="form-control"> {% endcomment %}
                             {{forms.first_name}}
                             <label class='checkout_label' for="firstName">First name</label>
+                            <span class="errors">{{forms.first_name.errors|striptags}}</span>
+
                         </div>
                     </div>
 
@@ -98,6 +100,7 @@
                         <div class='mt-sm-5 mt-xs-5 checkout_field_wrapper'>
                             {{forms.last_name}}
                             <label class='checkout_label' for="lastName">Last Name</label>
+                            <span class="errors">{{forms.last_name.errors|striptags}}</span>                    
                         </div>
                     </div>
                 </div>
@@ -107,6 +110,7 @@
                         {% comment %} <input type="text" id='email' class='form-control'> {% endcomment %}
                         {{forms.email}}
                         <label class='checkout_label' for="email">Email</label>
+                        <span class="errors">{{forms.email.errors|striptags}}</span> 
                     </div>
 
                     <div class='mt-sm-5 checkout_field_wrapper'>
@@ -115,12 +119,14 @@
                         
                         <label class='checkout_label' for="email">Phone Number</label>
                         <label for="">{{forms.phone_number.help_text}}</label>
+                        <span class="errors">{{forms.phone_number.errors|striptags}}</span> 
                     </div>
 
                     <div class='mt-sm-5 checkout_field_wrapper'>
                         {% comment %} <input type="text" id='email' class='form-control'> {% endcomment %}
                         {{forms.shipping_country}}
                         <label class='checkout_label' for="email">country</label>
+                        <span class="errors">{{forms.shipping_country.errors|striptags}}</span> 
                     </div>
 
 
@@ -134,33 +140,32 @@
                         {% comment %} <input type="text" id='Postcode / ZIP' class='form-control'> {% endcomment %}
                         {{forms.shipping_district}}
                         <label class='checkout_label' for="address">Address</label>
+                        <span class="errors">{{forms.shipping_district.errors|striptags}}</span> 
                     </div>
 
                     <div class='mt-sm-5 mt-xs-5 checkout_field_wrapper'>
                         {% comment %} <input type="text" id='Postcode / ZIP' class='form-control'> {% endcomment %}
                         {{forms.shipping_address2}}
                         <label class='checkout_label' for="address">Street Name</label>
+                        <span class="errors">{{forms.shipping_address2.errors|striptags}}</span> 
                     </div>
 
                     <div class='mt-sm-5 mt-xs-5 checkout_field_wrapper'>
                         {% comment %} <input type="text" id='address' class='form-control'> {% endcomment %}
                         {{forms.shipping_zip}}
                         <label class='checkout_label' for="Postcode / ZIP">Postcode/ZIP</label>
+                        <span class="errors">{{forms.shipping_zip.errors|striptags}}</span> 
                     </div>
 
                     <div class='mt-sm-5 mt-xs-5 checkout_field_wrapper'>
                         {% comment %} <input type="text" id='address' class='form-control'> {% endcomment %}
                         {{forms.payment_option}}
                         <label class='checkout_label' for="Postcode / ZIP">Payment Method</label>
+                        <span class="errors">{{forms.payment_option.errors|striptags}}</span> 
                     </div>
                     <button type="Submit" class="btn btn-primary btn-block mt-3">MAKE PURCHASE</button>
 
-                     {% comment %} <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="same_billing_address" id="same_billing_address">
-                        <label class="custom-control-label" for="same_billing_address">Billing address is the same as my shipping address</label>
-                    </div>
-
-                    <div class="custom-control custom-checkbox">
+                    {% comment %} <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping">
                         <label class="custom-control-label" for="set_default_shipping">Save as default shipping address</label>
                     </div> {% endcomment %}
@@ -191,7 +196,7 @@
             </ul>
             {% comment %} <a href="{% url 'checkout' %}"><button type="button" class="btn btn-primary btn-block">MAKE PURCHASE</button></a> {% endcomment %}
             {% comment %} for discount section {% endcomment %}
-            {% comment %} <div class="mb-3">
+            <div class="mb-3">
                 <div class="pt-4">
                     <a class="dark-grey-text d-flex justify-content-between" data-toggle="collapse"
                         href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -207,7 +212,7 @@
                         </div>
                     </div>
                 </div>
-            </div>  {% endcomment %}
+            </div>
             {% comment %} end of the discount {% endcomment %}
         </div>
     </div>

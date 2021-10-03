@@ -29,8 +29,11 @@
                     </span>
                 {% endif %}
 
+                  
 
-                    <form method= "POST" action="" enctype = "multipart/form-data">
+
+
+                    <form novalidate method= "POST" action="" enctype = "multipart/form-data">
                         <h4 for="" class="text-center text-bold mb-5">Create your NewAgeShopping Merchant Account</h4>
                         {% csrf_token %}
                         {{form | crispy}}
@@ -40,10 +43,9 @@
 
                         <div class="d-flex justify-content-between mt-3">
                             <div>
-                                <label for="" class="font-weight-bold added-style">Already Have Account ?</label>
-                                <a href="{% url 'accounts:register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Login</a> Here
+                                <label for="" class="font-weight-bold added-style">Already Have Merchant Account ?</label>
+                                <a href="{% url 'login' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Login</a> Here
                             </div>
-                            <a href="{% url 'accounts:password_reset' %} " class="added-style text-decoration-none">Forget Password? </a>
                         </div>
                     
 

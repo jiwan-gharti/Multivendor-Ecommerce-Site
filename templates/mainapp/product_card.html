@@ -5,15 +5,15 @@
   <div class="row productslider pl-5 pr-5">
   {% for data in FirstSlideProduct %}
     <div class="col-md-12">
-      <div class="card">
+      <div class="card shadow">
         <a href="{% url 'details' data.id %}"><img src="{{data.image.url}}" class="card-img-top" alt="..." ></a>
         {% if data.discount.active %}
         <div class="position-absolute top-0 right-0 discount-card">{{data.discount.discount_percentage}}% off
         </div>
         {% endif %}
         <div class="card-body bg-white text-dark overflow-hidden p-2" style= "height: 8rem">
-          <h5 class="mb-auto" class="card-title">{{data.name | title}}</h5>
-          <p style="font-size:0.7rem;" class="card-text mb-sm-0 mt-sm-0">{{data.category.name | title}}</p>
+          <h6 class="mb-auto" class="card-title" style="white-space:none; overflow:hidden; text-overflow:ellipsis">{{data.name | title}}</h6>
+          <p style="font-size:0.6rem; margin-bottom:3px;" class="card-text text-muted">{{data.category.brand_name | title}}</p>
           {% if date.get_average_rating.rating_avg %}
             
              <div class="review-rating" style="font-size:12px;">
@@ -31,14 +31,13 @@
                 <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
                 <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
                 <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
-            </div> 
-            (Not Rated Yet)
+            </div>
             {% endif %}
           <div class="d-md-flex justify-content-between mt-sm-1 d-sm-block">
             <div class="d-block ">
               {% if data.discount.active %}
               <p class="mb-0 mt-0 price-tag">
-                ${{data.price}}<br> <del class="mt-0 mb-0"
+                ${{data.price}}<br> <del class="mt-0 mb-0 text-muted"
                   style="font-size: .7rem;">&nbsp{{data.calculate_Discount}}&nbsp</del></p>
               {% else %}
               <p class="mb-0 mt-0 price-tag">
@@ -49,21 +48,26 @@
             {% comment %} <div class="d-flex"> {% endcomment %}
             {% if request.user.is_authenticated %}
               <div class="">
-                <form action="/cart/" method="post" class="">
-                {% csrf_token %}
-                <input type="hidden" name = "detail_item_id" value="{{data.id}}" hidden>
-                <button type= "submit" class="alert alert-secondary d-sm-inline-block forhover" href="{% url 'cart' %}"><i class='fas fa-shopping-cart pr-2'></i> Add to
-                    Card</button>
-                </form>
+                <form action="{% url 'cart' %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fas fa-shopping-cart'  style="font-size:0.6rem"></i> Add to Cart
+                        </button>
+                    </form>
                 {% comment %} <a href="">Add to cart</a> {% endcomment %}
               </div>
               {% else %}
-              <div class="p-2 h-25" style="background-color:#613f99">
-                 
-                <a class="w-50 text-center text-white text-decoration-none" href="{% url 'wishlist' data.id %}">
-                  Add to Wishlist
-                  <i class="fa fa-heart" aria-hidden="true"></i>
-                </a> 
+              <div class="">
+                <form action="{% url 'wishlist' data.id %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fa fa-heart'  style="font-size:0.6rem"></i> Add to Wishlist
+                        </button>
+                    </form>
               </div>
               {% endif %}
             {% comment %} </div> {% endcomment %}

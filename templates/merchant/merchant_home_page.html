@@ -20,12 +20,29 @@ Merchant Dashboard
                     aria-controls="v-pills-profile" aria-selected="false">Add Product</a>
                 <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
                     aria-controls="v-pills-messages" aria-selected="false">Product</a>
+                <a class="nav-link" id="v-pills-my_order-tab" data-toggle="pill" href="#v-pills-my_order" role="tab"
+                    aria-controls="v-pills-my_order" aria-selected="false">My Orders</a>
                 <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
                     aria-controls="v-pills-settings" aria-selected="false">Profile</a>
                 <a class="nav-link" href="{% url 'merchant_app:logout' %}">Logout</a>
             </div>
         </div>
         <div class="col-9 shadow ml-4 p-4">
+            {% if messages %}
+            <div class="mt-3 col-12 text-center">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <strong>{{message}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
             <div class="tab-content " id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                     aria-labelledby="v-pills-home-tab">{% include './dashboard.html' %}</div>
@@ -33,6 +50,8 @@ Merchant Dashboard
                     {% include './product.html' %}</div>
                 <div class="tab-pane fade position-relative" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                     {% include './mProductDetails.html' %}</div>
+                <div class="tab-pane fade position-relative" id="v-pills-my_order" role="tabpanel" aria-labelledby="v-pills-my_order-tab">
+                    {% include './mOrders.html' %}</div>
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                     {% include './mProfile.html' %}</div>
             </div>

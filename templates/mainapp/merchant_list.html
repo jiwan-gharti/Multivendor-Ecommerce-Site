@@ -23,6 +23,7 @@
                         <th scope="col">Shop Name</th>
                         <th scope="col">Merchant Name</th>
                         <th scope="col">Product Selling</th>
+                        <th scope="col">Average Rating</th>
                         <th scope="col">#</th>
                         </tr>
                     </thead>
@@ -37,6 +38,28 @@
                         {% for data in merchant.product_set.all %}
                         {{ data}},
                         {% endfor %}
+                        </td>
+                        <td>
+                         {% if merchant.get_average_merchant_rating.rate__avg %}
+                            <div class="review-rating" style="font-size:12px;">
+                                <i style="color:#FFB656;" class="fa fa-star{% if merchant.get_average_merchant_rating.rate__avg < 1 %}-o empty{% endif %}"></i>
+                                <i style="color:#FFB656;" class="fa fa-star{% if merchant.get_average_merchant_rating.rate__avg < 2 %}-o empty{% endif %}"></i>
+                                <i style="color:#FFB656;" class="fa fa-star{% if merchant.get_average_merchant_rating.rate__avg < 3 %}-o empty{% endif %}"></i>
+                                <i style="color:#FFB656;" class="fa fa-star{% if merchant.get_average_merchant_rating.rate__avg < 4 %}-o empty{% endif %}"></i>
+                                <i style="color:#FFB656;" class="fa fa-star{% if merchant.get_average_merchant_rating.rate__avg < 5 %}-o empty{% endif %}"></i>
+                                ({{merchant.get_average_merchant_rating.rate__avg | floatformat:1}})
+                            </div>
+                            {% else %}
+                            <div class="review-rating" style="font-size:12px;">
+                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                            </div> 
+                            (Not Rated Yet)
+                            {% endif %}
+                        
                         </td>
                         <td><a href="/merchant_shopping_page/merchant/{{merchant.pk}}/" class="text-decoration-none shop-name">Shop Here</a></td>
                         </tr>

@@ -35,10 +35,14 @@ class FeaturedSlider(ProductBaseClass):
 
 class SuperProductCategory(models.Model):
     first_level_category     =     models.CharField(max_length=100,
-                                                blank=True, null=True,
                                                 unique=True,
                                                  help_text="Like Electronic or Beauty Products or Sport and OutDoors",
                                                 )
+
+    class Meta:
+        verbose_name = "First Level Category"
+        verbose_name_plural = "First Level Categories"
+
     def __str__(self):
         return str(self.first_level_category)
 
@@ -60,10 +64,14 @@ class SuperProductCategory(models.Model):
 
     
 class SecondLevelCategory(models.Model):
-    product_category         =     models.CharField("Product Category Name (2nd level)",max_length=200, blank= True, null=True)
+    product_category         =     models.CharField("Product Category Name (2nd level)",max_length=200, unique=True)
     first_level_category     =     models.ForeignKey(SuperProductCategory, on_delete=models.CASCADE)
     slug                =       models.SlugField(max_length=300,blank=True,null=True)
       
+
+    class Meta:
+        verbose_name = "Second Level Category"
+        verbose_name_plural = "Second Level Categories"
 
     def __str__(self):
         return str(self.product_category)
@@ -88,12 +96,14 @@ class SecondLevelCategory(models.Model):
 class ProductCategory(ProductBaseClass):
 
     second_level_category     =     models.ForeignKey(SecondLevelCategory, on_delete=models.CASCADE)
-    brand_name                =     models.CharField("Brand Name",max_length=200, null=True, blank= True)
-    description               =     models.CharField(max_length=2000)
+    brand_name                =     models.CharField("Brand Name",max_length=200)
+    description               =     models.CharField(max_length=2000,null=True, blank= True)
     slug                =           models.SlugField(max_length=300,blank=True,null=True)
 
 
-
+    class Meta:
+        verbose_name = "Product Category"
+        verbose_name_plural = "Product Categories"
     class Meta:
         verbose_name          =    "Product Category"
         verbose_name_plural   =    "Product Categories"
@@ -112,7 +122,7 @@ class ProductCategory(ProductBaseClass):
 
 
 class ProductInventory(ProductBaseClass):
-    quantity             =     models.IntegerField(default=1,null=True, blank=True)
+    quantity             =     models.IntegerField(default=1)
 
     class Meta:
         verbose_name        =   "Product Inventory"
@@ -142,9 +152,10 @@ class Discount(ProductBaseClass):
             return str(self.name)
 
 class Product(ProductBaseClass):
-    user                   =     models.ForeignKey(User,on_delete=models.CASCADE,null=True, blank = True)
-    image                  =     models.ImageField("Product Image",upload_to = image_name_change, null=True, blank = True)
+    user                   =     models.ForeignKey(User,on_delete=models.CASCADE)
+    image                  =     models.ImageField("Product Image",upload_to = image_name_change)
     name                   =     models.CharField("Product Name",max_length=120)
+    small_description      =     models.TextField(max_length = 500)
     description            =     models.CharField("Product Description",max_length=2000)
     price                  =     models.DecimalField("Price",max_digits=8, decimal_places=2, help_text="Price should Grater than 20")
     availability           =     models.BooleanField(default=True)
@@ -193,15 +204,16 @@ class ProductAlternativeImage(models.Model):
 
 
 class OrderItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank= True)
-    item = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
-    quantity = models.IntegerField(default=1, null=False , blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
+    item = models.ForeignKey(Product, on_delete=models.SET_NULL,blank=True, null=True)
+    quantity = models.IntegerField(default=1)
     added_date = models.DateTimeField(auto_now_add=True)
-    ordered = models.BooleanField(default=False,null=True, blank=True)
+    updated_data = models.DateTimeField(auto_now=True)
+    ordered = models.BooleanField(default=False)
     shipping_address = models.ForeignKey(
-        'ShippingAddress', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
+        'ShippingAddress', related_name='shipping_address', on_delete=models.SET_NULL,blank=True, null=True)
     payment = models.ForeignKey(
-        'Payment', on_delete=models.SET_NULL, blank=True, null=True)
+        'Payment', on_delete=models.SET_NULL,blank=True, null=True)
     
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
@@ -235,6 +247,9 @@ class OrderItem(models.Model):
     order_items = OrderItemManager()
 
 
+    
+
+
         
     
 
@@ -260,19 +275,18 @@ class Order(models.Model):
 
 
 class ShippingAddress(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     # order_item = models.ForeignKey(OrderItem, on_delete=models.SET_NULL,null=True, blank=True)
-    first_name = models.CharField(max_length=30,null=True, blank=True)
-    last_name = models. CharField(max_length=30, null=True, blank=True)
-    email = models.EmailField(max_length=254, null=True, blank=True)
-    phone_number = PhoneNumberField(null=True, blank=True)
-    country = CountryField(multiple=False, null=True, blank=True)
-    city_address = models.CharField(max_length=100,null=True, blank=True)
-    street_address = models.CharField(max_length=100,null=True, blank=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models. CharField(max_length=30)
+    email = models.EmailField(max_length=254)
+    phone_number = PhoneNumberField()
+    country = CountryField(multiple=False)
+    city_address = models.CharField(max_length=100)
+    street_address = models.CharField(max_length=100)
     zip = models.CharField(max_length=100,null=True, blank=True)
-    ordered_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
-    payment_option = models.CharField(max_length=2, null=True, blank=True)
-    # default = models.BooleanField(default=False)
+    ordered_date = models.DateTimeField(auto_now_add=True)
+    payment_option = models.CharField(max_length=2)
 
     def __str__(self):
         return str(self.city_address) +" , "+ str(self.street_address)
@@ -283,6 +297,11 @@ class ShippingAddress(models.Model):
 
 
 
+COMMENT_CHOICE = [
+    ('Best','Best'),
+    ('Average','Average'),
+    ('Poor','Poor'),
+]
 class Comment(models.Model):
     STATUS = [
         ('New','New'),
@@ -291,16 +310,19 @@ class Comment(models.Model):
     ]
     product    = models.ForeignKey(Product,on_delete= models.CASCADE)
     user       = models.ForeignKey(User,on_delete= models.CASCADE)
-    subject    = models.CharField(max_length=50, blank=True)
+    subject    = models.CharField(max_length=50, blank=True, choices=COMMENT_CHOICE, default="Best")
     comment    = models.CharField(max_length=200, blank=True)
     rate       = models.SmallIntegerField(default = 1)
     ip         = models.CharField(max_length=20, blank=True)
+    sentiment  = models.CharField(max_length=5, null=True ,blank= True)
     status     = models.CharField(max_length=10, choices=STATUS,default="New")
     created    =    models.DateTimeField(auto_now_add=True)
     updated    =    models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.subject + "-title"
+    
+    
     
     
     
@@ -311,12 +333,24 @@ class Comment(models.Model):
 class Payment(models.Model):
     stripe_charge_id = models.CharField(max_length=50)
     user = models.ForeignKey(User,
-                             on_delete=models.SET_NULL, blank=True, null=True)
+                             on_delete=models.CASCADE)
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
+
+
+class ContactUS(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = PhoneNumberField(region='NP')
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
     
     
 

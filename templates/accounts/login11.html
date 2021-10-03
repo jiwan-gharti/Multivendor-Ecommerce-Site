@@ -1,0 +1,82 @@
+
+{% extends "../mainapp/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+
+{% block title %}Login Page{% endblock title %}
+
+{% block content %}
+
+
+ {% if not user.is_authenticated %}
+ 
+<div class="container mt-sm-5 mb-sm-5 ">
+    <div class="form-wrapper w-75 m-sm-auto p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                
+                    {% if messages %}
+                        <div class="mt-3 col-12 text-center">
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    <strong>{{message}}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <h1> Sign In </h1>
+
+                    <form method= "POST" action="">
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <div>
+                                <label for="" class="font-weight-bold added-style">New Customer ?</label>
+                                <a href="{% url 'accounts:register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Register</a> Here
+                            </div>
+                            <div>
+                                <label for="" class="font-weight-bold added-style">New Merchant ?</label>
+                                <a href="{% url 'accounts:merchant_register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Register</a> Here
+                            </div>
+                        </div>
+                        <a href="{% url 'accounts:password_reset' %} " class="added-style text-decoration-none">Forget Password? </a>
+                    
+                    
+                </div>
+                <div class="row d-flex justify-content-center">
+                <div class="col-6">
+                <a href="{% provider_login_url 'google' process='connect' %}"><button class="btn btn text-white border-0" style="background-color:#d34836; height:3rem; width:18rem;"><i class="fa fa-google" aria-hidden="true">+</i> Login with Google</button></</a>
+                </div>
+                <div class="col-6">
+                <a href="{% provider_login_url 'facebook' process='connect' %}"><button class="btn btn text-white border-0" style="background-color:#3b5998; height:3rem; width:18rem;"><i class="fa fa-facebook" aria-hidden="true"></i>   Login with Facebook</button></a>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ {% else %}
+
+
+        
+ {% endif %}
+
+{% endblock content %}

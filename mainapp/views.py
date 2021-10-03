@@ -5,9 +5,11 @@ from django.http import response
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import TemplateView, View
+
+from mainapp.ml_models import normalize_model, normalize_text, model_prdict
 from .models import Comment, FeaturedSlider, Order,  OrderItem, Payment, Product, SecondLevelCategory, ShippingAddress
 from django.contrib import messages
-from .forms import CheckoutForm, CommentForm
+from .forms import CheckoutForm, CommentForm, ContactUsForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -17,15 +19,21 @@ from django.core import serializers
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 import datetime
+from allauth.socialaccount.models import SocialAccount
 # Create your views here.
 
 def homepage(request):
+    print("'----------social--------",request.headers)
     FirstSlideProduct    =  Product.objects.order_by("?").distinct()[:8]
+    tranding_now    =  Product.objects.order_by("?").distinct()[:8]
+    view_products    =  Product.objects.order_by("?").distinct()[:8]
     featureItems         =  FeaturedSlider.objects.distinct("name")
 
     context = {
         "FirstSlideProduct"   :  FirstSlideProduct,
-        "featureItems"        :  featureItems
+        "featureItems"        :  featureItems,
+        'view_products'       :  view_products,
+        "tranding_now"        :   tranding_now
     }
     return render (request, 'mainapp/homepage.html',context)
 
@@ -45,15 +53,20 @@ def details(request,pk):
         return JsonResponse({'data':t},safe=False)
 
         print("-------",offset,"------------",limit)
+    
+    recommend_products    =  Product.objects.order_by("?").distinct()[:5]
+    forms = CommentForm()
     context = {
         "singleProduct" : singleProduct,
         'comments': comments,
-        'total_comments': total_comments
+        'total_comments': total_comments,
+        'recommend_products' : recommend_products,
+        'forms':forms
         # 'page_obj':page_obj
     }
     return render(request, 'mainapp/details.html', context)
 
-
+@login_required
 def Cart(request):
     if request.method == "POST":
         detail_item_id = request.POST.get("detail_item_id")
@@ -83,7 +96,6 @@ def Cart(request):
 
     
     cart_items = OrderItem.objects.filter(user = request.user, ordered = False)
-
     orderitem = OrderItem.order_items.get_total(request.user)
     total = 0 
     for cart_item in orderitem:
@@ -95,7 +107,12 @@ def Cart(request):
         "cart_items" : cart_items,
         'total':total
     }
-    return render(request, "mainapp/cart.html", context)
+    print("------==", SocialAccount.objects.get(user = request.user))
+    if request.user.is_customer | request.user.is_superuser:
+        return render(request, "mainapp/cart.html", context)
+    else:
+        messages.info(request, "Permission Denied! login through customer account!")
+        return redirect('/')
 
 def RemoveCart(request):
     if request.method == "POST":
@@ -104,11 +121,25 @@ def RemoveCart(request):
         print()
         item.delete()
         messages.warning(request, "Item Deleted From Cart!!!")
-        return redirect("/cart/")
+        if request.user.is_customer | request.user.is_superuser:
+            return redirect("/cart/")
+        else:
+            messages.info(request, "Permission Denied! Login through customer account!")
+            return redirect('/')
+        
 
 
-class ContactUs(TemplateView):
-    template_name = 'mainapp/contactus.html'
+def ContactUs(request):
+    forms = ContactUsForm()
+    if request.method == 'POST':
+        forms = ContactUsForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            messages.info(request, "We will Respond soon!!")
+    context = {
+        'forms':forms
+    }
+    return render(request, 'mainapp/contactus.html',context)
 
 class AboutUs(TemplateView):
     template_name = 'mainapp/aboutus.html'
@@ -260,7 +291,13 @@ def WishlistPage(request,pk):
     context={
         'products':products
     }
-    return render(request,'mainapp/wishlist.html',context)
+    if request.user.is_customer | request.user.is_superuser:
+            return render(request,'mainapp/wishlist.html',context)
+    else:
+        messages.info(request, "Permission Denied! Login through customer account!")
+        return redirect('/')
+    
+    
 
 def WishlistRemoveItem(request,pk):
     cart = request.session.get("product_cart")
@@ -451,6 +488,17 @@ def addComment(request,pk):
             data.ip = request.META.get('REMOTE_ADDR')
             data.product = Product.objects.get(pk = pk)
             data.user = request.user
+
+            comment = form.cleaned_data['comment']
+            print(comment)
+
+            normalized_text = normalize_text([comment])
+            x = normalize_model(normalized_text)
+            sentimental_result = model_prdict(x)
+
+            data.sentiment = sentimental_result[0]
+
+
             data.save()
             messages.success(request,"Your review has been sent. Thank you for your interest.")
             return HttpResponseRedirect(url)
@@ -488,7 +536,11 @@ def PaymentView(request):
         'total': total
     }
     print(orderItems)
-    return render(request, "mainapp/payment.html", context)
+    if request.user.is_customer:
+        return render(request, "mainapp/payment.html", context)
+    else:
+        messages.info(request, "Permission Denied! You Must login.")
+        return redirect("/")
 
 
 def PostPayment(request):
@@ -524,3 +576,7 @@ def PostPayment(request):
             return redirect("/")
     else:
         return redirect("/payment/")
+
+
+
+

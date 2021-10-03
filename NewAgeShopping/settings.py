@@ -28,15 +28,71 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.facebook',
+
+
     'mainapp',
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'myprofile',
     'widget_tweaks',
     'phonenumber_field',
     'django_countries',
     'merchant_app',
     'crispy_forms',
+    'django_summernote',
+
+
+    
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 2
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '576672183365-mq438eg8ccsrfasouptdiqo2aertk7b2.apps.googleusercontent.com',
+            'secret': 'fxhCtg0P4nEWccxdA9_RZywj',
+            'key': ''
+        }
+    },
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name'
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v7.0',
+    },
+}
+
 CRISPY_TEMPLATE_PACK ='bootstrap4'
 
 MIDDLEWARE = [
@@ -47,6 +103,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.template.context_processors.request',
 ]
 
 ROOT_URLCONF = 'NewAgeShopping.urls'
@@ -127,15 +184,21 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 
+# SOCIALACCOUNT_FORMS =(
+#     {'signup': 'accounts.forms.UserForm'})
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# LOGIN_REDIRECT_URL = '/'
-# LOGOUT_REDIRECT_URL = 'accounts:login'
+LOGIN_REDIRECT_URL ="/"
+LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.UserForm'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 

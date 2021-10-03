@@ -7,7 +7,7 @@ urlpatterns = [
     path('details/<int:pk>/',views.details,name='details'),
     path("cart/", views.Cart, name="cart"),
     path("removecart/", views.RemoveCart, name="remove_cart"),
-    path('contactus/', views.ContactUs.as_view(),name='contactus'),
+    path('contactus/', views.ContactUs,name='contactus'),
     path('aboutus/', views.AboutUs.as_view(),name='aboutus'),
     path('shopping_page/', views.ShoppingPage,name='shopping_page'),
     path('shopping_page1/<str:slug>/', views.ShoppingPage1,name='shopping_page1'),
@@ -35,6 +35,6 @@ urlpatterns = [
     # test 
     # path("test/", views.TestView,name = "test")
 
-    path("post_payment/",views.PostPayment, name="post_payment")
+    path("post_payment/",views.PostPayment, name="post_payment"),
 
 ]

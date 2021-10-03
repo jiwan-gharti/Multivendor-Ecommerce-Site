@@ -1,4 +1,4 @@
-from mainapp.models import Comment
+from mainapp.models import Comment, ContactUS
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from django_countries.fields import CountryField
@@ -43,4 +43,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ("subject", "comment","rate")
+
+
+class ContactUsForm(forms.ModelForm):
+    class Meta:
+        model = ContactUS
+        fields = "__all__"
     

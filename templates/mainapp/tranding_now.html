@@ -9,54 +9,70 @@
 
 <div class="container-fluid">
   <div class="row productslider pl-5 pr-5">
-  {% for data in FirstSlideProduct %}
+  {% for data in tranding_now %}
     <div class="col-md-12">
-      <div class="card">
+      <div class="card shadow" style="border:none;">
         <img src="{{data.image.url}}" class="card-img-top" alt="...">
         {% if data.discount.active %}
         <div class="position-absolute top-0 right-0 discount-card">{{data.discount.discount_percentage}}% off
         </div>
         {% endif %}
         <div class="card-body bg-white text-dark overflow-hidden p-2">
-          <h5 class="mb-auto" class="card-title">{{data.name | title}}</h5>
-          <p style="font-size:0.7rem;" class="card-text mb-sm-0 mt-sm-0">{{data.category.name | title}}</p>
-          <div class="mt-sm-1">
-            <i class="fas fa-star fa-xs"></i>
-            <i class="fas fa-star fa-xs"></i>
-            <i class="fas fa-star fa-xs"></i>
-            <i class="fas fa-star-half-alt fa-xs"></i>
-            <i class="far fa-star fa-xs"></i>
-          </div>
+          <h5 class="mb-auto" class="card-title" style="white-space:none; overflow:hidden; text-overflow:ellipsis">{{data.name | title}}</h5>
+          <p style="font-size:0.6rem; margin-bottom:3px;" class="card-text text-muted">{{data.category | title}}</p>
+           
+           {% if date.get_average_rating.rating_avg %}
+             <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 1 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 2 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 3 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 4 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 5 %}-o empty{% endif %}"></i>
+                ({{date.get_average_rating.rating_avg}})
+            </div>
+            {% else %}
+            <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+            </div>
+            {% endif %}
           <div class="d-flex justify-content-between mt-sm-1">
             <div class="d-block ">
               {% if data.discount.active %}
               <p class="mb-0 mt-0 price-tag">
-                ${{data.price}}<br> <del class="mt-0 mb-0"
+                ${{data.price}}<br> <del class="mt-0 mb-0 text-muted" 
                   style="font-size: .7rem;">&nbsp{{data.calculate_Discount}}&nbsp</del></p>
               {% else %}
               <p class="mb-0 mt-0 price-tag">
                 ${{data.price}}</p>
               {% endif %}
             </div>
-
-
-
-
             {% comment %} <div class="d-flex"> {% endcomment %}
-            {% if request.user.is_authenticated %}
-              <div class="p-1 h-25" style="background-color:#613f99">
-                <a class="w-50 text-center text-white text-decoration-none" href="">
-                  Add to cart
-                  <i class="fa fa-shopping-cart fa-sm"></i>
-                </a>
+           {% if request.user.is_authenticated %}
+              <div class="">
+                <form action="{% url 'cart' %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fas fa-shopping-cart'  style="font-size:0.6rem"></i> Add to Cart
+                        </button>
+                    </form>
+                {% comment %} <a href="">Add to cart</a> {% endcomment %}
               </div>
-               {% else %}
-            
-              <div class="p-1 h-25" style="background-color:#613f99">
-                <a class="w-50 text-center text-white text-decoration-none" href="">
-                  Add to Wishlist
-                  <i class="fa fa-heart" aria-hidden="true"></i>
-                </a>
+              {% else %}
+              <div class="">
+                <form action="{% url 'wishlist' data.id %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fa fa-heart'  style="font-size:0.6rem"></i> Add to Wishlist
+                        </button>
+                    </form>
               </div>
               {% endif %}
             {% comment %} </div> {% endcomment %}

@@ -114,10 +114,10 @@
 <h1 class="title"></h1>
 <div class="container-fluid">
     <div class='row'>
-        <div class="col-lg-3 ml-3 mt-4">
+        <div class="col-lg-3 ml-3 mt-4 border-right">
          
             {% comment %} checkbox area  {% endcomment %}
-            <div class="checkbox-area">
+            <div class="checkbox-area border-bottom">
                 <div>
                 <h3 for="checkbox-title">Filters</h3>
                 <label for="Condition">Condition</label>
@@ -138,9 +138,10 @@
             </div>
 
             {% comment %} <form> {% endcomment %}
+            <section class="border-bottom mb-2">
                 <label for="" class=mt-4>Price</label>
                 <div class="d-flex align-items-center pb-1">
-                    <div class="md-form md-outline my-0 min-max-search">
+                    <div class="md-form my-0 min-max-search">
                         <input id="input_minimum" type="text" class="form-control mb-0" data-price-key = "price_key">
                         <label class='min-label' id='min-label' for="form">$ Min</label>
                     </div>
@@ -151,12 +152,13 @@
                     </div>
                     <div class="col-md-3 min_max_button" id='min_max_button'
                         style="padding-left: 10px; width: 3rem; height:1.6rem;">
-                        <button type="button"><i class="fas fa-play-circle"></i></button>
+                        <button type="button" class="bg-transparent border-0"><i class="fas fa-play-circle"></i></button>
                     </div>
                 </div>
+            </section>
             {% comment %} </form> {% endcomment %}
 
-            <section>
+            <section class="border-bottom">
                 <div>
                     <label for="price"><h3>Price</h3></label>
                 </div>
@@ -188,7 +190,7 @@
             </section>
 
             {% comment %} rating  {% endcomment %}
-            <section class="">
+            <section class="border-bottom">
                 <h6 class="font-weight-bold mt-4 mb-3">Avg. Customer Review</h6>
                 <a href="#!" >
                     <ul class="rating">
@@ -230,29 +232,7 @@
                     <li><p class="small text-uppercase card-link-secondary">& Up</p></li>
                     </ul>
                 </a>
-            </section>
-
-            
-
-            {% comment %} checkbox area  {% endcomment %}
-            <div class="checkbox-area">
-                <div>
-                <h3 for="checkbox-title" class='mt-4'>Size</h3>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox">
-                    <label for="">small</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox">
-                    <label for="">Medium</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox">
-                    <label for="">Large</label>
-                </div>
-            </div>   
+            </section>  
 
         </div>
 
@@ -288,13 +268,15 @@
                         <div class="card card-hover  overflow-hidden">
                             <img src="{{data.image.url}}" class="card-img-top" width='150px' height='250px' alt="...">
 
-                            <div class="card-body pt-1">
+                            <div class="card-body pt-1" style="height:7rem;">
                                 
-                                <p name="product-name" class="card-text mb-0" style="font-weight:600; font-size:0.9rem;">{{data.name}}</p>
+                                <p name="product-name" class="card-text mb-0" style="font-weight:600; font-size:0.9rem; no-wrap:none; overflow:hidden; text-overflow:ellipsis; ">{{data.name |title}}</p>
+                                <p name="product-cateogry" class="card-text mb-0 text-muted" style="font-weight:400; font-size:0.7rem; no-wrap:none; overflow:hidden; text-overflow:ellipsis; ">{{data.category |title}}</p>
+
                                 <div class="product-price">
                                         {% if data.discount.active %}
                                         <p class="mb-0 mt-0 price-tag">
-                                            <del class="mt-0 mb-0"> ${{data.price}}</del><br> {{data.calculate_Discount}}&nbsp</p>
+                                            <del class="mt-0 mb-0"> ${{data.price}}</del class="text-muted"><br> {{data.calculate_Discount}}&nbsp</p>
                                         {% else %}
                                         <p class="mb-0 mt-0 price-tag">
                                             ${{data.price}}</p>
@@ -302,11 +284,24 @@
                                 </div>
                                 <div class="product-bottom">
                                     <div class='float-left'>
-                                        <i class="fas fa-star fa-xs"></i>
-                                        <i class="fas fa-star fa-xs"></i>
-                                        <i class="fas fa-star fa-xs"></i>
-                                        <i class="fas fa-star-half-alt fa-xs"></i>
-                                        <i class="far fa-star fa-xs"></i>
+                                        {% if date.get_average_rating.rating_avg %}
+                                            <div class="review-rating" style="font-size:12px;">
+                                                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 1 %}-o empty{% endif %}"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 2 %}-o empty{% endif %}"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 3 %}-o empty{% endif %}"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 4 %}-o empty{% endif %}"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star{% if date.get_average_rating.rating_avg < 5 %}-o empty{% endif %}"></i>
+                                                ({{date.get_average_rating.rating_avg}})
+                                            </div>
+                                            {% else %}
+                                            <div class="review-rating" style="font-size:12px;">
+                                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                                            </div>
+                                            {% endif %}
                                     </div>
                                     <p style='float:right;'>Nepal</p>
                                 </div>

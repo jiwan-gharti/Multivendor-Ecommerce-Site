@@ -3,7 +3,7 @@
     position: absolute;
     top: 50%;
     left: 1rem;
-    z-index: 5555;
+    z-index: 55;
     transform: translateY(-50%);
 }
 .slider-prev-arrow, .slider-next-arrow  > i{

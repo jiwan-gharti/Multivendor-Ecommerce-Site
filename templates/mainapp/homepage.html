@@ -7,14 +7,31 @@
 
 
 {% block slider %}
-    <div class="container-fluid mt-1 mb-0">
-        <p class="text-center">Biggest Discount Hurry up <a class="text-decoration-none text-danger font-weight-bold"
+  <div class="container">
+    {% if messages %}
+          <div class="mt-3 col-12 text-center">
+              <ul class="messages">
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      <strong>{{message}}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
+  </div>
+    <div class="container-fluid mt-1 bg-dark">
+        <p class="text-center text-white p-2">Biggest Discount Hurry up <a class="text-decoration-none text-danger font-weight-bold"
                 href="#scroller">Shop Now</a></p>
     </div>
     {% include 'mainapp/slider.html' %}
 {% endblock slider %}
 
 {% block content %}
+
 <div id='scroller'></div>
 <div class="container" style='margin-top: 6%'>
     <h3 class='text-center'>
@@ -24,11 +41,102 @@
     <hr style="height:4px; bg-gray">
 </div>
 {% include 'mainapp/product_card.html' %}
+
+
+
+
+
+<div class="container-fluid mt-5 position-relative">
+    <h3 class='text-center'>
+    <i style = "" class="fas fa-shopping-bag fa-xs mr-sm-2"></i>
+    OUR PRODUCTS
+    </h3>
+    <hr style="height:4px; bg-gray">
+
+  <div class="row pl-5 d-flex justify-content-left pr-5 margin-auto">
+  {% for data in view_products %}
+    <div class="mr-3 mt-2 mb-2" style="width:250px;">
+      <div class="card shadow" style="border:none;">
+        <a href="{% url 'details' data.id %}"><img src="{{data.image.url}}" class="card-img-top shadow" alt="..." ></a>
+        {% if data.discount.active %}
+        <div class="position-absolute top-0 right-0 discount-card">{{data.discount.discount_percentage}}% off
+        </div>
+        {% endif %}
+        <div class="card-body bg-white text-dark overflow-hidden p-2 shadow" style= "height: 8rem">
+          <h6 class="mb-auto" class="card-title" style="white-space:none; overflow:hidden; text-overflow:ellipsis">{{data.name | title}}</h6>
+          <p style="font-size:0.6rem; margin-bottom:3px;" class="card-text mb-0 mt-sm-0 text-muted">{{data.category.brand_name | title}}</p>
+          {% if data.get_average_rating.rating_avg %}
+            
+             <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star{% if data.get_average_rating.rating_avg < 1 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if data.get_average_rating.rating_avg < 2 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if data.get_average_rating.rating_avg < 3 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if data.get_average_rating.rating_avg < 4 %}-o empty{% endif %}"></i>
+                <i style="color:#FFB656;" class="fa fa-star{% if data.get_average_rating.rating_avg < 5 %}-o empty{% endif %}"></i>
+                ({{data.get_average_rating.rating_avg | floatformat:1}})
+            </div>
+            {% else %}
+            <div class="review-rating" style="font-size:12px;">
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+                <i style="color:#FFB656;" class="fa fa-star-o empty"></i>
+            </div>
+            {% endif %}
+          <div class="d-md-flex justify-content-between mt-sm-1 d-sm-block">
+            <div class="d-block ">
+              {% if data.discount.active %}
+              <p class="mb-0 mt-0 price-tag">
+                ${{data.price}}<br> <del class="mt-0 mb-0 text-muted"
+                  style="font-size: .7rem;">&nbsp{{data.calculate_Discount}}&nbsp</del></p>
+              {% else %}
+              <p class="mb-0 mt-0 price-tag">
+                ${{data.price}}</p>
+              {% endif %}
+            </div>
+
+            {% comment %} <div class="d-flex"> {% endcomment %}
+            {% if request.user.is_authenticated %}
+              <div class="">
+                <form action="{% url 'cart' %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fas fa-shopping-cart'  style="font-size:0.6rem"></i> Add to Cart
+                        </button>
+                    </form>
+                {% comment %} <a href="">Add to cart</a> {% endcomment %}
+              </div>
+              {% else %}
+               <div class="">
+                <form action="{% url 'wishlist' data.id %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input id="product_id" type="text" name="detail_item_id" value="{{data.id}}" hidden>
+                        <button type="submit" style="border-radius:2px; font-size:0.9rem"
+                            class="bg-primary forhover text-white p-1 border-0 add-to-cart-btn1"><i
+                                class='fa fa-heart'  style="font-size:0.6rem"></i> Add to Wishlist
+                        </button>
+                    </form>
+              </div>
+              {% endif %}
+            {% comment %} </div> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+    </div>
+    <div class=" mr-5" style="position:absolute; top:-21px; right:0; z-index: 1;">
+        <a href="{% url 'shopping_page1' 'all'  %}"><button type="button" class="text-center mt-5 p-2 border border-primary text-primary" style="color:#faca51" >VIEW MORE >> </button></a>
+    </div>
+</div>
+
+
+
+
 {% include 'mainapp/tranding_now.html' %}
-
-
-
-
 {% endblock content %}
 
 

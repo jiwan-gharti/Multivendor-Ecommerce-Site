@@ -10,5 +10,6 @@ urlpatterns = [
     path("my_orders/", view=views.MyOrder, name="my_orders"),
     path("my_review/", view=views.MyReview, name="my_review"),
     path("update_profile/", view=views.UpdateCustomerProfile, name="update_profile"),
-
+    path("review_seller/", view=views.ReviewSeller, name="review_seller"),
+    path("review_seller1/<int:pk>/", view=views.ReviewSeller1, name="review_seller1"),
 ]

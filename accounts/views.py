@@ -33,6 +33,7 @@ def SignupPage(request):
                 password1 = forms.cleaned_data.get("password1")
                 print(password1)
                 password2 = forms.cleaned_data.get("password2")
+                
                 print(password2)
 
                 user_obj = User(username = username,
@@ -63,6 +64,7 @@ def SignupPage(request):
         return redirect('/')
 
 def Login(request):
+    print("--------------------here--------------------")
     if  not request.user.is_authenticated:
     
         forms = LoginForm()
@@ -71,25 +73,21 @@ def Login(request):
             print("post request")
             forms = LoginForm(request.POST or None)
             if forms.is_valid():
-                print("valid")
                 username = forms.cleaned_data.get('username')
-                print(username)
                 password = forms.cleaned_data.get("password")
-                print(password)
-
                 user = authenticate(username = username, password = password)
-                print(user)
                 if user is not None:
-                    print("not none")
                     login(request,user)
                     if request.user.is_authenticated and request.user.is_customer:
                         return redirect("/")
                     elif request.user.is_authenticated and  request.user.is_merchant:
                         print("merchant")
                         return redirect("/merchant/")
+                else:
+                    messages.info(request, "Either username or Password is incorrect!")
 
         context = {
-            'form':forms
+            'form':forms,
         }
         return render(request, 'accounts/login.html', context)
     else:
@@ -130,11 +128,13 @@ def MerchantCustomer(request):
                 print(password2)
                 document = forms.cleaned_data.get("document")
                 print(document)
+                shop_name = forms.cleaned_data.get("shop_name")
 
                 user_obj = User(username = username,
                                 first_name=first_name, 
                                 last_name = last_name,
                                 email = email,
+                                shop_name = shop_name,
                                 phone_number = phone_number,
                                 address = address,
                                 gender = gender,

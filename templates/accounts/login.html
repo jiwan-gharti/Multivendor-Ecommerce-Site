@@ -1,66 +1,80 @@
-
 {% extends "../mainapp/base.html" %}
-{% load static %}
+
+{% load i18n %}
+{% load account socialaccount %}
 {% load crispy_forms_filters %}
 
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block title %}Login Page{% endblock title %}
+
 
 {% block content %}
-
-
- {% if not user.is_authenticated %}
- 
 <div class="container mt-sm-5 mb-sm-5 ">
     <div class="form-wrapper w-75 m-sm-auto p-5">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                
-                {% if messages %}
-                    {% for message in messages %}
-                        <p class="alert-success p-2" style="font-size:1rem;">{{message}}</p>
-                    {% endfor %}
-                {% endif %}
+                     {% if messages %}
+                        <div class="mt-3 col-12 text-center">
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    <strong>{{message}}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
 
-                {% if form.non_field_errors %}
-                    <span class="errors">
-                        {{form.errors|striptags}}
-                    </span>
-                {% endif %}
 
+                              <h1>{% trans "Sign In" %}</h1>
 
-                    <form method= "POST" action="">
-                        {% csrf_token %}
-                        {{form | crispy}}
-                        
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
+                                {% get_providers as socialaccount_providers %}
 
-                        <div class="d-flex justify-content-between mt-4">
-                            <div>
-                                <label for="" class="font-weight-bold added-style">New Customer ?</label>
-                                <a href="{% url 'accounts:register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Register</a> Here
-                            </div>
-                            <div>
+                                {% if socialaccount_providers %}
+                                <p>Please sign up if you are new user.<a href="/accounts/signup/">sign up</a></p>
+
+                                <div class="socialaccount_ballot">
+
+                                  <ul class="socialaccount_providers">
+                                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                                    
+                                  </ul>
+
+                                  <div class="login-or">{% trans 'or' %}</div>
+
+                                </div>
+
+                                {% include "socialaccount/snippets/login_extra.html" %}
+
+                                {% else %}
+                                <p>{% blocktrans %}If you have not created an account yet, then please
+                                <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+                                {% endif %}
+
+                              <form novalidate class="login" method="POST" action="{% url 'accounts:login' %}">
+                                {% csrf_token %}
+                                {{ form | crispy }}
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                                <button class="btn btn-primary border-0 p-2 text-white" class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+                                <a class="button secondaryAction float-right" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                              </form>
+
+                              <div class="mt-3">
                                 <label for="" class="font-weight-bold added-style">New Merchant ?</label>
                                 <a href="{% url 'accounts:merchant_register' %}" class="added-style text-decoration-none" style="cursor:pointer;"> Register</a> Here
                             </div>
-                        </div>
-                        <a href="{% url 'accounts:password_reset' %} " class="added-style text-decoration-none">Forget Password? </a>
-                    
 
-
-                </div>
+                              
+                  </div>
             </div>
         </div>
     </div>
 </div>
 
- {% else %}
-
-
-        
- {% endif %}
-
-{% endblock content %}
+{% endblock %}
