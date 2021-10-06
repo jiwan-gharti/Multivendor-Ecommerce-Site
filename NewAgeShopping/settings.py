@@ -194,7 +194,27 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL ="/"
 LOGOUT_REDIRECT_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# host =  "smtp.gmail.com"
+# port =  587
+# username =  "nawijitrahg@gmail.com"
+# password =  "agneecoqxwhxihqa"
+# use_tls = True
+
+import environ
+env = environ.Env()
+environ.Env.read_env()
+
+DEFAULT_FROM_EMAIL = env('email_host_user')
+SERVER_EMAIL = env('email_host_user')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = env('email_host_user')
+EMAIL_HOST_PASSWORD = env('email_host_password')
+EMAIL_PORT = 587
+
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.UserForm'
 

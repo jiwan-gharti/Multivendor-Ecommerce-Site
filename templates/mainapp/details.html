@@ -249,7 +249,7 @@
                                     <div class="review-heading">
                                                 <div><a href="#"><i class="fa fa-user-o"></i> {{rs.user.first_name}}</a></div>
                                                 {% comment %} <div style="font-size:14px;"><p>{{rs.subject}}</p></div> {% endcomment %}
-                                                {% if rs.sentiment != '0' %}
+                                                {% if rs.sentiment == '1' %}
                                                     <div style="font-size:14px;"><p>&#x1F600</p></div>
                                                 {% else %}
                                                     <div style="font-size:14px;"><p>&#x1F641</p></div>

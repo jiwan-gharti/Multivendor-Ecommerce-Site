@@ -2,7 +2,7 @@ from accounts.models import User
 import json
 import random
 from django.http import response
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import BadHeaderError, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import TemplateView, View
 
@@ -20,6 +20,9 @@ from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 import datetime
 from allauth.socialaccount.models import SocialAccount
+from django.core.mail import send_mail
+from smtplib import SMTPException
+from django.db.models import F
 # Create your views here.
 
 def homepage(request):
@@ -40,7 +43,7 @@ def homepage(request):
 def details(request,pk):
     singleProduct = Product.objects.get(pk = pk)
     total_comments = Comment.objects.filter(product__id = pk,status = True).count()
-    comments = Comment.objects.filter(product__id = pk,status = True)[:2]
+    comments = Comment.objects.filter(product__id = pk,status = True)
     # paginator = Paginator(comments, per_page=2)
     # page_no = request.GET.get("page")
     # page_obj = paginator.get_page(page_no)
@@ -107,7 +110,7 @@ def Cart(request):
         "cart_items" : cart_items,
         'total':total
     }
-    print("------==", SocialAccount.objects.get(user = request.user))
+    # print("------==", SocialAccount.objects.get(user = request.user))
     if request.user.is_customer | request.user.is_superuser:
         return render(request, "mainapp/cart.html", context)
     else:
@@ -133,8 +136,30 @@ def ContactUs(request):
     forms = ContactUsForm()
     if request.method == 'POST':
         forms = ContactUsForm(request.POST)
+        print("-----contact us posts----------")
         if forms.is_valid():
-            forms.save()
+            print("-----contact us ----------")
+            
+            to_mail = forms.cleaned_data.get('email')
+            message = forms.cleaned_data.get('message')
+            subject = forms.cleaned_data.get('name')
+            print('to mail', to_mail)
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    'nawijitrahg@gmail.com',
+                    [to_mail],
+                    fail_silently=False,
+                )
+                forms.save()
+            except BadHeaderError:              # If mail's Subject is not properly formatted.
+                print('Invalid header found.')
+            except SMTPException as e:          # It will catch other errors related to SMTP.
+                print('There was an error sending an email.'+ e)
+            except:                             # It will catch All other possible errors.
+                messages.info(request, "There is some Problem!!")
+                
             messages.info(request, "We will Respond soon!!")
     context = {
         'forms':forms
@@ -564,14 +589,26 @@ def PostPayment(request):
         if get_shipping_address.exists():
             get_shipping_address = get_shipping_address[0]
         else:
-            return redirect("/checkout")
+            return redirect("/checkout/")
+        
+
         if orderItems.exists():
             orderItems.update(shipping_address = get_shipping_address)
             orderItems.update(payment = request.user)
             orderItems.update(ordered = True)
+        
+            print("--------i ama here -  - -  - - - - -  - - - - ")            
+            # orderItems.update(item__inventory__quantity = F('item__inventory__quantity')- F('quantity'))
+
+            
+            print("------------order items----------",orderItems)
             for item in orderItems:
+                print("-------------order indisde----- -- - - - -- - - -  - -")
+                products = Product.objects.all()
+                print("product-------------------", products)
                 item.save()
-            print("ordered placed!!!!")
+                print("ordered placed!!!!")
+        
         
             return redirect("/")
     else:

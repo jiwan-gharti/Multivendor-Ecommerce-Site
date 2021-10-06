@@ -173,7 +173,7 @@ def MerchantCustomer(request):
 class PasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
     email_template_name = 'accounts/password_reset_email.html'
-    # success_url = reverse_lazy('password_reset_done')
+    from_email = "nawijitrahg@gmail.com"
 
 class PasswordResetDoneView(PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
