@@ -2,6 +2,13 @@
 College Project
 
 
+Requirements:
+-django
+-django-orm
+-django-template language
+-postgresql
+
+
 In this project:
 
 For Vendor:
